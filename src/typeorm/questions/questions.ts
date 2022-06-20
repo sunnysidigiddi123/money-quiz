@@ -1,6 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm"
-import { Savedcontest } from "../contests/Savedcontest"
+import { Exclude } from "class-transformer"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm"
+import { Admincontest } from "../contests/Admincontest"
+import { Publishedcontest } from "../contests/Publishedcontests"
 
+export enum QuestionTypes {
+  Video = 'video',
+  Photo = 'photo',
+  Audio = 'audio',
+  Yes_No = 'yes/no',
+  }
 
 @Entity()
 export class Question {
@@ -16,9 +24,9 @@ export class Question {
 
     @Column({
         nullable:false,
-        default:''
+        type:'text'
     })
-    type: string
+    type: QuestionTypes
 
     @Column('simple-array')
     options: string[]
@@ -27,6 +35,7 @@ export class Question {
         nullable:false,
         default:''
     })
+    @Exclude({ toPlainOnly: true })
     correctanswer: string
 
     @Column({
@@ -47,8 +56,13 @@ export class Question {
     })
     totalQuestionTime: number
 
-    @ManyToOne(() => Savedcontest, contest => contest.questions)
-    contest: Savedcontest;
+    @ManyToOne(() => Admincontest, contest => contest.questions)
+    @JoinColumn({ name: "contest_id" })
+    contest: Admincontest;
+
+    @ManyToOne(() => Publishedcontest, contest => contest.questions)
+    @JoinColumn({ name: "publishedcontest_id" })
+    publishedcontest: Publishedcontest;
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

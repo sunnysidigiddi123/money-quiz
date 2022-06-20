@@ -1,5 +1,13 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Savedcontest } from "../contests/Savedcontest";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Admincontest } from "../contests/Admincontest";
+
+
+
+export enum RoleTypes {
+    Admin = 'admin',
+    User = 'user'
+    }
+
 
 @Entity()
 export class User {
@@ -29,9 +37,9 @@ export class User {
     
     @Column({
         nullable:false,
-        default:''
+        type:'text'
     })
-    role: string
+    role: RoleTypes
     
     @Column({
         nullable:false,
@@ -39,8 +47,8 @@ export class User {
     Wallet: number
 
    
-    @OneToMany(() => Savedcontest, savedcontest => savedcontest.user)
-    savedcontests: Savedcontest[];
+    @OneToMany(() => Admincontest, savedcontest => savedcontest.user)
+    savedcontests: Admincontest[];
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

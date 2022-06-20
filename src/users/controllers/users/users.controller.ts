@@ -1,8 +1,8 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ContestService } from 'src/contests/services/contest/contest.service';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
-import { Serializeduser } from 'src/users/types';
+import { Serializeduser } from 'src/types';
+import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,12 +16,32 @@ export class UsersController {
      return this.usersService.findUsers();
  }
 
+ @Get('/:id')
+@UseInterceptors(ClassSerializerInterceptor)   
+    async getContestById(@Param('id' ,ParseIntPipe) id:number  ){
+      
+       const contest = await this.usersService.getUserById(id);   
+       return contest
+
+ }
+
  @Post('signup')
  @UsePipes(ValidationPipe)      //for class-validator to import
- signupUsers(@Body() createUserDto:CreateUserDto){
+ async signupUsers(@Body() createUserDto:CreateUserDto){
      console.log(createUserDto)
-     return this.usersService.signupUser(createUserDto);
-   
+     const user = await this.usersService.signupUser(createUserDto);
+     if(user){
+         throw new HttpException(user,HttpStatus.CREATED)
+     }
+ }
+
+ @Post('login')
+ @UsePipes(ValidationPipe)      //for class-validator to import
+ async loginUsers(@Body() loginUserDto:LoginUserDto){
+     const user = await this.usersService.loginUser(loginUserDto);
+     if(user){
+         throw new HttpException(user,HttpStatus.ACCEPTED)
+     }
  }
 
  @UseInterceptors(ClassSerializerInterceptor) // to import class serialized restrict password interceptors

@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
 
-export class CreateLiveContestDto {
+export class CreatePublishedContestDto {
    
      @IsNotEmpty()
      contestName:string;
@@ -14,5 +14,6 @@ export class CreateLiveContestDto {
      @IsNotEmpty()
      EntryAmount:number;
      
-
+     @IsNotEmpty()
+     admincontestId:number;
 }
