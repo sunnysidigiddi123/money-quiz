@@ -1,14 +1,11 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { validate } from 'class-validator';
-import { ContestService } from 'src/contests/services/contest/contest.service';
-import { Savedcontest, User } from 'src/typeorm';
+import { Admincontest, User } from 'src/typeorm';
 import { UsersController } from './controllers/users/users.controller';
-import { ValidateUserMiddleWare } from './middlewares/validate-user.middleware';
 import { UsersService } from './services/users/users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User,Savedcontest])],
+  imports: [TypeOrmModule.forFeature([User,Admincontest])],
   controllers: [UsersController],
   providers: [
     {
@@ -19,15 +16,5 @@ import { UsersService } from './services/users/users.service';
 
 ] //use { provide,useclass} to send service as token 
 })
-export class UsersModule implements NestModule {
+export class UsersModule  {}
 
- configure(consumer: MiddlewareConsumer) {
-   consumer.apply(ValidateUserMiddleWare)
-   .forRoutes({
-    path: 'users',
-    method: RequestMethod.GET
-
-   })
- }
-
-}

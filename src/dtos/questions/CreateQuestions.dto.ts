@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { QuestionTypes } from "src/typeorm/questions/questions";
 
 
 export class CreateQuestionDto {
@@ -8,11 +9,11 @@ export class CreateQuestionDto {
     question: string;
 
     @IsNotEmpty()
-    type: string;
+    @IsEnum(QuestionTypes)
+    type:QuestionTypes ;
      
     @IsNotEmpty()
     options: string[];
-
 
     @IsNotEmpty()
     correctanswer: string;
@@ -26,7 +27,8 @@ export class CreateQuestionDto {
     @IsNotEmpty()
     totalQuestionTime: number;
 
-
+    @IsNotEmpty()
+    contestId:number;
 
 
 }

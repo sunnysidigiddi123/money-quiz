@@ -2,21 +2,20 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Up
 
 
 @Entity()
-export class Applieduser {
+export class Liveuser {
   
     @PrimaryGeneratedColumn('increment')
     id: number
 
     @Column({
         nullable:false,
-        default:''
     })
-    contestid: string
-
+    userId: number
+   
     @Column({
         nullable:false,
     })
-    userid: number
+    contestId: number
 
     
     @CreateDateColumn({name: 'created_at'})
