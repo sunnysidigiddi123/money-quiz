@@ -1,0 +1,35 @@
+.register-page-wrap {
+
+        height: 90vh;
+        
+  }
+  
+  .submit {
+  
+          position: absolute;
+          right: 25px;
+          bottom: 25px;
+          
+  }
+  
+  
+  .errormsg {
+  
+          margin-left: 131px;
+          margin-bottom:10px !important ;
+          margin-top: -17px;
+  }
+  .red {
+  
+          outline: none;
+          border: 1px solid red;
+           
+   }
+   .input-group-texts {
+  
+           margin-right: 21px;
+           margin-top: 12px;
+   }
+  
+  
+  

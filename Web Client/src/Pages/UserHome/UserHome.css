@@ -1,0 +1,84 @@
+.table-plus::before {
+
+    content: none !important;
+}
+
+.odd {
+     background-color: #dfdfdf;
+}
+.even:hover {
+
+        background-color: #dfdfdf;
+}
+.unsorting::before {
+
+     content: none !important;
+}
+.unsorting::after {
+
+      content: none !important;
+}
+.dt-checkbox-label {
+
+      display: none !important;
+}
+.dt-checkbox {
+
+      content: url('https://esquilo.io/png/thumb/xvp1NDEVS6WUEEN-Vector-Quiz-Transparent-PNG.png') !important ;
+      width: 54px;
+      height: 37px;
+}
+
+.table td {
+
+       padding: 10px !important;
+}
+
+.mb-30 {
+
+       margin-bottom: 14px !important;
+}
+
+.usertable {
+
+        padding: 12px !important ;
+        height: auto;
+}
+
+
+.pl-20 .pr-20{
+      padding-left: 25px;
+      padding-right: 25px;
+}
+
+.success{
+      color: green;
+      display: inline-block;
+}
+
+  
+.modal-content {
+      border-radius: 1rem
+  }
+  
+  .modal-content:hover {
+      box-shadow: 2px 2px 2px black
+  }
+  
+  .ss {
+      color: #2b84be;
+      font-size: 90px;
+      padding: 30px 0px
+  }
+  
+  .b1 {
+      background-color: #2b84be;
+      box-shadow: 0px 4px #337095;
+      font-size: 17px
+  }
+  
+  .r3 {
+      color: #c1c1c1;
+      font-weight: 500
+  }
+  
