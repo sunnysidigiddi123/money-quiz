@@ -32,8 +32,8 @@ const NewQuestionModal = (props) => {
       correctanswer: correctanswer==''? optionA : correctanswer,
       type: questionType,
       videolink:videolink,
-      totalQuestionTime:questionTime,
-      totalVideoTime:totaltiming,
+      totalQuestionTime:totaltiming,
+      totalVideoTime:questionTime,
       contestId:props.contestId,
       segmentId: segmentId== undefined ? segment[0].id : segmentId
     };

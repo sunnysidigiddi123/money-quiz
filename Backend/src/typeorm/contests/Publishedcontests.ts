@@ -37,6 +37,9 @@ export class Publishedcontest {
         default:0
     })
     ParticularPoll: number
+
+    @Column('simple-array',{nullable: true})
+    BroadcastingValues: number[]
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

@@ -219,7 +219,7 @@ const Contest = () => {
       <div className="mobile-menu-overlay"></div>
 
       <div className="main-container admincontainer" >
-        <div className="pd-ltr-20">
+        <div className="pd-ltr-20" style={{height:'100vh'}}>
           <div className="card-box mb-30 admincreate">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde hic

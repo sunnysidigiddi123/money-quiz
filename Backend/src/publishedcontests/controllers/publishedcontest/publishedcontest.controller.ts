@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Inject, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Post, Req, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
@@ -13,6 +13,17 @@ export class PublishedcontestController {
     @Inject('ADMINCONTEST_SERVICE') private readonly admincontestService: AdminContestService
 
 ){}
+
+@Get('getPublishedContest')
+@UseInterceptors(ClassSerializerInterceptor)   
+async getContest(@Req() request: IGetUserAuthInfoRequest){
+
+   const contests = await this.publishcontestService.getPublishedContest(request);   
+    if(contests){
+       throw new HttpException(contests,HttpStatus.CREATED)
+    }else
+     throw new HttpException("Unauthorized User",HttpStatus.UNAUTHORIZED)
+    }
 
 
 @Post('liveContest')
@@ -55,5 +66,17 @@ auditContest(@Body() createAuditContestDto:CreateAuditContestDto){
        throw new HttpException(PlayUser,HttpStatus.CREATED)
     }
  }
+
+ @Post('paynewpollamount')
+ @UsePipes(ValidationPipe)   
+ async paynewpollamount(@Req() request: IGetUserAuthInfoRequest){
+
+    console.log(request.body)
+    const PlayUser =  await this.publishcontestService.paynewpollamount(request);
+    if(PlayUser){
+       throw new HttpException(PlayUser,HttpStatus.CREATED)
+    }
+ }
+
 
 }

@@ -763,7 +763,7 @@ function showq(){
           <Modal.Title id="example-modal-sizes-title-lg">
             View Questions
           </Modal.Title>
-		  <button  onClick={() => setLgShowsview(false)} type="button" class="close close-btn" data-dismiss="modal" aria-label="Close"><span class="" aria-hidden="true">&times;</span></button>
+		  <button  onClick={() => setLgShowsview(false)} type="button" className="close close-btn" data-dismiss="modal" aria-label="Close"><span class="" aria-hidden="true">&times;</span></button>
           </Modal.Header>
          
            <Modal.Body id="modalview" style={{overflowY:'scroll',maxHeight:'450px'}}>
@@ -773,7 +773,7 @@ function showq(){
 	   {showquestion && newArr.map((question,index)=>{
               return < >
 
-	   <table class="styled-table">
+	   <table className="styled-table">
        <thead>
         <tr>
             <th>Contest Name</th>
@@ -785,7 +785,7 @@ function showq(){
         </tr>
        </thead>
        <tbody>
-        <tr class="active-row">
+        <tr className="active-row">
             <td>{records.contestName}</td>
             <td>{moment(records.contestTime).format("MMMM Do YYYY, h:mm:ss a")}</td>
 			<td>{records.contestDetails}</td>

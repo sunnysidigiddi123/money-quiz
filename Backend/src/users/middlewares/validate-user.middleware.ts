@@ -49,6 +49,19 @@ export class ValidateUserMiddleWare implements NestMiddleware {
 
 }
 
+@Injectable()
+export class FakeValidateUserMiddleWare implements NestMiddleware {
+
+
+   use(req: IGetUserAuthInfoRequest, res: Response , next : NextFunction) {
+          req.userId = 20;
+          next();
+        }
+    
+    }
+
+
+
 
 export const resfreshAuth = (refreshTok:any) => {
   const refreshToken = refreshTok.replace("Bearer ", "");

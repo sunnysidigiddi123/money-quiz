@@ -13,10 +13,10 @@
 
  
 }
-label{
+/* label{
     display:block;
     line-height:20px;
-  }
+  } */
 
   .option-input {
     -webkit-appearance: none;
@@ -190,4 +190,58 @@ label{
 .bb3 {
   background-color: #0cb466;
   border-color: #0cb466;
+}
+
+.question_title h1 {
+
+  font-family: "Sen", sans-serif !important;
+  color: #212529 !important;
+}
+
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* 720 / 1280 = 0.5625 */
+  margin-top: 80px;
+  
+
+  
+}
+
+.react-player {
+  position: absolute;
+  border: 2px solid black;
+  border-radius: 3px;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+.roll-in-left {
+	-webkit-animation: roll-in-left 0.6s ease-out both;
+	        animation: roll-in-left 0.6s ease-out both;
+}
+
+@-webkit-keyframes roll-in-left {
+  0% {
+    -webkit-transform: translateX(-800px) rotate(-540deg);
+            transform: translateX(-800px) rotate(-540deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotate(0deg);
+            transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes roll-in-left {
+  0% {
+    -webkit-transform: translateX(-800px) rotate(-540deg);
+            transform: translateX(-800px) rotate(-540deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0) rotate(0deg);
+            transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
 }

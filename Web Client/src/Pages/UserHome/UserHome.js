@@ -12,6 +12,9 @@ import $, { data } from "jquery";
 import "./UserHome.css";
 import { Modal, Button, Form, Row, ModalFooter } from "react-bootstrap";
 import { FaCrown,FaExclamation,FaSmile} from "react-icons/fa";
+// import DataTable from "react-data-table-component";
+// import DataTableExtensions from "react-data-table-component-extensions";
+// import "react-data-table-component-extensions/dist/index.css";
 import moment from "moment"
 import {
 	BrowserRouter as Router,
@@ -19,6 +22,7 @@ import {
   useLocation,useParams,Link, Navigate
   } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+
 
 const UserHome = () => {
   const [contests, setContest] = useState([]);
@@ -30,102 +34,73 @@ const UserHome = () => {
 	const [toastColor, setToastColor] = useState("");
   const [question, setQuestions] = useState([]);
   const [video , setVideo ] = useState([]);
-  const [playedd,setPlayed] = useState();
+  const [playedd,setPlayed] = useState(0);
   const [wallet,setUserWallet] = useState();
   const [lgShowed,setLgShowed] = useState();
   const [amount , setAmount] = useState();
   const [lgShowsss,setLgShowsss] = useState(false);
   const [newpoll , setNewPoll] = useState([]);
   const [alldata,setAllData] = useState([]);
+  const [appliedcontests,setAppliedContests] = useState([]);
   
-  
+  console.log(appliedcontests)
   
   const navigate = useNavigate();
   let DailyDate = new Date()
   console.log(moment(DailyDate).format("MMMM Do YYYY, h:mm:ss a"))
   console.log(userId)
   const Played = async (result) => {
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/played`;
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/contestplaycheck`;
 
     const token = sessionStorage.getItem("token");
     let sendData = {
-      contests: result._id,
+      contestid: result.id,
      
     };
     try {
-      let post = await axios.post(BASE_URL, sendData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }, 
-         });
+      let post = await axios.post(BASE_URL, sendData);
 
-       if(post.data.status == 0){
-         toast.error(post.data.message)
-       }  
        if(post.data.status == 1 ){
-       navigate("/livecontest",{state:{draftid:result.contestdraftid,question:question,video:video,ContestTime:result.contestTime,LiveUsers:post.data.liveusers,entryamount:result.EntryAmount,contests: result._id,userid:userId,present:post.data.presentquestion}}) 
+         console.log(post.data.question1,"questions")
+       navigate("/livecontestnew",{state:{question1:post.data.question1,totalquestions:post.data.totalquestions,ContestTime:result.contestTime,InititalUsers:post.data.totalIntitalUsers,entryamount:result.EntryAmount,contestid:result.id,present:result.BroadcastingValues}}) 
        }  
        if(post.data.status == 2){
         localStorage.clear('success')
-        setAllData([result.contestdraftid,result.contestTime,result.EntryAmount,result._id,post.data.presentquestion])
-        setNewPoll([post.data.entryamount,post.data.newentryamount]) 
+        setAllData([post.data.question1,post.data.totalquestions,result.contestTime,result.EntryAmount,result.id,result.BroadcastingValues])
+        setNewPoll([post.data.entryamount,post.data.particularPoll]) 
         setLgShowsss(true)
       }
   
     }catch (e){
      
-       toast.error(e)
+      toast.error(e.response.data.message)
     }
   }
 
 
   const entered  = async (e) => {
     e.preventDefault();
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/entered`;
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/paynewpollamount`;
 
     const token = sessionStorage.getItem("token");
     let sendData = {
-      contests: alldata[3],
+      contestid: alldata[4],
      
     };
     try {
-      let post = await axios.post(BASE_URL, sendData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }, 
-         });
+      let post = await axios.post(BASE_URL, sendData);
 
-       if(post.data.status == 0){
-         toast.error(post.data.message)
-       }  
-       if(post.data.status == 1 ){
+        if(post.data.status == 1 ){
          console.log("aaaaaa",alldata[0],alldata[1],alldata[2])
-         navigate("/livecontest",{state:{draftid:alldata[0],question:question,video:video,ContestTime:alldata[1],LiveUsers:post.data.liveusers,entryamount:alldata[2],contests:alldata[3],userid:userId,present:alldata[4]}}) 
+         navigate("/livecontestnew",{state:{question1:alldata[0],totalquestions:alldata[1],ContestTime:alldata[2],InititalUsers:post.data.totalIntitalUsers,entryamount:alldata[3],contestid:alldata[4],present:alldata[5]}}) 
        }   
   
     }catch (e){
      
-       toast.error(e)
+      toast.error(e.response.data.message)
     }
   }
 
-  const getUser = async () => {
-    const token = sessionStorage.getItem("token");
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/home`;
-    try {
-      let data = await axios.get(BASE_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(data.data.user);
-      setUserId(data.data.id);
-      setUserWallet(data.data.wallet);
-      console.log(data.data);
-    } catch (e) {
-      // console.log(e.response)
-    }
-  };
 
   
    const addamount = async (e) => {
@@ -165,43 +140,31 @@ const UserHome = () => {
 
 
   const applyContest = async (item) => {
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/applyContest`;
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/applycontest`;
     const token = sessionStorage.getItem("token");
     let sendData = {
-      contests: item._id,
-      EntryAmount:item.EntryAmount,
+      contestid: item.id,
     };
     try {
-      let post = await axios.post(BASE_URL, sendData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }, 
-      });
-      console.log('@@@!@@',post.data.wallet);
-      if(post.data.wallet !== undefined){
-      setUserWallet(post.data.wallet)
-      }
-		  toast.success(post.data)
-      //alert(post.data);
+      let post = await axios.post(BASE_URL, sendData);
+      console.log(post.data)
+		  toast.success(post.data.message)
+   
       getContest();
     } catch (e) {
       console.log(e.response.data);
-     // alert(e.response.data);
-     toast.error(e.response.data)
+     toast.error(e.response.data.message)
     }
   };
 
   const getContest = async () => {
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/getContests`;
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/getPublishedContest`;
     axios.get(BASE_URL).then((res) => {
-      console.log(res.data.contests);
-      appliedContestLength();
       setContest([...res.data.contests]);
-      playedduser();
-      setQuestions([...res.data.questions])
-      setVideo([...res.data.video])
+      setAppliedContests([...res.data.appliedcontests]);
+      setUser(res.data.user)
+      setUserWallet(res.data.wallet) 
       
-    
     
     });
     //initialize datatable
@@ -217,26 +180,9 @@ const UserHome = () => {
       }, 1000);
     });
   }
-const appliedContestLength = () =>{
-    let appliedContests = contests.filter((id)=>id.participants.includes(userId) )  ;
-    
-    setApplied(appliedContests.length);
-    
-   
-  
-}
-function playedduser(){
-  let playeduser = contests.filter((id)=>id.played.includes(userId))
-  setPlayed(playeduser.length)
-}
 
-useEffect(()=>{
-  appliedContestLength();
-  playedduser();
-}, [contests]);
 
   useEffect(() => {
-    getUser();
     getContest();
    
   }, []);
@@ -298,7 +244,7 @@ useEffect(()=>{
                     </div>
                   </div>
                   <div className="widget-data">
-                    <div className="h4 mb-0">{applied}</div>
+                    <div className="h4 mb-0">{appliedcontests.length}</div>
                     <div className="weight-600 font-14">Applied Contests</div>
                   </div>
                 </div>
@@ -361,7 +307,7 @@ useEffect(()=>{
                           <td>{moment(result.contestTime).format("MMMM Do YYYY, h:mm:ss a")}{" "}</td>
                           <td>{`₹ ${result.EntryAmount}`}</td>
                           <td>
-                            {!result.participants.includes(userId)?
+                            {!appliedcontests.find((item)=> {if(item.contestid == result.id) return true;})?
                              <button
                               type="button"
                               className="btn btn-primary"
@@ -370,13 +316,13 @@ useEffect(()=>{
                               }} 
                             >
                               Apply Now
-                            </button>:
+                            </button>
+                            :
                            <h6 className="success">Applied</h6>}
                             &nbsp;
-				                    &nbsp;
-                            { moment(DailyDate).isBetween(result.contestTime,moment(result.contestTime).add(20,'minutes'))  && result.participants.includes(userId)
+				                    &nbsp;  
+                            { moment(DailyDate).isBetween(result.contestTime,moment(result.contestTime).add(20,'minutes'))  && appliedcontests.find((item)=> {if(item.contestid == result.id) return true;})
                              ?
-                          
                           
                           <button className="btn btn-danger"
                           onClick={()=>{

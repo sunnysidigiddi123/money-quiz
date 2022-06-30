@@ -98,11 +98,10 @@ async applyContest(request: IGetUserAuthInfoRequest){
 
 async contestplaycheck(request: IGetUserAuthInfoRequest){
          
-    const contest = await this.PublishedContestRepository.findOne({where: {id:request.body.contestid}})
+    const contest = await this.PublishedContestRepository.findOne({where: {id:request.body.contestid},relations:['questions']})
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
-    
     const UserAlreadyPlayed = await this.liveUserRepository.findOne({where:{contestId:request.body.contestid , userId:request.userId}})
-   
+    console.log("sss",contest.questions[0],contest.questions.length)
     if(UserAlreadyPlayed){
       
          throw new HttpException({message:"You Have Already Played",status:0},HttpStatus.BAD_REQUEST);
@@ -116,11 +115,12 @@ async contestplaycheck(request: IGetUserAuthInfoRequest){
                  contestId:contest.id
            })
            await this.liveUserRepository.save(liveUsers);
-           return {message:'Enter Successfully', status:1}
+           const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
+           return {message:'Enter Successfully', status:1,question1:contest.questions[0],totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew}
           }
         if(contest.EntryAmount < contest.ParticularPoll){
 
-           return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2}
+           return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question1:contest.questions[0],totalquestions:contest.questions.length}
         }
 
 
@@ -128,6 +128,45 @@ async contestplaycheck(request: IGetUserAuthInfoRequest){
     }
 }
 
+async paynewpollamount(request: IGetUserAuthInfoRequest){
+         
+  const contest = await this.PublishedContestRepository.findOne({where: {id:request.body.contestid},relations:['questions']})
+  const user = await this.UserRepository.findOne({where:{id:request.userId}})
+  
+      if(user.Wallet < contest.ParticularPoll){
+         
+        throw new HttpException({message:"Insufficient Cash In Your Wallet",status:0},HttpStatus.BAD_REQUEST);
+        }
+      if(user.Wallet >= contest.ParticularPoll){
+        user.Wallet = user.Wallet - (contest.ParticularPoll-contest.EntryAmount);
+        const liveUsers = this.liveUserRepository.create({
+          userId:user.id,
+          contestId:contest.id
+         })
+         await this.liveUserRepository.save(liveUsers);
+         await this.UserRepository.save(user)
+         const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
+         return {mesage:"Enter successfully",status:1,question1:contest.questions[0],totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew}
+      }
+
+}
+
+
+
+
+
+async getPublishedContest(request: IGetUserAuthInfoRequest){
+     
+     const AppliedContests = await this.AppliedUserRepository.find({where:{userid:request.userId}})
+     const contest = await this.PublishedContestRepository.find();
+     const user = await this.UserRepository.find({where:{id:request.userId}});
+
+
+     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet}
+
+
+
+}
 
 
 

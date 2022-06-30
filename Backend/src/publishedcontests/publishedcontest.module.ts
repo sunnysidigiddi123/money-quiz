@@ -6,7 +6,7 @@ import { Liveuser } from 'src/typeorm/contests/Liveusers';
 import { Admincontest } from 'src/typeorm/contests/Admincontest';
 import { Applieduser } from 'src/typeorm/participants/appliedusers';
 import { User } from 'src/typeorm/Users/User';
-import { ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
+import { FakeValidateUserMiddleWare, ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 import { UsersService } from 'src/users/services/users/users.service';
 import { PublishedcontestController } from './controllers/publishedcontest/publishedcontest.controller';
 import { PublishedcontestService } from './services/publishedcontest/publishedcontest.service';
@@ -35,7 +35,7 @@ export class PublishedcontestModule  implements NestModule {
 
 
     configure(consumer: MiddlewareConsumer) {
-      consumer.apply(ValidateUserMiddleWare)
+      consumer.apply(FakeValidateUserMiddleWare)
       .forRoutes({
        path: 'publishedcontest/applyContest',
        method: RequestMethod.POST
@@ -45,7 +45,18 @@ export class PublishedcontestModule  implements NestModule {
         method: RequestMethod.POST
     
        },
+       {
+        path: 'publishedcontest/getPublishedContest',
+        method: RequestMethod.GET
+    
+       },
+       {
+        path: 'publishedcontest/paynewpollamount',
+        method: RequestMethod.POST
+    
+       },
      
+       
       
       )
     }
