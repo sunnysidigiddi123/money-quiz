@@ -38,8 +38,16 @@ export class Publishedcontest {
     })
     ParticularPoll: number
 
-    @Column('simple-array',{nullable: true})
-    BroadcastingValues: number[]
+    @Column({
+        nullable:false,
+        default:0
+    })
+    LiveQuestionIndex: number
+    
+    @Column({
+        nullable:true,
+    })
+    LivecontestTime: Date
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

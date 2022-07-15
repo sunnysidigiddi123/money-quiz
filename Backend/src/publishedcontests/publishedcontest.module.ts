@@ -11,10 +11,10 @@ import { UsersService } from 'src/users/services/users/users.service';
 import { PublishedcontestController } from './controllers/publishedcontest/publishedcontest.controller';
 import { PublishedcontestService } from './services/publishedcontest/publishedcontest.service';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
-import { Segment } from 'src/typeorm';
+import { Question, Segment } from 'src/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment])],
+  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment,Question])],
   controllers: [PublishedcontestController],
   providers: [
     {
@@ -35,7 +35,7 @@ export class PublishedcontestModule  implements NestModule {
 
 
     configure(consumer: MiddlewareConsumer) {
-      consumer.apply(FakeValidateUserMiddleWare)
+      consumer.apply(ValidateUserMiddleWare)
       .forRoutes({
        path: 'publishedcontest/applyContest',
        method: RequestMethod.POST
@@ -52,6 +52,11 @@ export class PublishedcontestModule  implements NestModule {
        },
        {
         path: 'publishedcontest/paynewpollamount',
+        method: RequestMethod.POST
+    
+       },
+       {
+        path: 'publishedcontest/getData',
         method: RequestMethod.POST
     
        },

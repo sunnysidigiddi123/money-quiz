@@ -33,25 +33,61 @@ export class BroadcastService {
    
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
     const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
+    const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
+    const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
+    const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
     // console.log("sssss",await this.AppliedUserRepository.count({where:{contestid:1}}))
+    console.log(request.body.selectedOption,LiveUser,"aaaaaaaaaa")
     if(user){
       
         if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
 
          throw new HttpException({message: "Congrats! You Gave Correct Answer ",status:1},HttpStatus.CREATED)
 
-        if(question.correctanswer !== request.body.selectedOption )
-
-         throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
-        
-        if(request.body.selectedOption === null)
+        if(question.correctanswer !== request.body.selectedOption || request.body.selectedOption === null || request.body.selectedOption === '' ){
            
-        throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
+          let totalPoll = TotalLiveUsers * contest.ParticularPoll ;
+          await this.liveUserRepository.remove(LiveUser);
+          const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
+         if(TotalLiveUsersnew == 0){
+        
+         contest.ParticularPoll = contest.EntryAmount;
+         }
+        
+         if(TotalLiveUsersnew > 0){
           
-        if(request.body.selectedOption === '')
+          console.log("total live users", TotalLiveUsersnew)
+          contest.ParticularPoll = totalPoll/TotalLiveUsersnew;
+        }
 
-        throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
+         await this.PublishedContestRepository.save(contest);
+         
+         throw new HttpException({message: "Oops! You Gave Wrong Answer" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:0},HttpStatus.CREATED)
+        }
+        
+        // if(request.body.selectedOption === null)
+           
+        // throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
+          
+        // if(request.body.selectedOption === '')
+
+        // throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
     }
+
+  }
+
+
+  async getpollvalues(request:IGetUserAuthInfoRequest){
+    const user = await this.UserRepository.findOne({where:{id:request.userId}})
+    const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
+    const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
+    
+    if(user){
+         
+      return {message: "Poll Values" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsers}
+
+    }
+
 
   }
 
@@ -85,7 +121,7 @@ export class BroadcastService {
     
       await this.PublishedContestRepository.save(contest);
       await this.UserRepository.save(user);
-      return {mesage:"Cashout Successfully",ParticularPoll:particularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll}
+      return {mesage:"Cashout Successfully",ParticularPoll:particularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:1}
     }
 
   }
@@ -121,6 +157,31 @@ export class BroadcastService {
 
   }
 
+  async reenter(request: IGetUserAuthInfoRequest){
+
+
+    const user = await this.UserRepository.findOne({where:{id:request.userId}})
+    const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
+   
+
+    if(user){
+      if(user.Wallet < contest.ParticularPoll){
+         
+        throw new HttpException({message:"Insufficient Cash In Your Wallet",status:0},HttpStatus.BAD_REQUEST);
+        }
+        if(user.Wallet >= contest.ParticularPoll){
+          user.Wallet = user.Wallet - (contest.ParticularPoll);
+          const liveUsers = this.liveUserRepository.create({
+            userId:user.id,
+            contestId:contest.id
+           })
+           await this.liveUserRepository.save(liveUsers);
+           await this.UserRepository.save(user)
+           return {mesage:"Re-Enter successfully",status:1}
+        }  
+     
+    }
+  }
   
   
 

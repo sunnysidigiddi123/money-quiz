@@ -45,32 +45,51 @@ const Formlogin = ({
              email,
             password
         }
-        const BASE_URL = `${process.env.REACT_APP_BASE_URL}/login`;
+        const API_URL = `${process.env.REACT_APP_BASE_URL}/users/login`;
         try {
-            const data = await axios.post(BASE_URL, sendData)
-            const token = data.data.user.tokens[0].token
-            sessionStorage.setItem("login", true);
-            sessionStorage.setItem("token",token)
-            if(data.data.user.role == "User") {
-              
-                
+          const data =  await axios.post(API_URL, sendData);
+
+        if (data.data.auth) {
+         
+          toast.success(data.data.message);
+          sessionStorage.setItem("token", "Bearer " + data.data.token);
+          localStorage.setItem(
+            "refreshToken",
+            "Bearer " + data.data.refreshToken
+          );
+          localStorage.setItem("name", data.data.details.name);
+          localStorage.setItem("email", data.data.details.email);
+          localStorage.setItem("loginStatus", true);
+         
+          setTimeout(() => {
+            if(data.data.details.role == "user") {
               navigate("/userhome");
               window.location.reload();
+
            }else
           {
          
-            toast.error("Invalid User");
+            toast.error("Invalid User")
         
           }
-          
-            // navigate("/home");
-            // window.location.reload();
-        } catch (e) {
-             setBackerror("You have entered an invalid username or password")
-            
+          }, 1000);
         }
+        } catch (e) {
+        //console.log(e.response);
+        toast.error(e.response.data.message);
+       }
+  
+       
+
     
     }
+
+    useEffect(() => {
+      let status = localStorage.getItem("loginStatus");
+      if (status) {
+        navigate("/userhome");
+      }
+    }, []);
 
   return (
   <>

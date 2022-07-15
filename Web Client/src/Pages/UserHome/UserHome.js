@@ -42,6 +42,7 @@ const UserHome = () => {
   const [newpoll , setNewPoll] = useState([]);
   const [alldata,setAllData] = useState([]);
   const [appliedcontests,setAppliedContests] = useState([]);
+  const [lgShowss,setLgShowss] = useState(false);
   
   console.log(appliedcontests)
   
@@ -58,15 +59,19 @@ const UserHome = () => {
      
     };
     try {
-      let post = await axios.post(BASE_URL, sendData);
+      let post = await axios.post(BASE_URL, sendData,{
+        headers: {
+          "authorization": token,
+          },
+       });
 
        if(post.data.status == 1 ){
          console.log(post.data.question1,"questions")
-       navigate("/livecontestnew",{state:{question1:post.data.question1,totalquestions:post.data.totalquestions,ContestTime:result.contestTime,InititalUsers:post.data.totalIntitalUsers,entryamount:result.EntryAmount,contestid:result.id,present:result.BroadcastingValues}}) 
+       navigate("/livecontestnew",{state:{question1:post.data.question1,totalquestions:post.data.totalquestions,ContestTime:post.data.contestTime,InititalUsers:post.data.totalIntitalUsers,entryamount:result.EntryAmount,contestid:result.id,questionIndex:post.data.questionIndex}}) 
        }  
        if(post.data.status == 2){
-        localStorage.clear('success')
-        setAllData([post.data.question1,post.data.totalquestions,result.contestTime,result.EntryAmount,result.id,result.BroadcastingValues])
+        // localStorage.clear('success')
+        setAllData([post.data.question1,post.data.totalquestions,post.data.contestTime,result.EntryAmount,result.id])
         setNewPoll([post.data.entryamount,post.data.particularPoll]) 
         setLgShowsss(true)
       }
@@ -88,11 +93,15 @@ const UserHome = () => {
      
     };
     try {
-      let post = await axios.post(BASE_URL, sendData);
+      let post = await axios.post(BASE_URL, sendData,{
+        headers: {
+          "authorization": token,
+          },
+       });
 
         if(post.data.status == 1 ){
          console.log("aaaaaa",alldata[0],alldata[1],alldata[2])
-         navigate("/livecontestnew",{state:{question1:alldata[0],totalquestions:alldata[1],ContestTime:alldata[2],InititalUsers:post.data.totalIntitalUsers,entryamount:alldata[3],contestid:alldata[4],present:alldata[5]}}) 
+         navigate("/livecontestnew",{state:{question1:alldata[0],totalquestions:alldata[1],ContestTime:alldata[2],InititalUsers:post.data.totalIntitalUsers,entryamount:alldata[3],contestid:alldata[4],questionIndex:post.data.questionIndex}}) 
        }   
   
     }catch (e){
@@ -129,15 +138,7 @@ const UserHome = () => {
        toast.error("Oops! Something Went Wrong")
     }
 
-
-
    }
-
-
-
-
-
-
 
   const applyContest = async (item) => {
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/applycontest`;
@@ -146,7 +147,11 @@ const UserHome = () => {
       contestid: item.id,
     };
     try {
-      let post = await axios.post(BASE_URL, sendData);
+      let post = await axios.post(BASE_URL, sendData,{
+        headers: {
+          "authorization": token,
+          },
+       });
       console.log(post.data)
 		  toast.success(post.data.message)
    
@@ -159,7 +164,12 @@ const UserHome = () => {
 
   const getContest = async () => {
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/getPublishedContest`;
-    axios.get(BASE_URL).then((res) => {
+    const token = sessionStorage.getItem("token");
+    axios.get(BASE_URL,{
+      headers: {
+        "authorization": token,
+        },
+     }).then((res) => {
       setContest([...res.data.contests]);
       setAppliedContests([...res.data.appliedcontests]);
       setUser(res.data.user)
@@ -188,6 +198,12 @@ const UserHome = () => {
   }, []);
   
 
+  useEffect(() => {
+    let status = localStorage.getItem("loginStatus");
+    if (!status) {
+      navigate("/");
+    }
+  }, []);
 
  
   return (
@@ -199,6 +215,7 @@ const UserHome = () => {
       <div className="mobile-menu-overlay"></div>
 
       <div className="main-container">
+     
         <div className="pd-ltr-20">
           <div className="card-box  usertable height-100-p mb-30" >
             <div className="row align-items-center">
@@ -206,7 +223,7 @@ const UserHome = () => {
                 <img src="vendors/images/banner-img.png" alt="" />
               </div>
               <div className="col-md-8">
-                <h4 className="font-20 weight-500 mb-10 text-capitalize">
+                <h4 className="font-20 weight-500 mb-10 text-capitalize" >
                   Welcome back{" "}
                   <div className="weight-600 font-30 text-blue">{user}</div>
                 </h4>

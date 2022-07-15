@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Applieduser, Auditcontest, Liveuser, Publishedcontest, Question, User } from 'src/typeorm';
-import { ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
+import { FakeValidateUserMiddleWare, ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 import { BroadcastController } from './controllers/broadcast/broadcast.controller';
 import { BroadcastService } from './services/broadcast/broadcast.service';
 
@@ -33,7 +33,15 @@ export class BroadcastModule implements NestModule {
       path: 'broadcast/quit',
       method: RequestMethod.POST
   
-     },
+     },{
+      path: 'broadcast/reenter',
+      method: RequestMethod.POST
+  
+     },{
+      path: 'broadcast/getpollvalues',
+      method: RequestMethod.POST
+  
+     }
      
     
     )

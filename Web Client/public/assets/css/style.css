@@ -1,13 +1,4 @@
-/* ====== Table of content Start =====*/
-/*
-Project Name: Quizo
-File        : CSS Base
-Version     : 1.0.0
-Author      : jthemes (https://themeforest.net/user/jthemes)
-*/
-/* ====== Table of content End =====*/
-/* Default transition start*/
-/*Default transition end*/
+
 .wrapper {
   width: 100%;
   min-height: 100vh;
@@ -18,8 +9,9 @@ Author      : jthemes (https://themeforest.net/user/jthemes)
 }
 
 .clock_area img {
-  width: 8rem;
-  height: 9rem;
+  width: 14rem !important;
+  height: 12rem !important;
+  padding-right: 50px;
 }
 .clock_area span {
   top: 55%;
@@ -318,6 +310,7 @@ button {
 
   .content_box {
     padding-left: 0rem;
+    padding-top: 10px;
   }
 
   .question_number {
@@ -336,6 +329,8 @@ button {
   .left-side-img img {
     display: none;
   }
+
+
 
   .prev_btn {
     left: 15%;

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Applieduser, Publishedcontest, Liveuser, Admincontest, User } from 'src/typeorm';
+import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Question } from 'src/typeorm';
 import { Auditcontest } from 'src/typeorm/contests/Auditcontest';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
@@ -28,6 +28,10 @@ export class PublishedcontestService {
     private readonly AppliedUserRepository: Repository<Applieduser>,
     @InjectRepository(Liveuser)
     private readonly liveUserRepository: Repository<Liveuser>,
+    @InjectRepository(Segment)
+    private readonly segmentRepository: Repository<Segment>,
+    @InjectRepository(Question)
+    private readonly questionRepository: Repository<Question>,
     
     ){}
 
@@ -41,7 +45,8 @@ async publishContest(publishedcontestDto:CreatePublishedContestDto,admincontest:
               contestDetails:publishedcontestDto.contestDetails,
               contestTime:publishedcontestDto.contestTime,
               EntryAmount:publishedcontestDto.EntryAmount,
-              ParticularPoll:publishedcontestDto.EntryAmount
+              ParticularPoll:publishedcontestDto.EntryAmount,
+              LivecontestTime:publishedcontestDto.contestTime
         });
         newContest.questions = admincontest.questions
         
@@ -116,17 +121,49 @@ async contestplaycheck(request: IGetUserAuthInfoRequest){
            })
            await this.liveUserRepository.save(liveUsers);
            const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
-           return {message:'Enter Successfully', status:1,question1:contest.questions[0],totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew}
+           return {message:'Enter Successfully', status:1,question1:contest.questions[contest.LiveQuestionIndex],contestTime:contest.LivecontestTime,totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew,questionIndex:contest.LiveQuestionIndex}
           }
         if(contest.EntryAmount < contest.ParticularPoll){
 
-           return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question1:contest.questions[0],totalquestions:contest.questions.length}
+           return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2,entryamount:contest.EntryAmount,contestTime:contest.LivecontestTime,particularPoll:contest.ParticularPoll,question1:contest.questions[contest.LiveQuestionIndex],totalquestions:contest.questions.length}
         }
 
 
 
     }
 }
+
+
+async getData(request: IGetUserAuthInfoRequest){
+         
+  const contest = await this.PublishedContestRepository.findOne({where: {id:request.body.contestId},relations:['questions']})
+  const user = await this.UserRepository.findOne({where:{id:request.userId}})
+  // const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
+ console.log("Cccccccccc",contest.questions[1],request.body.LivecontestTime,request.body.questionIndex)
+  if(user){
+      contest.LivecontestTime = request.body.LivecontestTime
+      contest.LiveQuestionIndex = request.body.questionIndex
+      await this.PublishedContestRepository.save(contest)
+    // if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
+    
+    throw new HttpException({message: "Congrats! You Gave Correct Answer ",status:1,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex]},HttpStatus.CREATED)
+
+  //  if(question.correctanswer !== request.body.selectedOption )
+
+  //   throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex]},HttpStatus.CREATED)
+   
+  //  if(request.body.selectedOption === null)
+      
+  //  throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex]},HttpStatus.CREATED)
+     
+  //  if(request.body.selectedOption === '')
+
+  //  throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex]},HttpStatus.CREATED)
+
+
+  }
+} 
+
 
 async paynewpollamount(request: IGetUserAuthInfoRequest){
          
@@ -146,7 +183,7 @@ async paynewpollamount(request: IGetUserAuthInfoRequest){
          await this.liveUserRepository.save(liveUsers);
          await this.UserRepository.save(user)
          const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
-         return {mesage:"Enter successfully",status:1,question1:contest.questions[0],totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew}
+         return {mesage:"Enter successfully",status:1,question1:contest.questions[contest.LiveQuestionIndex],totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew,questionIndex:contest.LiveQuestionIndex}
       }
 
 }

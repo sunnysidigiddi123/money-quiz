@@ -54,7 +54,7 @@ export class FakeValidateUserMiddleWare implements NestMiddleware {
 
 
    use(req: IGetUserAuthInfoRequest, res: Response , next : NextFunction) {
-          req.userId = 20;
+          req.userId = 24;
           next();
         }
     

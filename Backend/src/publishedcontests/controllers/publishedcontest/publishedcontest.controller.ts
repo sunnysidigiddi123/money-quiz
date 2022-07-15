@@ -67,6 +67,16 @@ auditContest(@Body() createAuditContestDto:CreateAuditContestDto){
     }
  }
 
+
+ @Post('getData')
+ @UsePipes(ValidationPipe)   
+ async getData(@Req() request: IGetUserAuthInfoRequest){
+
+    console.log(request.body)
+   return this.publishcontestService.getData(request);
+   
+ }
+
  @Post('paynewpollamount')
  @UsePipes(ValidationPipe)   
  async paynewpollamount(@Req() request: IGetUserAuthInfoRequest){

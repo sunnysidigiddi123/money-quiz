@@ -38,5 +38,26 @@ export class BroadcastController {
   }
 }
 
+@Post('reenter')
+@UsePipes(ValidationPipe)   
+ async reenter(@Req() request: IGetUserAuthInfoRequest){
+
+  const reenter = await this.broadcastService.reenter(request);
+  if(reenter){
+    throw new HttpException(reenter,HttpStatus.CREATED)
+  }
+}
+
+@Post('getpollvalues')
+@UsePipes(ValidationPipe)   
+ async getpollvalues(@Req() request: IGetUserAuthInfoRequest){
+
+  const getpollvalues = await this.broadcastService.getpollvalues(request);
+  if(getpollvalues){
+    throw new HttpException(getpollvalues,HttpStatus.CREATED)
+  }
+}
+
+
 
 }
