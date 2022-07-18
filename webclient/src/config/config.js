@@ -1,0 +1,2 @@
+export  let STATS_DELAY_IN_SEC=30
+export  let STATS_DELAY_IN_MILLISEC=30000
