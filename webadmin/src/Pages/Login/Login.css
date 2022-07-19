@@ -1,0 +1,38 @@
+.login-wrap {
+
+       height: 90vh;
+ }
+ 
+ .select-role .btn-group {
+ 
+         display: none !important;
+ }
+ 
+ .red {
+ 
+        outline: none;
+        border: 1px solid red;
+         
+ }
+ 
+ .errormsgs {
+ 
+          margin-top: -17px;
+          margin-bottom: 10px;
+          
+ }
+ 
+ a:hover {
+ 
+         color: #41B3A3 !important;
+ }
+ 
+ .btn-outline-primary:hover {
+ 
+ 
+        background-color: #41B3A3 !important;
+        color: #ffff !important;
+ 
+ }
+ 
+ 

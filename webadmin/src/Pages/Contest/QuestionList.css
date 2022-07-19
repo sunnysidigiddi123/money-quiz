@@ -1,0 +1,67 @@
+.tapp-teacherdelmodal.download-csv .modal-dialog, 
+.download-csv-modal .modal-dialog {
+    max-width: 380px;
+    width: 85%;
+    max-height: 191px;
+    min-width: auto;
+    margin: auto !important;
+}
+.m-download-csv{
+    color: #4482FF;
+    font-weight: 600;
+    margin-top: -8px !important;
+}
+.tapp-teacherdelmodal.download-csv .modal-dialog .modal-content,
+.download-csv-modal .modal-dialog .modal-content{
+    min-width: auto;
+    width: 100%;
+    height: 191px;
+}
+
+.download-csv-modal .modal-dialog .modal-content .modal-body{
+    height: 100%;
+}
+
+.tapp-teacherdelmodal.download-csv .modal-dialog .modal-content .tapp-teacherdelmodal-subheading,
+.download-csv-modal .modal-dialog .modal-content .text-center h5{
+    font: normal normal 600 16px/26px Open Sans;
+    margin-bottom: 10px;
+}
+
+.download-loader{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-loader .ant-spin-dot-item {
+    background-color: #f45e29;
+}
+
+.tapp-teacherdelmodal.download-csv .tapp-teacherdelmodal-btn .tapp-teacherdelmodal-cancelbtn{
+    margin-right: 0;
+}
+
+.tapp-teacherdelmodal.download-csv .tapp-teacherdelmodal-btn{
+    gap: 6px;
+}
+
+.tapp-teacherdelmodal.download-csv .modal-dialog .modal-content .modal-body{
+   padding: 40px 20px 20px;
+}
+
+.questionList{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 900;
+    justify-content: space-between;
+}
+
+.newQues{
+    font-size: 15px;
+    color: blue;
+}
