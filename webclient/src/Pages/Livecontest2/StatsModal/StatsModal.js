@@ -86,7 +86,7 @@ const StatsModal = (props) => {
                                                     <li>
                                                         <img src="extra-images/result1.png" className='heartbeat' alt="" />
                                                         <h4><a href="#">Initial Contestants</a></h4>
-                                                        <span>21</span>
+                                                        <span>{props.initalusers}</span>
                                                     </li>
                                                     <li className="sportsmagazine-match-score">
                                                         <h5>Your Total Earning</h5>
@@ -100,7 +100,7 @@ const StatsModal = (props) => {
                                                 </ul>
                                             </div>
 
-                                            <div className="sportsmagazine-fancy-title"><h2>Advertisement</h2></div>
+                                            {/* <div className="sportsmagazine-fancy-title"><h2>Advertisement</h2></div> */}
 
                                             <div className="row">
                                                 <div className="col-md-6">
@@ -111,7 +111,7 @@ const StatsModal = (props) => {
                                                 </div>
                                             </div>
 
-                                            <figure className="sportsmagazine-add-banner">
+                                            {/* <figure className="sportsmagazine-add-banner">
                                                 <img src="extra-images/add-thumb-1.jpg" alt="" />
                                                 <span className="sportsmagazine-add-transparent"></span>
                                                 <figcaption>
@@ -121,7 +121,8 @@ const StatsModal = (props) => {
                                                         <a href="404.html" className="sportsmagazine-banner-btn">Read More <span></span></a>
                                                     </div>
                                                 </figcaption>
-                                            </figure>
+                                            </figure> */}
+
 
                                         </div>
 

@@ -58,6 +58,18 @@ export class BroadcastController {
   }
 }
 
+@Post('getInitialUsers')
+@UsePipes(ValidationPipe)   
+ async getInitialUsers(@Req() request: IGetUserAuthInfoRequest){
+
+  const getInitialUsers = await this.broadcastService.getInitialUsers(request);
+  if(getInitialUsers){
+    throw new HttpException(getInitialUsers,HttpStatus.CREATED)
+  }
+}
+
+
+
 @Post('creditwinningamount')
 @UsePipes(ValidationPipe)   
  async creditwinningamount(@Req() request: IGetUserAuthInfoRequest){

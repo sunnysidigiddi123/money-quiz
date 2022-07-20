@@ -92,6 +92,19 @@ export class BroadcastService {
   }
 
 
+  async getInitialUsers(request:IGetUserAuthInfoRequest){
+  
+    const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
+  
+         
+      return {message: "Initial Users" ,InitialUsers:TotalLiveUsers}
+
+  
+
+  }
+
+
+
   async cashout(request: IGetUserAuthInfoRequest){
    
     const user = await this.UserRepository.findOne({where:{id:request.userId}})

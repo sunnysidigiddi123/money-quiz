@@ -40,6 +40,7 @@ export class PublishedcontestService {
 
 async publishContest(publishedcontestDto:CreatePublishedContestDto,admincontest:Admincontest){
 
+        const segment = await this.segmentRepository.find({where:{contestId:admincontest.id}})
         const newContest = this.PublishedContestRepository.create({
               contestName:publishedcontestDto.contestName,
               contestDetails:publishedcontestDto.contestDetails,
@@ -49,12 +50,24 @@ async publishContest(publishedcontestDto:CreatePublishedContestDto,admincontest:
               LivecontestTime:publishedcontestDto.contestTime
         });
         newContest.questions = admincontest.questions
-        
+      
         admincontest.publish = true
 
         await this.contestRepository.save(admincontest);
 
-        return this.PublishedContestRepository.save(newContest);
+        const publishcontest =  await this.PublishedContestRepository.save(newContest);
+        
+        for(let i=0;i< segment.length;i++){
+
+          segment[i].livecontestId = newContest.id
+           console.log(segment[i].livecontestId,newContest.id,"aaaaa")
+          
+     }
+     
+          await this.segmentRepository.save(segment);
+
+        return publishcontest
+
   
   }
 
