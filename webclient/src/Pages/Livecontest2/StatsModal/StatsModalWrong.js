@@ -61,10 +61,10 @@ const StatsModalWrong = (props) => {
                                                     <li>
                                                         <img src="extra-images/resultred1.png" className='heartbeat' alt="" />
                                                         <h4><a href="#">Initial Contestants</a></h4>
-                                                        <span>21</span>
+                                                        <span>{props.initalusers}</span>
                                                     </li>
                                                     <li className="sportsmagazine-match-score">
-                                                        <h5>Want To Re-enter </h5>
+                                                    {props.totalquestions != sessionStorage.getItem('questionIndex') ?  <h5>Want To Re-enter </h5> : <h5>Lost </h5> }
                                                         <p><strong className="sportsmagazine-color" style={{color:'red'}}>₹ {props.polldata[0]}</strong></p>
                                                     </li>
                                                     <li>
@@ -75,7 +75,7 @@ const StatsModalWrong = (props) => {
                                                 </ul>
                                             </div>
 
-                                            <div className="redtitle " ><h2>Advertisement</h2></div>
+                                            {/* <div className="redtitle " ><h2>Advertisement</h2></div> */}
 
                                             <div className="row">
                                                 <div className="col-md-6">
@@ -86,7 +86,7 @@ const StatsModalWrong = (props) => {
                                                 </div>
                                             </div>
 
-                                            <figure className="sportsmagazine-add-banner">
+                                            {/* <figure className="sportsmagazine-add-banner">
                                                 <img src="extra-images/add-thumb-1.jpg" alt="" />
                                                 <span className="sportsmagazine-add-transparent"></span>
                                                 <figcaption>
@@ -96,7 +96,7 @@ const StatsModalWrong = (props) => {
                                                         <a href="#" className="sportsmagazine-banner-btn">Read More <span></span></a>
                                                     </div>
                                                 </figcaption>
-                                            </figure>
+                                            </figure> */}
 
                                         </div>
 

@@ -15,6 +15,13 @@ export class Segment {
 
     @Column({
         nullable:false,
+        default:0
+        
+    })
+    livecontestId: number
+
+    @Column({
+        nullable:false,
         
     })
     segmentName: string

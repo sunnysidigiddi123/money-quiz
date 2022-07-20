@@ -35,7 +35,7 @@ const Livecontestnew = () => {
    const [reentersuccess, setReentersuccess] = useState(false);
    const [polldata , setPollData] = useState([]);
    const [creditlastamount , setCreditLastAmount] = useState(0);
-
+   const [initialusers , setInitialUsers] = useState(0);
    // For adding values from userhome 
    // console.log(present.length,present)
    const navigate = useNavigate();
@@ -320,6 +320,33 @@ const Livecontestnew = () => {
 
    }
 
+   // getting initial user data 
+
+   
+   const getInitialUsers = async (e) => {
+      
+      const BASE_URL = `${process.env.REACT_APP_BASE_URL}/broadcast/getInitialUsers`;
+      let sendData = {
+         contestId: contestid
+      };
+      try {
+         let post = await axios.post(BASE_URL, sendData);
+        
+         setInitialUsers(post.data.InitialUsers)
+
+      } catch (e) {
+
+         console.log("Oops! Something Went Wrong")
+      }
+
+
+
+   }
+   
+
+
+
+
    
 
    //for  getting selected option value . 
@@ -400,6 +427,11 @@ const Livecontestnew = () => {
                         
                                // repeat animation in 1.5 seconds
                             }}
+                            onUpdate={(remainingTime)=>{
+                                   if(remainingTime== 5 ){
+                                      getInitialUsers();
+                                   }
+                            }} 
                         >
                            {({ remainingTime }) => remainingTime}
                         </CountdownCircleTimer></span></div> </>}
@@ -598,8 +630,8 @@ const Livecontestnew = () => {
            
                   </Modal> */}
 
-                  <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} />
-                  <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} />
+                  <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} />
+                  <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} />
 
 
 
