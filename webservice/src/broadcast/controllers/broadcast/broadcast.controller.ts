@@ -1,6 +1,6 @@
-import { Controller, HttpException, HttpStatus, Inject, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, HttpException, HttpStatus, Inject, Post, Req, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BroadcastService, IGetUserAuthInfoRequest } from 'src/broadcast/services/broadcast/broadcast.service';
-
+import { Response } from 'express';
 
 @Controller('broadcast')
 export class BroadcastController {
@@ -12,59 +12,62 @@ export class BroadcastController {
 
 @Post('answerCheck')
 @UsePipes(ValidationPipe)   
- answerCheck(@Req() request: IGetUserAuthInfoRequest){
+ async answerCheck(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
-  return this.broadcastService.answerCheck(request);
-
+  const answercheck = await this.broadcastService.answerCheck(request);
+  
+  if(answercheck){
+    response.status(201).send(answercheck)
+  }
 }
 
 @Post('cashout')
 @UsePipes(ValidationPipe)   
- async cashout(@Req() request: IGetUserAuthInfoRequest){
+ async cashout(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const cashout = await this.broadcastService.cashout(request);
   if(cashout){
-    throw new HttpException(cashout,HttpStatus.CREATED)
+    response.status(201).send(cashout)
   }
 }
 
 @Post('quit')
 @UsePipes(ValidationPipe)   
- async quit(@Req() request: IGetUserAuthInfoRequest){
+ async quit(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const quit = await this.broadcastService.quit(request);
   if(quit){
-    throw new HttpException(quit,HttpStatus.CREATED)
+    response.status(201).send(quit)
   }
 }
 
 @Post('reenter')
 @UsePipes(ValidationPipe)   
- async reenter(@Req() request: IGetUserAuthInfoRequest){
+ async reenter(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const reenter = await this.broadcastService.reenter(request);
   if(reenter){
-    throw new HttpException(reenter,HttpStatus.CREATED)
+    response.status(201).send(reenter)
   }
 }
 
 @Post('getpollvalues')
 @UsePipes(ValidationPipe)   
- async getpollvalues(@Req() request: IGetUserAuthInfoRequest){
+ async getpollvalues(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const getpollvalues = await this.broadcastService.getpollvalues(request);
   if(getpollvalues){
-    throw new HttpException(getpollvalues,HttpStatus.CREATED)
+    response.status(201).send(getpollvalues)
   }
 }
 
 @Post('getInitialUsers')
 @UsePipes(ValidationPipe)   
- async getInitialUsers(@Req() request: IGetUserAuthInfoRequest){
+ async getInitialUsers(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const getInitialUsers = await this.broadcastService.getInitialUsers(request);
   if(getInitialUsers){
-    throw new HttpException(getInitialUsers,HttpStatus.CREATED)
+    response.status(201).send(getInitialUsers)
   }
 }
 
@@ -72,11 +75,11 @@ export class BroadcastController {
 
 @Post('creditwinningamount')
 @UsePipes(ValidationPipe)   
- async creditwinningamount(@Req() request: IGetUserAuthInfoRequest){
+ async creditwinningamount(@Req() request: IGetUserAuthInfoRequest,@Res() response: Response){
 
   const creditwinningamount = await this.broadcastService.creditwinningamount(request);
   if(creditwinningamount){
-    throw new HttpException(creditwinningamount,HttpStatus.CREATED)
+    response.status(201).send(creditwinningamount)
   }
 }
 

@@ -1,4 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Post, Req, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Post, Query, Req, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Response } from 'express';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
@@ -16,11 +17,11 @@ export class PublishedcontestController {
 
 @Get('getPublishedContest')
 @UseInterceptors(ClassSerializerInterceptor)   
-async getContest(@Req() request: IGetUserAuthInfoRequest){
+async getContest(@Req() request: IGetUserAuthInfoRequest,@Query('page') page:number,@Res() response:Response){
 
-   const contests = await this.publishcontestService.getPublishedContest(request);   
+   const contests = await this.publishcontestService.getPublishedContest(request,page);   
     if(contests){
-       throw new HttpException(contests,HttpStatus.CREATED)
+       response.status(201).send(contests)
     }else
      throw new HttpException("Unauthorized User",HttpStatus.UNAUTHORIZED)
     }
@@ -28,63 +29,93 @@ async getContest(@Req() request: IGetUserAuthInfoRequest){
 
 @Post('liveContest')
 @UsePipes(ValidationPipe)   
-async publishContest(@Body() createPublishedContestDto:CreatePublishedContestDto){
+async publishContest(@Body() createPublishedContestDto:CreatePublishedContestDto,@Res() response:Response){
    const admincontest = await this.admincontestService.getSavedContestById(createPublishedContestDto.admincontestId)
    console.log(createPublishedContestDto)
-   return this.publishcontestService.publishContest(createPublishedContestDto,admincontest);
+   const publishcontest = await this.publishcontestService.publishContest(createPublishedContestDto,admincontest);
+   
+   if(publishcontest){
+    
+      response.status(201).send(publishcontest)
 
+   }
 }
 
 
 @Post('auditContest')
 @UsePipes(ValidationPipe)   
-auditContest(@Body() createAuditContestDto:CreateAuditContestDto){
+async auditContest(@Body() createAuditContestDto:CreateAuditContestDto,@Res() response:Response){
 
    console.log(createAuditContestDto)
-   return this.publishcontestService.auditContest(createAuditContestDto);
-
+   const auditcontest = await this.publishcontestService.auditContest(createAuditContestDto);
+   if(auditcontest){
+      response.status(201).send(auditcontest)
+   }
 }
 
 @Post('applycontest')
  @UsePipes(ValidationPipe)   
- async applyContest(@Req() request: IGetUserAuthInfoRequest){
+ async applyContest(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
 
     console.log(request.body)
     const ApplyUser =  await this.publishcontestService.applyContest(request);
     if(ApplyUser){
-       throw new HttpException("You Have Applied Successfully",HttpStatus.CREATED)
+       response.status(201).send({message:"You Have Applied Successfully"})
     }
  }
 
  @Post('contestplaycheck')
  @UsePipes(ValidationPipe)   
- async contestplaycheck(@Req() request: IGetUserAuthInfoRequest){
+ async contestplaycheck(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
 
-    console.log(request.body)
     const PlayUser =  await this.publishcontestService.contestplaycheck(request);
     if(PlayUser){
-       throw new HttpException(PlayUser,HttpStatus.CREATED)
+      response.status(201).send(PlayUser)
     }
  }
 
 
  @Post('getData')
  @UsePipes(ValidationPipe)   
- async getData(@Req() request: IGetUserAuthInfoRequest){
+ async getData(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
 
-    console.log(request.body)
-   return this.publishcontestService.getData(request);
-   
+   const getData = await this.publishcontestService.getData(request);
+   if(getData){
+      response.status(201).send(getData)
+   }
  }
 
  @Post('paynewpollamount')
  @UsePipes(ValidationPipe)   
- async paynewpollamount(@Req() request: IGetUserAuthInfoRequest){
+ async paynewpollamount(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
 
-    console.log(request.body)
     const PlayUser =  await this.publishcontestService.paynewpollamount(request);
     if(PlayUser){
-       throw new HttpException(PlayUser,HttpStatus.CREATED)
+       response.status(201).send(PlayUser)
+    }
+ }
+
+
+ @Post('detailviewcontest')
+ @UsePipes(ValidationPipe)   
+ async detailviewcontest(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+
+   const detailcontests = await  this.publishcontestService.detailviewcontest(request);
+
+   if(detailcontests){
+      response.status(201).send(detailcontests)
+   }
+   
+ }
+
+ @Get('appliedcontests')
+ @UsePipes(ValidationPipe)   
+ async appliedcontests(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+
+    const appliedcontest = await this.publishcontestService.appliedcontests(request);
+    
+    if(appliedcontest){
+      response.status(201).send(appliedcontest)
     }
  }
 

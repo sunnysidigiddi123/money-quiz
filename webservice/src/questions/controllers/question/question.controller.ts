@@ -1,4 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Post, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Response } from 'express';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
 import { CreateQuestionDto } from 'src/dtos/questions/CreateQuestions.dto';
 import { QuestionService } from 'src/questions/services/question/question.service';
@@ -27,11 +28,13 @@ export class QuestionController {
 
     @Get('getQuestion')
     @UseInterceptors(ClassSerializerInterceptor)   
-    async getContest(){
+    async getContest(@Res() response:Response){
 
-         return this.questionService.getQuestion();
+         const questions = await this.questionService.getQuestion();
        
-   
+          if(questions){
+            response.status(201).send(questions)
+          }
     }
 
     

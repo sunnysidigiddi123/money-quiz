@@ -1,9 +1,10 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 import { Serializeduser } from 'src/types';
 import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
+import { Response } from 'express';
 
 
 
@@ -20,12 +21,13 @@ export class UsersController {
  }
 
  @Get('/getuserid')
- async home(@Req() request: IGetUserAuthInfoRequest ){
+ async home(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
     
     const user = await this.usersService.home(request);  
    
     if(user){
-        throw new HttpException(user,HttpStatus.CREATED)
+
+        response.status(201).send(user)
     }
 
    
@@ -33,29 +35,33 @@ export class UsersController {
 
  @Get('/:id')
 @UseInterceptors(ClassSerializerInterceptor)   
-    async getContestById(@Param('id' ,ParseIntPipe) id:number  ){
+    async getContestById(@Param('id' ,ParseIntPipe) id:number ,@Res() response:Response ){
       
-       const contest = await this.usersService.getUserById(id);   
-       return contest
+       const contest = await this.usersService.getUserById(id); 
+       
+       if(contest){
+        response.status(201).send(contest)
+       }
+      
 
  }
 
  @Post('signup')
  @UsePipes(ValidationPipe)      //for class-validator to import
- async signupUsers(@Body() createUserDto:CreateUserDto){
+ async signupUsers(@Body() createUserDto:CreateUserDto,@Res() response:Response){
      console.log(createUserDto)
      const user = await this.usersService.signupUser(createUserDto);
      if(user){
-         throw new HttpException(user,HttpStatus.CREATED)
+        response.status(201).send(user)
      }
  }
 
  @Post('login')
  @UsePipes(ValidationPipe)      //for class-validator to import
- async loginUsers(@Body() loginUserDto:LoginUserDto){
+ async loginUsers(@Body() loginUserDto:LoginUserDto,@Res() response:Response){
      const user = await this.usersService.loginUser(loginUserDto);
      if(user){
-         throw new HttpException(user,HttpStatus.ACCEPTED)
+        response.status(202).send(user)
      }else
      throw new HttpException("You have entered an invalid username or password",HttpStatus.BAD_REQUEST)
  }
@@ -72,11 +78,48 @@ export class UsersController {
 
  @Post('refresh-token')
  @UsePipes(ValidationPipe)      //for class-validator to import
- refreshtoken(@Req() request: IGetUserAuthInfoRequest){
-     return this.usersService.refreshtoken(request);
-  
-
+ async refreshtoken(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+     const refreshtoken = await this.usersService.refreshtoken(request);
+     
+     if(refreshtoken){
+        response.status(202).send(refreshtoken)
+     }
 }
+
+@Post('forgotPassword')
+@UsePipes(ValidationPipe)      
+async forgotPassword(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+    const forgotpassword = await this.usersService.forgotPassword(request);
+     
+    if(forgotpassword){
+        response.status(201).send(forgotpassword)
+    }
+}
+
+@Post('otp-verification')
+@UsePipes(ValidationPipe)      
+async otpVerification(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+    const otpverified = await  this.usersService.otpVerification(request);
+    
+    if(otpverified){
+     
+        response.status(200).send(otpverified)
+
+    }
+}
+
+@Post('reset-password')
+@UsePipes(ValidationPipe)      
+async resetPassword(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+    const resetpassword = await  this.usersService.resetPassword(request);
+
+    if(resetpassword){
+
+        response.status(201).send(resetpassword)
+    }
+}
+
+
 
 
 }

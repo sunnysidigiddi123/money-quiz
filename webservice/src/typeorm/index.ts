@@ -6,10 +6,11 @@ import { Question } from "./questions/questions";
 import { Applieduser } from "./participants/appliedusers";
 import { Liveuser } from "./contests/Liveusers";
 import { Segment } from "./questions/segments";
+import { Otp } from "./Users/forgetpassword/otp";
 
-const entities = [User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment];
+const entities = [User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp];
 
 
-export {User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment};
+export {User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp};
 
 export default entities ;
