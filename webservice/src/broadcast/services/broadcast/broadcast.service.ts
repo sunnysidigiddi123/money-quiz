@@ -38,11 +38,12 @@ export class BroadcastService {
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
     // console.log("sssss",await this.AppliedUserRepository.count({where:{contestid:1}}))
     console.log(request.body.selectedOption,LiveUser,"aaaaaaaaaa")
+    try{
     if(user){
       
         if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
 
-         throw new HttpException({message: "Congrats! You Gave Correct Answer ",status:1},HttpStatus.CREATED)
+         return {message: "Congrats! You Gave Correct Answer ",status:1}
 
         if(question.correctanswer !== request.body.selectedOption || request.body.selectedOption === null || request.body.selectedOption === '' ){
            
@@ -62,44 +63,49 @@ export class BroadcastService {
 
          await this.PublishedContestRepository.save(contest);
          
-         throw new HttpException({message: "Oops! You Gave Wrong Answer" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:0},HttpStatus.CREATED)
+         return {message: "Oops! You Gave Wrong Answer" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:0}
         }
         
-        // if(request.body.selectedOption === null)
-           
-        // throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
-          
-        // if(request.body.selectedOption === '')
-
-        // throw new HttpException({message: "Oops! You Gave Wrong Answer" , status:0},HttpStatus.CREATED)
+       
     }
+  }catch(e){
+
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  }
 
   }
 
 
   async getpollvalues(request:IGetUserAuthInfoRequest){
+
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
     const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
-    
+    try{
     if(user){
          
       return {message: "Poll Values" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsers}
 
     }
 
+  }catch(e){
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  }
 
   }
 
 
   async getInitialUsers(request:IGetUserAuthInfoRequest){
   
+    try{
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
   
          
       return {message: "Initial Users" ,InitialUsers:TotalLiveUsers}
 
-  
+    }catch(e){
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+    }
 
   }
 
@@ -112,6 +118,7 @@ export class BroadcastService {
     const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
     console.log("total old live users", TotalLiveUsers,user)
+    try{
     if(user){
       
       let totalPoll = TotalLiveUsers * contest.ParticularPoll ;
@@ -136,6 +143,11 @@ export class BroadcastService {
       await this.UserRepository.save(user);
       return {mesage:"Cashout Successfully",ParticularPoll:particularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:1}
     }
+  }catch(e){
+     
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+     
+  }
 
   }
 
@@ -146,7 +158,8 @@ export class BroadcastService {
     const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
     const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
-
+  
+    try{
     if(user){
        
       let totalPoll = TotalLiveUsers * contest.ParticularPoll ;
@@ -167,6 +180,11 @@ export class BroadcastService {
         return {mesage:"Quit Successfully",ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll}
 
     }
+  }catch(e){
+  
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+     
+  }
 
   }
 
@@ -176,6 +194,7 @@ export class BroadcastService {
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
     const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
    
+    try{
 
     if(user){
       if(user.Wallet < contest.ParticularPoll){
@@ -194,6 +213,10 @@ export class BroadcastService {
         }  
      
     }
+  }catch(e){
+
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  }
   }
 
  
@@ -202,6 +225,7 @@ export class BroadcastService {
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
     const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
     
+    try{
     if(user){
       
       let particularPoll = contest.ParticularPoll;
@@ -210,7 +234,10 @@ export class BroadcastService {
       await this.UserRepository.save(user);
       return {mesage:"Amount Credited"}
     }
+  }catch(e){
 
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  }
   }
 
 

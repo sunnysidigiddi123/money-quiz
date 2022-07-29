@@ -26,17 +26,30 @@ export class AdminContestService {
   ){}
 
 getSavedContest(){
+     try{
 
        return this.admincontestRepository.find({relations:['user','questions']});
-} 
+     
+      }catch(e){
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+      }
+      } 
 
 getSavedContestById(id:number){
     
+      try{
+
       return this.admincontestRepository.findOne(id ,{relations:['questions']})
      
+     }catch(e){
+      
+            throw new HttpException(e, HttpStatus.BAD_REQUEST) 
+      }
 }
 
 async createContest(admincontestDto:CreateAdminContestDto,user:User,request:IGetUserAuthInfoRequest){
+    
+    try{
       const users = await this.UserRepository.findOne({where:{id:request.userId}})
       console.log(users,"Sfsdfds")
          const newContest = this.admincontestRepository.create({
@@ -69,15 +82,25 @@ async createContest(admincontestDto:CreateAdminContestDto,user:User,request:IGet
          }
       const particularsegement = await this.segmentRepository.find({where:{contestId:newContest.id }})
          return {message:"Contest Created Succssfully",contest:newContest,Segment:particularsegement}
-       
+    
+      }catch(e){
+      
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+    } 
    }
 
 
 async getSegment(request:IGetUserAuthInfoRequest){
-
+      
+      try{
         const segment = await this.segmentRepository.find({where:{contestId:request.body.contestId}})
 
         return {Segment:segment};
+
+      }catch(e){
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+      }
 
 }
 

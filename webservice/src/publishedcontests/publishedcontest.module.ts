@@ -11,10 +11,10 @@ import { UsersService } from 'src/users/services/users/users.service';
 import { PublishedcontestController } from './controllers/publishedcontest/publishedcontest.controller';
 import { PublishedcontestService } from './services/publishedcontest/publishedcontest.service';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
-import { Question, Segment } from 'src/typeorm';
+import { Otp, Question, Segment } from 'src/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment,Question])],
+  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment,Question,Otp])],
   controllers: [PublishedcontestController],
   providers: [
     {
@@ -58,6 +58,11 @@ export class PublishedcontestModule  implements NestModule {
        {
         path: 'publishedcontest/getData',
         method: RequestMethod.POST
+    
+       },
+       {
+        path: 'publishedcontest/appliedcontests',
+        method: RequestMethod.GET
     
        },
      

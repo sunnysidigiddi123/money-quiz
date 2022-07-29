@@ -8,29 +8,35 @@ import { Repository } from 'typeorm';
 export class QuestionService {
 
     constructor(@InjectRepository(Question)
-    private readonly questionRepository: Repository<Question> ,
-    @InjectRepository(Admincontest)
-    private readonly savedContestRepository: Repository<Admincontest> ,
-    ){}
+    private readonly questionRepository: Repository<Question>,
+        @InjectRepository(Admincontest)
+        private readonly savedContestRepository: Repository<Admincontest>,
+    ) { }
 
-   
-    async createQuestion(questionDto:CreateQuestionDto,contest:Admincontest){
+
+    async createQuestion(questionDto: CreateQuestionDto, contest: Admincontest) {
 
         const newQuestion = this.questionRepository.create(questionDto);
-        contest.questions = [...contest.questions , newQuestion]
-        console.log("qqqqq",contest.questions)
+        contest.questions = [...contest.questions, newQuestion]
+        console.log("qqqqq", contest.questions)
         await this.questionRepository.save(newQuestion)
         await this.savedContestRepository.save(contest);
-        return newQuestion ;
+        return newQuestion;
 
 
-  }
+    }
 
 
-   getQuestion(){
+    async getQuestion() {
+        try {
 
-        return this.questionRepository.find();
-   }
+            return await this.questionRepository.find();
+             
+
+        } catch (e) {
+
+        }
+    }
 
 
 
