@@ -45,47 +45,53 @@ const Form = ({
 
   
 
-  async function signupp(e) {
-    e.preventDefault();
-    const email = values.email;
-    const user = values.firstName;
-    const password = values.password;
-    handleSubmit();
-    if( JSON.stringify(errors) == '{}'){
-    sessionStorage.setItem("login", true);
-    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/signup`;
-    let sendData = {
-      user,
-      email,
-      password,
-      role: "User",
-    };
-    try {
-      const data = await axios.post(BASE_URL, sendData);
-      toast.success("Signup Successfully");
-      setTimeout(() => {
-			  navigate("/");
-			}, [2000]);
-      console.log("success")
-      // navigate("/")
-    } catch (e) {
-
-      toast.error(e.response.data);
+    async function signupp(e) {
+      e.preventDefault();
+      const API_URL = `${process.env.REACT_APP_BASE_URL}/users/signup`;
+      const email = values.email;
+      const user = values.firstName;
+      const password = values.password;
+      const organization = values.organization;
+      let sendData = {
+        name:user,
+        email,
+        password,
+        Wallet:0,
+        role: "user",
+      };
+      try{
       
-      if (e?.response?.data?.email?.message) {
-        // return alert(e?.response?.data?.email?.message)
-        return setBackerroremail(e?.response?.data?.email?.message);
-      }
-      if (e?.response?.data?.password?.message) {
-        // return alert(e?.response?.data?.password?.message)
-        return setBackerrorpassword(e?.response?.data?.password?.message);
-      }
-     
+      const data = await axios.post(API_URL, sendData);
+      handleSubmit();
+      if( JSON.stringify(errors) == '{}'){
+      if(data.data.auth){
+        sessionStorage.setItem("token", "Bearer " + data.data.token);
+        localStorage.setItem(
+          "refreshToken",
+          "Bearer " + data.data.refreshToken
+        );
+        localStorage.setItem("name", data.data.details.name);
+        localStorage.setItem("email", data.data.details.email);
+        localStorage.setItem("loginStatus", true);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
     }
   }
+      
+    } catch (e) {
+  
+        toast.error(e.response.data.message);
+    
   }
+    }
 
-
+    useEffect(() => {
+      let status = localStorage.getItem("loginStatus");
+      if (status) {
+        navigate("/userhome");
+      }
+    }, []);
 
 
   return (

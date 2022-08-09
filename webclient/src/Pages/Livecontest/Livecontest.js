@@ -6,7 +6,6 @@ import "./Livecontest.css"
 import {BrowserRouter as Router,useNavigate,useLocation,useParams,Link} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Confetti from "react-dom-confetti";
 import moment from "moment"
 import ModalSuccess from '../../Components/Modal/ModalSuccess';
 import ModalPerQuestion from '../../Components/Modal/ModalPerQuestion';
@@ -68,21 +67,21 @@ const Livecontest = () => {
     
 
 
-    console.log(totalsegement) 
-    const config = {
-      angle: "360",
-      spread: 360,
-      startVelocity: 40,
-      elementCount: 70,
-      dragFriction: 0.12,
-      duration: 6000,
-      stagger: 3,
-      width: "14px",
-      height: "7px",
-      perspective: "382px",
-      colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
+    // console.log(totalsegement) 
+    // const config = {
+    //   angle: "360",
+    //   spread: 360,
+    //   startVelocity: 40,
+    //   elementCount: 70,
+    //   dragFriction: 0.12,
+    //   duration: 6000,
+    //   stagger: 3,
+    //   width: "14px",
+    //   height: "7px",
+    //   perspective: "382px",
+    //   colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
      
-    };
+    // };
    
    
     function nextQuestion() {
@@ -1342,7 +1341,7 @@ function continuee(){
                     </div>
                 </div>
                 <div className="question bg-white p-3 border-bottom">
-                <Confetti active={confetti} config={config} style={{width:'100%',height:'100%'}} />
+                {/* <Confetti active={confetti} config={config} style={{width:'100%',height:'100%'}} /> */}
                 <br></br>
                 { newArr.map((question,index)=>{
                     return <>

@@ -17,13 +17,12 @@ export class PublishedcontestController {
 
 @Get('getPublishedContest')
 @UseInterceptors(ClassSerializerInterceptor)   
-async getContest(@Req() request: IGetUserAuthInfoRequest,@Query('page') page:number,@Res() response:Response){
+async getContest(@Req() request: IGetUserAuthInfoRequest,@Query('page') page:number,@Query('limit') limit:number,@Res() response:Response){
 
-   const contests = await this.publishcontestService.getPublishedContest(request,page);   
+   const contests = await this.publishcontestService.getPublishedContest(request,page,limit);   
     if(contests){
        response.status(201).send(contests)
-    }else
-     throw new HttpException("Unauthorized User",HttpStatus.UNAUTHORIZED)
+    }
     }
 
 
