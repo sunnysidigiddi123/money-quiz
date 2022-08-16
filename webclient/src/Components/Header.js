@@ -6,11 +6,11 @@ import {
   
 const Header = (props) => {
 	const navigate = useNavigate()
-    function logout() {
-        sessionStorage.clear("login")
-        sessionStorage.clear("token")
-        navigate("/");
-    }
+	const logout =()=>{
+		localStorage.clear();
+		sessionStorage.clear();
+		navigate("/");
+	  }
     
     return (
         <>

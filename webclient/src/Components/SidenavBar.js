@@ -8,6 +8,12 @@ import {
   } from "react-router-dom";
 
 const SidenavBar = () => {
+	const navigate = useNavigate()
+	const logout =()=>{
+		localStorage.clear();
+		sessionStorage.clear();
+		navigate("/");
+	  }
     return (
         <>
             <div className="left-side-bar">
@@ -24,7 +30,7 @@ const SidenavBar = () => {
 			<div className="sidebar-menu">
 				<ul id="accordion-menu">
 					<li className="dropdown">
-						<a href="#" className="dropdown-toggle ">
+						<a  className="dropdown-toggle ">
 							<span className="micon dw dw-house-1"></span><span className="mtext">Home</span>
 						</a>
 						
@@ -106,9 +112,9 @@ const SidenavBar = () => {
 						</a>
 					</li> */}
 					<li>
-					<Link to='/'><a href="#" className="dropdown-toggle no-arrow">
+					<a onClick={logout} className="dropdown-toggle no-arrow">
 							<span className="micon dw dw-invoice"></span><span className="mtext">Signout</span>
-						</a></Link>
+						</a>
 					</li>
 				</ul>
 			</div>

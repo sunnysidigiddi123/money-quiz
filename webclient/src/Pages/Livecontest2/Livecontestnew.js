@@ -218,8 +218,9 @@ const Livecontestnew = () => {
             // setLgShows(true)
             setQuestions(post.data.question)
             setTimerTime(post.data.question.totalQuestionTime+STATS_DELAY_IN_SEC)
-            setQuestionIndex(questionIndex + 1)
-            sessionStorage.setItem("questionIndex",questionIndex+1)
+            setQuestionIndex(parseInt(post.data.liveindex) + 1)
+            console.log("qqqqqqq",parseInt(post.data.liveindex)+1)
+            sessionStorage.setItem("questionIndex",parseInt(post.data.liveindex)+1)
             if (post.data.question.videolink !== '') {
                setViewVideo(true)
             }

@@ -11,17 +11,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import $, { data } from "jquery";
 import "./UserHome.css";
 import { Modal, Button, Form, Row, ModalFooter } from "react-bootstrap";
-import { FaCrown,FaExclamation,FaSmile} from "react-icons/fa";
+import { FaCrown, FaExclamation, FaSmile } from "react-icons/fa";
 // import DataTable from "react-data-table-component";
 // import DataTableExtensions from "react-data-table-component-extensions";
 // import "react-data-table-component-extensions/dist/index.css";
 import moment from "moment"
 import {
-	BrowserRouter as Router,
+  BrowserRouter as Router,
   useNavigate,
-  useLocation,useParams,Link, Navigate
-  } from "react-router-dom";
+  useLocation, useParams, Link, Navigate
+} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import CountdownTimer from 'react-awesome-countdowntimer';
 
 
 const UserHome = () => {
@@ -30,22 +31,22 @@ const UserHome = () => {
   const [userId, setUserId] = useState("");
   const [applied, setApplied] = useState();
   const [showmessage, setshowMesaage] = useState(false);
-	const [toastMessage, setToastMessage] = useState("");
-	const [toastColor, setToastColor] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastColor, setToastColor] = useState("");
   const [question, setQuestions] = useState([]);
-  const [video , setVideo ] = useState([]);
-  const [playedd,setPlayed] = useState(0);
-  const [wallet,setUserWallet] = useState();
-  const [lgShowed,setLgShowed] = useState();
-  const [amount , setAmount] = useState();
-  const [lgShowsss,setLgShowsss] = useState(false);
-  const [newpoll , setNewPoll] = useState([]);
-  const [alldata,setAllData] = useState([]);
-  const [appliedcontests,setAppliedContests] = useState([]);
-  const [lgShowss,setLgShowss] = useState(false);
-  
+  const [video, setVideo] = useState([]);
+  const [playedd, setPlayed] = useState(0);
+  const [wallet, setUserWallet] = useState();
+  const [lgShowed, setLgShowed] = useState();
+  const [amount, setAmount] = useState();
+  const [lgShowsss, setLgShowsss] = useState(false);
+  const [newpoll, setNewPoll] = useState([]);
+  const [alldata, setAllData] = useState([]);
+  const [appliedcontests, setAppliedContests] = useState([]);
+  const [lgShowss, setLgShowss] = useState(false);
+
   console.log(appliedcontests)
-  
+
   const navigate = useNavigate();
   let DailyDate = new Date()
   console.log(moment(DailyDate).format("MMMM Do YYYY, h:mm:ss a"))
@@ -57,63 +58,63 @@ const UserHome = () => {
     const token = sessionStorage.getItem("token");
     let sendData = {
       contestid: result.id,
-     
+
     };
     try {
-      let post = await axios.post(BASE_URL, sendData,{
+      let post = await axios.post(BASE_URL, sendData, {
         headers: {
           "authorization": token,
-          },
-       });
+        },
+      });
 
-       if(post.data.status == 1 ){
-         console.log(post.data.question1,"questions")
-       navigate("/livecontestnew",{state:{question1:post.data.question1,totalquestions:post.data.totalquestions,ContestTime:post.data.contestTime,InititalUsers:post.data.totalIntitalUsers,entryamount:result.EntryAmount,contestid:result.id,questionIndex:post.data.questionIndex}}) 
-       }  
-       if(post.data.status == 2){
+      if (post.data.status == 1) {
+        console.log(post.data.question1, "questions")
+        navigate("/livecontestnew", { state: { question1: post.data.question1, totalquestions: post.data.totalquestions, ContestTime: post.data.contestTime, InititalUsers: post.data.totalIntitalUsers, entryamount: result.EntryAmount, contestid: result.id, questionIndex: post.data.questionIndex } })
+      }
+      if (post.data.status == 2) {
         // localStorage.clear('success')
-        setAllData([post.data.question1,post.data.totalquestions,post.data.contestTime,result.EntryAmount,result.id])
-        setNewPoll([post.data.entryamount,post.data.particularPoll]) 
+        setAllData([post.data.question1, post.data.totalquestions, post.data.contestTime, result.EntryAmount, result.id])
+        setNewPoll([post.data.entryamount, post.data.particularPoll])
         setLgShowsss(true)
       }
-  
-    }catch (e){
-     
+
+    } catch (e) {
+
       toast.error(e.response.data.message)
     }
   }
 
 
-  const entered  = async (e) => {
+  const entered = async (e) => {
     e.preventDefault();
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/paynewpollamount`;
 
     const token = sessionStorage.getItem("token");
     let sendData = {
       contestid: alldata[4],
-     
+
     };
     try {
-      let post = await axios.post(BASE_URL, sendData,{
+      let post = await axios.post(BASE_URL, sendData, {
         headers: {
           "authorization": token,
-          },
-       });
+        },
+      });
 
-        if(post.data.status == 1 ){
-         console.log("aaaaaa",alldata[0],alldata[1],alldata[2])
-         navigate("/livecontestnew",{state:{question1:alldata[0],totalquestions:alldata[1],ContestTime:alldata[2],InititalUsers:post.data.totalIntitalUsers,entryamount:alldata[3],contestid:alldata[4],questionIndex:post.data.questionIndex}}) 
-       }   
-  
-    }catch (e){
-     
+      if (post.data.status == 1) {
+        console.log("aaaaaa", alldata[0], alldata[1], alldata[2])
+        navigate("/livecontestnew", { state: { question1: alldata[0], totalquestions: alldata[1], ContestTime: alldata[2], InititalUsers: post.data.totalIntitalUsers, entryamount: alldata[3], contestid: alldata[4], questionIndex: post.data.questionIndex } })
+      }
+
+    } catch (e) {
+
       toast.error(e.response.data.message)
     }
   }
 
 
-  
-   const addamount = async (e) => {
+
+  const addamount = async (e) => {
     e.preventDefault();
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/addmoney`;
     console.log(amount)
@@ -121,25 +122,25 @@ const UserHome = () => {
     let sendData = {
       userid: userId,
       wallet: amount
-     
+
     };
     try {
       let post = await axios.post(BASE_URL, sendData, {
         headers: {
           Authorization: `Bearer ${token}`,
-        }, 
-         });
-        
+        },
+      });
+
       setLgShowed(false)
       toast.success("Amount Added Successfully")
       setUserWallet(post.data.Wallet)
-      
-    }catch (e){
-     
-       toast.error("Oops! Something Went Wrong")
+
+    } catch (e) {
+
+      toast.error("Oops! Something Went Wrong")
     }
 
-   }
+  }
 
   const applyContest = async (item) => {
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/applycontest`;
@@ -148,56 +149,66 @@ const UserHome = () => {
       contestid: item.id,
     };
     try {
-      let post = await axios.post(BASE_URL, sendData,{
+      let post = await axios.post(BASE_URL, sendData, {
         headers: {
           "authorization": token,
-          },
-       });
+        },
+      });
       console.log(post.data)
-		  toast.success(post.data.message)
-   
+      toast.success(post.data.message)
+
       getContest();
     } catch (e) {
       console.log(e.response.data);
-     toast.error(e.response.data.message)
+      toast.error(e.response.data.message)
     }
   };
 
   const getContest = async () => {
+
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/getPublishedContest`;
     const token = sessionStorage.getItem("token");
-    axios.get(BASE_URL,{
-      headers: {
-        "authorization": token,
+
+
+      axios.get(BASE_URL, {
+        headers: {
+          "authorization": token,
         },
-     }).then((res) => {
-      setContest([...res.data.contests]);
-      setAppliedContests([...res.data.appliedcontests]);
-      setUser(res.data.user)
-      setUserWallet(res.data.wallet) 
-      
-    
-    });
-    //initialize datatable
-    $(document).ready(function () {
-      setTimeout(function () {
-        $("#contest").DataTable({
-          'destroy': true,
-          "order": [],
-          'scrollY': "200px",
-          'order': [[4, 'asc']]
-          
-        });
-      }, 1000);
-    });
+      }).then((res) => {
+        setContest([...res.data.contests]);
+        setAppliedContests([...res.data.appliedcontests]);
+        setUser(res.data.user)
+        setUserWallet(res.data.wallet)
+
+
+      }).catch((e) =>{
+            if (e.response.status === 401) {
+					localStorage.clear();
+					navigate("/");
+				  }
+      });
+
+      //initialize datatable
+      $(document).ready(function () {
+        setTimeout(function () {
+          $("#contest").DataTable({
+            'destroy': true,
+            "order": [],
+            'scrollY': "200px",
+            'order': [[4, 'asc']]
+
+          });
+        }, 1000);
+      });
+   
   }
 
 
   useEffect(() => {
     getContest();
-   
+
   }, []);
-  
+
 
   useEffect(() => {
     let status = localStorage.getItem("loginStatus");
@@ -206,7 +217,7 @@ const UserHome = () => {
     }
   }, []);
 
- 
+
   return (
     <>
       <Header user={user} />
@@ -216,7 +227,7 @@ const UserHome = () => {
       <div className="mobile-menu-overlay"></div>
 
       <div className="main-container">
-     
+
         <div className="pd-ltr-20">
           <div className="card-box  usertable height-100-p mb-30" >
             <div className="row align-items-center">
@@ -283,7 +294,7 @@ const UserHome = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-3 mb-30" onClick={()=>setLgShowed(true)} style={{cursor:'pointer'}}>
+            <div className="col-xl-3 mb-30" onClick={() => setLgShowed(true)} style={{ cursor: 'pointer' }}>
               <div className="card-box height-100-p widget-style1">
                 <div className="d-flex flex-wrap align-items-center">
                   <div className="progress-data">
@@ -314,43 +325,50 @@ const UserHome = () => {
                       <th>Date & Time</th>
                       <th>Entry Amount</th>
                       <th className="unsorting">Apply</th>
+                      <th className="unsorting">Segment</th>
                     </tr>
                   </thead>
                   <tbody>
                     {contests.map((result, index) => {
                       return (
-                        <tr key={index}> 
+                        <tr key={index}>
                           <td>{result.contestName}</td>
                           <td>{result.contestDetails}</td>
                           <td>{moment(result.contestTime).format("MMMM Do YYYY, h:mm:ss a")}{" "}</td>
                           <td>{`₹ ${result.EntryAmount}`}</td>
                           <td>
-                            {!appliedcontests.find((item)=> {if(item.contestid == result.id) return true;})?
-                             <button
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={() => {
-                                applyContest(result);
-                              }} 
-                            >
-                              Apply Now
-                            </button>
-                            :
-                           <h6 className="success">Applied</h6>}
+                            {!appliedcontests.find((item) => { if (item.contestid == result.id) return true; }) ?
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => {
+                                  applyContest(result);
+                                }}
+                              >
+                                Apply Now
+                              </button>
+                              :
+                              <h6 className="success">Applied</h6>}
                             &nbsp;
-				                    &nbsp;  
-                            { moment(DailyDate).isBetween(result.contestTime,moment(result.contestTime).add(20,'minutes'))  && appliedcontests.find((item)=> {if(item.contestid == result.id) return true;})
-                             ?
-                          
-                          <button className="btn btn-danger"
-                          onClick={()=>{
-                            Played(result);
-                          }}
-                          >Live!</button>
-                           : null 
+                            &nbsp;
+                            {moment(DailyDate).isBetween(result.contestTime, moment(result.contestTime).add(20, 'minutes')) && appliedcontests.find((item) => { if (item.contestid == result.id) return true; })
+                              ?
+
+                              <button className="btn btn-danger"
+                                onClick={() => {
+                                  Played(result);
+                                }}
+                              >Live!</button>
+                              : null
                             }
                           </td>
-                        
+                          <td>
+                            {moment(result.LivecontestTime).isSame(result.SegmentGoingOn) && result.LiveQuestionIndex > 0 ? <h6>Enter Now</h6> :
+                              result.LiveQuestionIndex > 0 && <CountdownTimer endDate={moment(result.SegmentGoingOn)} />
+                            }
+
+                          </td>
+
                         </tr>
                       );
                     })}
@@ -358,64 +376,64 @@ const UserHome = () => {
                 </table>
               </div>
             </div>
-          
+
           </div>
           <Footer />
         </div>
-       
+
       </div>
-      <ToastContainer  autoClose={3000} />
+      <ToastContainer autoClose={3000} />
 
 
       <Modal
-            size="md"
-            show={lgShowed}
-            onHide={() => setLgShowed(false)}
-            backdrop="static"
-            keyboard={false}
-            aria-labelledby="example-modal-sizes-title-lg"
+        size="md"
+        show={lgShowed}
+        onHide={() => setLgShowed(false)}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header >
           <Modal.Title id="example-modal-sizes-title-lg">
             Add Money in Wallet
           </Modal.Title>
-              
-          </Modal.Header>
 
-           <Modal.Body>
-            
-           <form>
-        <div class="form-group">
-       <label for="exampleInputEmail1">Amount</label>
-       <input type='number' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount" onChange={(e)=>{setAmount(e.target.value)}}/>
-       </div>
-       <button type="submit" class="btn btn-primary" onClick={addamount}>Add Now</button>&nbsp;
-       <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowed(false)}}>Close</button>
-       </form>
+        </Modal.Header>
 
-            
-           
-		
-			      </Modal.Body>
-           
-                  </Modal>
+        <Modal.Body>
 
-                  <Modal
-            size="md"
-            show={lgShowsss}
-            onHide={() => setLgShowsss(false)}
-            backdrop="static"
-            keyboard={false}
-            aria-labelledby="example-modal-sizes-title-lg"
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Amount</label>
+              <input type='number' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount" onChange={(e) => { setAmount(e.target.value) }} />
+            </div>
+            <button type="submit" class="btn btn-primary" onClick={addamount}>Add Now</button>&nbsp;
+            <button type="submit" class="btn btn-danger" onClick={(e) => { e.preventDefault(); setLgShowed(false) }}>Close</button>
+          </form>
+
+
+
+
+        </Modal.Body>
+
+      </Modal>
+
+      <Modal
+        size="md"
+        show={lgShowsss}
+        onHide={() => setLgShowsss(false)}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="example-modal-sizes-title-lg"
       >
-      
-      {/* <Modal.Title id="example-modal-sizes-title-lg">
+
+        {/* <Modal.Title id="example-modal-sizes-title-lg">
          Do You Want To Enter in Contest ?
           </Modal.Title> */}
-              
-           <Modal.Body>
-        
-           {/* <form>
+
+        <Modal.Body>
+
+          {/* <form>
         <div class="form-group">
        <label for="exampleInputEmail1">Entry Amount : {newpoll && newpoll[0]}</label>
        <label for="exampleInputEmail1">Current Entry Amount : {newpoll && newpoll[1]}</label>
@@ -425,21 +443,21 @@ const UserHome = () => {
        <button type="submit" class="btn btn-primary" onClick={entered}>Yes</button>&nbsp;
        <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
        </form> */}
-            
-       <div class="modal-content py-md-5 px-md-4 p-sm-3 p-4">
+
+          <div class="modal-content py-md-5 px-md-4 p-sm-3 p-4">
             <h3>Do You Want To Enter in Contest ?</h3> <i className="fa fa-bell ss"></i>
             <p className="r3 px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
-             <br></br>
+            <br></br>
             <p className="r3 px-md-5 px-sm-1">Current Entry Amount : {newpoll && newpoll[1]}</p>
             <br>
             </br>
-            <p className="r3 px-md-5 px-sm-1">You Have To Pay : {newpoll && (parseInt(newpoll[1])-(parseInt(newpoll[0])))}</p>
-            <div className="text-center mb-3"> <button className="btn btn-primary w-50 rounded-pill b1" onClick={(e) => entered(e)}>Yes</button> </div> <a onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Not now</a>
-            </div>
-         
-			      </Modal.Body>
-           
-                  </Modal>
+            <p className="r3 px-md-5 px-sm-1">You Have To Pay : {newpoll && (parseInt(newpoll[1]) - (parseInt(newpoll[0])))}</p>
+            <div className="text-center mb-3"> <button className="btn btn-primary w-50 rounded-pill b1" onClick={(e) => entered(e)}>Yes</button> </div> <a onClick={(e) => { e.preventDefault(); setLgShowsss(false) }}>Not now</a>
+          </div>
+
+        </Modal.Body>
+
+      </Modal>
 
     </>
   );
