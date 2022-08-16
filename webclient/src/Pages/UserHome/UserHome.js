@@ -385,12 +385,12 @@ const UserHome = () => {
            <Modal.Body>
             
            <form>
-        <div class="form-group">
+        <div className="form-group">
        <label for="exampleInputEmail1">Amount</label>
-       <input type='number' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount" onChange={(e)=>{setAmount(e.target.value)}}/>
+       <input type='number' className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Amount" onChange={(e)=>{setAmount(e.target.value)}}/>
        </div>
-       <button type="submit" class="btn btn-primary" onClick={addamount}>Add Now</button>&nbsp;
-       <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowed(false)}}>Close</button>
+       <button type="submit" className="btn btn-primary" onClick={addamount}>Add Now</button>&nbsp;
+       <button type="submit" className="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowed(false)}}>Close</button>
        </form>
 
             
@@ -426,7 +426,7 @@ const UserHome = () => {
        <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
        </form> */}
             
-       <div class="modal-content py-md-5 px-md-4 p-sm-3 p-4">
+       <div className="modal-content py-md-5 px-md-4 p-sm-3 p-4">
             <h3>Do You Want To Enter in Contest ?</h3> <i className="fa fa-bell ss"></i>
             <p className="r3 px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
              <br></br>

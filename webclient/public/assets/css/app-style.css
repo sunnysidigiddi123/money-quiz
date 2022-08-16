@@ -1,0 +1,127 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+/* =================  Remove this======================*/
+/* body{height: 2000px;} */
+
+/* =================  Reset css======================*/
+.container-fluid{width: 100%; max-width: 700px; margin: 0 auto;}
+body{
+    font-family: 'Montserrat', sans-serif!important;
+}
+ol,ul{padding-left:0}
+li{list-style:none!important;}
+.border-top-radius-50{border-top-left-radius:50px; border-top-right-radius:50px}
+.text-orange{color: #f3ac58!important;}
+.text-dark-orange{color:#ff914d!important}
+.text-yellow{color: #fcbd11!important;}
+.text-gray{color:#8b8b8b!important;}
+.text-black{color: #000000!important;}
+.fw-500{font-weight: 500;}
+.section-head{font-weight: 500; color: #000000; font-size: 2rem;}
+.custom-fs-2{font-size:2rem;}
+.custom-fs-1{font-size:1.5rem;}
+/* =================  Common css======================*/
+body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!important;}
+.b-radius-25{ border-radius: 25px;}
+.body-bg{background-color: #fdfeff;}
+.btn-orange{background-color: #f3ac58;}
+.page-container{padding:90px 0;}
+.inner-page-container{padding:80px 0; background-color: #eeeef2;}
+.border-bottom-left-round{border-bottom-left-radius:55px}
+.bg-dark-orange{background-color: #ff914d;}
+.bg-lighter-gray{background-color: #e7ebf2;}
+.bg-light-gray{background-color: #ceced1;}
+.bg-dark-gray{background-color: #918f8f;}
+.bg-yellow-orange{background-color: #ffbd59;}
+.bg-black{background-color: #000000;}
+.text-info-gray{color: #808080; font-weight: bold; font-size: 0.9rem; padding-bottom: 5px;}
+.fw-500{font-weight: 500;}
+.add-circle{width: 50px; height: 50px; padding: 12px;  border-radius: 50%;}
+.btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
+/* ================= top-nav/ App Header Css ======================*/
+.top-nav{background-color: #ffffff;}
+.wallet-coin{border-radius: 23px; box-shadow: 0px 0px 5px #b5b5b5; width: 70px; padding: 8px; vertical-align: middle;}
+.wallet-coin .coin:after{top:-5px; left: 5px;}
+.profile img{width: 50px; height: 50px; border-radius: 50%;}
+/* =================  Advertisement Section======================*/
+.bg-light-orange{background-color: #f3ac58;}
+.advertisement  h1{color:#ffffff;}
+.go-advertisement{background-color: #ffffff; width: 60px; height: 60px; border-radius: 50%; display: inline-block;}
+.go-advertisement i{color: #f3ac58;}
+
+/* =================  Remaining Quiz Section======================*/
+.bg-light-gray{background-color: #c7c9cc;}
+.remaining-quiz{ cursor: pointer; margin-top: -20px;}
+
+.trophy{color: #fcdd14;}
+/* =================  Next Quiz Section======================*/
+.bg-off-white-1{background-color: #fdfeff;}
+
+/* =================   Quiz Today Section======================*/
+.bg-off-white-2{background-color: #f3f8ff;}
+
+/* =================   Bottom Nav css ======================*/
+.bottom-nav{background-color: #ffffff; padding: 1rem;}
+.navbar a{width: 25%; }
+.navbar a.active, 
+.navbar a:focus,
+.navbar a:hover
+{ background: #f3ac58; padding: 0.375rem 0.475rem;border-radius: 22px;}
+.navbar a.active i, 
+.navbar a:focus i,
+.navbar a:hover i
+{   color : #000000;}
+
+/* =================   item card css ======================*/
+.card-item {
+    padding-right: 10px;
+}
+.card-item-box { background-color: #fff;  border-radius: 10px;  -webkit-box-shadow: 0 0 28px rgb(0 0 0 / 8%); box-shadow: 0 0 28px rgb(0 0 0 / 8%);}
+.card-item .quiz-image { width: 140px; padding-right: 10px;}
+.card-item .quiz-image img{ border-top-left-radius: 10px; border-bottom-left-radius: 10px;}
+.quiz-arrow{width: 100px;}
+.coin{position: relative;}
+.coin::after{  content: ""; position: absolute; background-color: #ffcc01; width: 25px; height: 23px; border-radius: 50%; display: inline-block; box-shadow: 1px 7px 2px 2px #f9ba10 inset; top: -1px; left: 3px;}
+.big.coin::after{width: 31px; height: 28px; top: 4px;}
+.small.coin::after{width: 20px; height: 20px;  top: -3px; left: 7px;}
+.pagination .page-link{ color: #fcbd11; font-weight: bold; font-size: 1.25rem;}
+    
+    /* =================   inner page css ======================*/
+.inner-page-heading{font-size: 2rem; font-weight: 700; color: #000000;}
+.start-in-time{ color: #a2a0a0; padding-top: 10px;  font-size: 0.9rem; font-weight: bold; word-spacing: 0.7px;}
+
+/* =================   entry fee card css ======================*/
+.single-q-fee-box{color: #000000;}
+.width-80{width: 80%; margin: 0 auto;}
+.card-parent-gray{border-radius: 20px;}
+.entry-fee-card.small{ width: 60%;}
+.entry-fee-card{border:4px solid #000000; border-radius: 0; box-shadow: -9px -9px 2px #000000;}
+.entry-fee-card .card-header{border-bottom: 4px solid #000000; font-weight: bold; border-radius: 0;}
+
+/* =================   info oval ribbon css ======================*/
+.info-oval-ribbon {border-radius: 44px; padding: 10px; margin-top: 20px;}
+.user-icon{width: 45px; height: 45px; display: inline-block; border-radius: 50%; padding: 10px 7px;}
+.user-grp-icons{position: relative;  min-width: 130px; padding-left: 10px;}
+.user-grp-icons img{width: 40px; height: 40px; border-radius: 50%; border:2px solid #ffffff; position: absolute;}
+.user-grp-icons img:first-child{z-index: 10;}
+.user-grp-icons img:nth-child(2){z-index: 9; left:33px;}
+.user-grp-icons img:nth-child(3){z-index: 8; left: 57px;}
+.quiz-name-small{font-size: 1.5rem; font-weight: bold;}
+
+/* =================   time css ======================*/
+.clock_area img { width: 14rem !important; height: 12rem !important; padding-right: 50px;}
+.clock_area span {top: 55%; right: 49px; -webkit-transform: translateY(-50%);transform: translateY(-50%); font-size: 2rem; font-weight: 700;}
+.icon-circle{width: 25px; height: 25px; border-radius: 50%; box-shadow: 1px 1px 11px grey;display: inline-block; padding: 2px 6px;}
+.small-ribbon{ border-radius: 21px;  padding: 5px 10px;}
+
+ /* =================   custom radio button css ======================*/    
+.radio-tile-group {display: flex; flex-wrap: wrap; justify-content: center;}
+.radio-tile-group .input-container {position: relative; height: 2.5rem; width: 9rem; margin: 0.5rem; }
+.radio-tile-group .input-container .radio-button {opacity: 0;position: absolute; top: 0; left: 0;height: 100%; width: 100%; margin: 0; cursor: pointer;  }
+.radio-tile-group .input-container .radio-tile {display: flex;flex-direction: row; align-items: center;justify-content: center; width: 100%; height: 100%; background: #e0e0e9; border: 2px solid #dcdcde; 
+    border-radius: 20px; padding: 1rem;transition: transform 300ms ease;box-shadow: 2px 2px 13px #ffffff;-webkit-box-shadow: 2px 2px 13px #ffffff;}
+.radio-tile-group .input-container .radio-tile-label { text-align: center;font-size: 1.275rem;font-weight: 600;text-transform: uppercase; letter-spacing: 1px;color: #000000; }
+.radio-tile-group .input-container .radio-button:checked + .radio-tile { background-color: #ff914d; border: 2px solid #ff914d;color: white;transform: scale(1.1, 1.1);}
+.radio-tile-group .input-container .radio-button:checked + .radio-tile .radio-tile-label {color: white; background-color: #ff914d;}
+.ques-img {border-radius: 20px;}
+.video-player-wraper{height: 250px;}
