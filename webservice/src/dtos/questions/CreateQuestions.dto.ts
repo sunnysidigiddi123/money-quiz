@@ -17,11 +17,11 @@ export class CreateQuestionDto {
 
     @IsNotEmpty()
     correctanswer: string;
-
-    @IsNotEmpty()
+    
     videolink: string;
 
-    @IsNotEmpty()
+    imagepath: string;
+
     totalVideoTime: number;
 
     @IsNotEmpty()

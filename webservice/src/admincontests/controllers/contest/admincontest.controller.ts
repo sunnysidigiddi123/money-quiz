@@ -84,15 +84,17 @@ export class AdminContestController {
 
         })
     )
-    uploadPhoto(@UploadedFile() file:Express.Multer.File ){
+    uploadPhoto(@UploadedFile() file:Express.Multer.File ,@Res() res:Response){
 
        console.log(file)
        if(!file){
          throw new BadRequestException('File is not an image');
        }else{
          const response = {
-            filePath: `http://localhost:4000/admincontest/pictures/${file.filename}`
+            filePath: `http://localhost:4000/admincontest/pictures/${file.filename}`,
+            message:'photo uploaded '
          }
+         res.status(201).send(response)
        }
     }
 

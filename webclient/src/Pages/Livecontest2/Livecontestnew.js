@@ -80,7 +80,12 @@ const Livecontestnew = () => {
       
 
          setVideoTime(Math.round(userDelayTime / 1000))
-       
+         console.log('userdelay',userDelayTime/1000)
+
+         if(userDelayTime/1000 >= questions.totalVideoTime){
+
+            setViewVideo(false)
+         }
       
          //when contest is running 
          if (afterDelayQuestionTime > 0) {
@@ -239,8 +244,11 @@ const Livecontestnew = () => {
 
 
       } catch (e) {
-
-         console.log("Oops! Something Went Wrong")
+          console.log(e.response.data.status,'qqqqq')
+         if(e.response.data.status == 400){
+              navigate('/userhome')
+            //   toast.success(e.response.data.message)
+         }
       }
 
    }

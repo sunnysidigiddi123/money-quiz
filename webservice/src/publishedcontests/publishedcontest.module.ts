@@ -65,6 +65,12 @@ export class PublishedcontestModule  implements NestModule {
         method: RequestMethod.GET
     
        },
+       {
+        path: 'publishedcontest/detailviewcontest',
+        method: RequestMethod.POST
+    
+       },
+     
      
        
       
