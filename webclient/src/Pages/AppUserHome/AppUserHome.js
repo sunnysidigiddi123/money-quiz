@@ -29,7 +29,7 @@ export default function AppUserHome() {
     const [wallet, setUserWallet] = useState();
     const [pagenumber, setPagenumber] = useState("1");//need to remove after getting data from API
     const [pagelimit, setPagelimit] = useState("3"); //need to remove after getting data from API
-    const [totalrecCount, setTotalrecCount] = useState('10');//need to remove after getting data from API
+    const [totalrecCount, setTotalrecCount] = useState();//need to remove after getting data from API
     const [startsin, setStartsin] = useState();
     const [pageCount, setPageCount] = useState()
 
@@ -37,13 +37,10 @@ export default function AppUserHome() {
     const calculateDifference = (contestTime) => {
 
         let contestDateTime = moment(contestTime)
-        console.log(contestDateTime)
-
+        // console.log(contestDateTime)
         let currentdate = new Date()
         let currentTime = moment(currentdate).format("h:mm:ss")
-        console.log(currentdate)
-        let difference = currentTime - contestDateTime
-        console.log(difference)
+        // console.log(currentdate)     
         let newdifference = contestDateTime - currentdate;
         console.log(newdifference)
         return Math.floor(newdifference / 1000)
@@ -55,30 +52,33 @@ export default function AppUserHome() {
         let pageclicked = item.selected + 1;
         console.log('page clicked ', pageclicked)
         setPagenumber(pageclicked)
-        console.log(item);
-        getContest(item)
+        getContest(pageclicked, pagelimit)
+
     }
 
     // get all contest data
     const getSingleContest = async () => {
-        const allContestUrl = `${CONSTANTS.GETPUBLISHEDCONTEST}?page=1&limit=1`;
+        const allContestUrl = CONSTANTS.APPLIEDCONTESTLIST;
         const token = sessionStorage.getItem("token");
         const HEADERS = { "authorization": token, }
         try {
             await axios.get(allContestUrl, {
                 headers: HEADERS,
             }).then((res) => {
-                console.log('from single for timer', res.data.contests[0]);
-                let contesttime = res?.data?.contests[0]?.contestTime;
-                //setStartsin(calculateDifference(contesttime))
-                console.log('startsin updated')
-                setStartsin(40)
+                // console.log('from single for timer', res.data.contest);
+                let response = res?.data?.contest;
+                //console.log('response is ',response)
+                const sortedres = response.sort((a, b) => b.LivecontestTime - a.LivecontestTime);
+                console.log('soreted response is', sortedres);
+                let contesttime = sortedres[0]?.LivecontestTime;
+                setStartsin(calculateDifference(contesttime));
+
             });
         } catch (error) {
-            console.log('error is ',error.response)
+            console.log('error is ', error.response)
             if (error && error.response) {
                 toast.error(error.response.data.message);
-                if(error.response.status === 401){
+                if (error.response.status === 401) {
                     navigate("/");
                 }
             } else {
@@ -88,9 +88,9 @@ export default function AppUserHome() {
     }
 
     // get all contest data
-    const getContest = async () => {
+    const getContest = async (number, limit) => {
         console.log('inside get contest1')
-        const allContestUrl = `${CONSTANTS.GETPUBLISHEDCONTEST}?page=${pagenumber}&limit=${pagelimit}`;
+        const allContestUrl = `${CONSTANTS.GETPUBLISHEDCONTEST}?page=${number}&limit=${limit}`;
         const token = sessionStorage.getItem("token");
         const HEADERS = { "authorization": token, }
         try {
@@ -101,18 +101,18 @@ export default function AppUserHome() {
                 setContest([...res?.data?.contests]);
                 setAppliedContests([...res?.data?.appliedcontests]);
                 setUser(res?.data?.user)
-                setUserWallet(res?.data.wallet);
-                setPagelimit(res?.page_size || 3);
-                setTotalrecCount(res?.count || 10);
-                setPageCount(Math.ceil(totalrecCount / pagelimit))
+                setUserWallet(res?.data?.wallet);
+                setTotalrecCount(res?.data?.count);
+                setPagelimit(res?.data?.page_size);
+                let totalcount = Math.ceil(totalrecCount / pagelimit);
+                //setPageCount(totalcount);
             });
         } catch (error) {
             console.log(error.response)
             if (error && error.response) {
-                console.log('error is ',error)
-                alert('hello')
+                console.log('error is ', error)
                 toast.error(error.response.data.message);
-                if(error.response.status === 401){
+                if (error.response.status === 401) {
                     navigate("/");
                 }
             } else {
@@ -124,27 +124,35 @@ export default function AppUserHome() {
     //Render will return template to display on clock timer
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
-            return <div className="timer">Too lale...</div>;
+            return <div className="timer text-success">Live</div>;
         }
 
         return (
             <div className="timer">
 
-                <div className="value">{remainingTime}</div>
+                <div className="value fs-5">{remainingTime}</div>
 
             </div>
         );
     };
     // Get All COntest Data
     useEffect(() => {
-        getContest();
-
+        getContest(pagenumber, pagelimit);
     }, []);
     // get single record for timier
     useEffect(() => {
         getSingleContest();
-
     }, []);
+    // update page count
+    useEffect(() => {
+        let totalcount = Math.ceil(totalrecCount / pagelimit);
+        setPageCount(totalcount);
+        console.log('totalrecCount use effr=ect called', totalrecCount)
+    }, [totalrecCount]);
+    // useEffect(() => {
+
+    //     console.log('totalcount  is here', pageCount)
+    // }, [pageCount]);
 
     //Navigate if user is not logged-in
     useEffect(() => {
@@ -192,7 +200,7 @@ export default function AppUserHome() {
                                         <div className="col-xs-12 clock_area countdown_timer d-flex justify-content-center text-center">
                                             <div className="position-relative">
                                                 <img src="./assets/images/clock/clock.png" alt="timer_image" />
-                                                <span class="countdown-wrapper text-white position-absolute">
+                                                <span className="countdown-wrapper text-white position-absolute">
                                                     <CountdownCircleTimer
                                                         isPlaying
                                                         duration={startsin}
@@ -242,9 +250,9 @@ export default function AppUserHome() {
                             {contests.map((res, index) => {
                                 return (<>
                                     {/* card item starts */}
-                                    <div className="col-xl-3  col-sm-12 col-xs-12 mb-30" key={res.id}>
+                                    <div className="col-xl-3  col-sm-12 col-xs-12 mb-30" key={index}>
                                         <Link to="/singleQuizdetail" state={{ contestName: res.contestName, EntryAmount: res.EntryAmount, contestTime: res.contestTime, contestid: res.id }} >
-                                            <div className="card-item-box height-100-p card-item">
+                                            <div className="card-item-box height-100-p card-item" >
                                                 <div className="d-flex flex-wrap align-items-center">
                                                     <div className="quiz-image"><div>
                                                         <img src="./assets/images/quiz-icon.jpg" />
@@ -258,6 +266,12 @@ export default function AppUserHome() {
                                                         </div>
                                                     </div>
                                                     <div className="quiz-arrow text-end">
+                                                        {
+                                                            (calculateDifference(res.contestTime) > 0) 
+                                                            ? ""
+                                                            : <button className='btn btn-sm btn-success btn-live'>Live</button>
+                                                        }
+                                                        
                                                         <i className="fas fa-arrow-right"></i>
                                                     </div>
                                                 </div>
