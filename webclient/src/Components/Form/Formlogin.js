@@ -63,7 +63,7 @@ const Formlogin = ({
          
           setTimeout(() => {
             if(data.data.details.role == "user") {
-              navigate("/userhome");
+              navigate("/appuserhome");
               window.location.reload();
 
            }else
@@ -87,7 +87,7 @@ const Formlogin = ({
     useEffect(() => {
       let status = localStorage.getItem("loginStatus");
       if (status) {
-        navigate("/userhome");
+        navigate("/userhome"); 
       }
     }, []);
 

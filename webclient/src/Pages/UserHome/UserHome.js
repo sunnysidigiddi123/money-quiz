@@ -398,7 +398,9 @@ const UserHome = () => {
             Add Money in Wallet
           </Modal.Title>
 
+
         </Modal.Header>
+
 
         <Modal.Body>
 
@@ -443,8 +445,9 @@ const UserHome = () => {
        <button type="submit" class="btn btn-primary" onClick={entered}>Yes</button>&nbsp;
        <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
        </form> */}
+            
+       <div className="modal-content py-md-5 px-md-4 p-sm-3 p-4">
 
-          <div class="modal-content py-md-5 px-md-4 p-sm-3 p-4">
             <h3>Do You Want To Enter in Contest ?</h3> <i className="fa fa-bell ss"></i>
             <p className="r3 px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
             <br></br>
