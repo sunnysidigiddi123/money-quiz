@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default function AppHeader() {
+export default function AppHeader(props) {
+  let user = props.user;
+  let wallet = props.wallet;
   return (
     <div>
       <div className="container-fluid">
@@ -13,7 +15,7 @@ export default function AppHeader() {
               <div className="logo"><h1>CLUTCH</h1></div>
               <div className="total-coin">
                 <div className="wallet-coin">
-                  140 <i className="coin"></i>
+                  {wallet} <i className="coin"></i>
                 </div>
               </div>
             </div>

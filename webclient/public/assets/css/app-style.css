@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 /* =================  Remove this======================*/
-/* body{height: 2000px;} */
+/* body{height: 6000px;} */
 
 /* =================  Reset css======================*/
 .container-fluid{width: 100%; max-width: 700px; margin: 0 auto;}
@@ -84,7 +84,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .coin::after{  content: ""; position: absolute; background-color: #ffcc01; width: 25px; height: 23px; border-radius: 50%; display: inline-block; box-shadow: 1px 7px 2px 2px #f9ba10 inset; top: -1px; left: 3px;}
 .big.coin::after{width: 31px; height: 28px; top: 4px;}
 .small.coin::after{width: 20px; height: 20px;  top: -3px; left: 7px;}
-.pagination .page-link{ color: #fcbd11; font-weight: bold; font-size: 1.25rem;}
+.pagination .page-link{ color: #fcbd11; font-weight: bold; }
     
     /* =================   inner page css ======================*/
 .inner-page-heading{font-size: 2rem; font-weight: 700; color: #000000;}
