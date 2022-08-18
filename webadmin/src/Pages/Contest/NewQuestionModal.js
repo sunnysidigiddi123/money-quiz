@@ -643,20 +643,7 @@ const NewQuestionModal = (props) => {
                           />
                         </div>
                       </div>
-                      <div className="form-row">
-                        <div className="col questionName">
-                          <label for="question questionheading">Total Image Viewing Time</label>
-                          <input
-                            type="number"
-                            className="form-control"
-                            placeholder="In Secs"
-                            value={questionTime}
-                            onChange={(e) => {
-                              setQuestionTime(e.target.value);
-                            }}
-                          />
-                        </div>
-                      </div>        
+                           
 
                     </form>
                   </>

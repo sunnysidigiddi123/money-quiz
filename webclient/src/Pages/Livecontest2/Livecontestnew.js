@@ -36,12 +36,13 @@ const Livecontestnew = () => {
    const [polldata , setPollData] = useState([]);
    const [creditlastamount , setCreditLastAmount] = useState(0);
    const [initialusers , setInitialUsers] = useState(0);
+   
    // For adding values from userhome 
    // console.log(present.length,present)
    const navigate = useNavigate();
    let location = useLocation();
    // console.log(questions.totalQuestionTime)
-   console.log(questionIndex,totalquestions,"vvvvvvvv");
+   console.log(questionIndex,totalquestions,"vvvvvvvv",value);
 
    useEffect(() => {
 
@@ -52,6 +53,9 @@ const Livecontestnew = () => {
    function addData() {
 
       setQuestions(location.state.question1)
+      if(location.state.question1.videolink == ''){
+         setViewVideo(false)
+      }
       setContestTime(location.state.ContestTime)
       setEntryAmount(location.state.entryamount)
       setContestId(location.state.contestid)
@@ -229,10 +233,10 @@ const Livecontestnew = () => {
             if (post.data.question.videolink !== '') {
                setViewVideo(true)
             }
-           
+            
          }
          
- 
+         nextQuestion()
          // if(post.data.status == 0){
          //    setLgShows(true)
          // }
@@ -372,6 +376,8 @@ const Livecontestnew = () => {
       } else
          setValue(e.target.value)
 
+         
+
    }
 
 
@@ -388,21 +394,12 @@ const Livecontestnew = () => {
    }
 
    // for next question
-   var currentTab = 0
-   function nextQuestion(n) {
+   
+   function nextQuestion() {
 
       var childNodes = document.getElementById("containers");
       childNodes.style.pointerEvents = 'auto';
 
-      currentTab = currentTab + n
-      console.log(currentTab, "current")
-
-      var x = document.getElementsByClassName("step");
-      console.log(x.length, "aaa")
-      for (var i = 0; i < x.length; i++) {
-         x[i].className = x[i].className.replace(" active", "");
-      }
-      x[currentTab].className += " active";
 
    }
 
@@ -462,6 +459,7 @@ const Livecontestnew = () => {
                                        height='100%' muted></ReactPlayer></div>
                                  :
                                  <>
+                                   {questions.imagepath != '' ?<img src={questions.imagepath} alt="image" width="500" height="600"></img>:<></>}
                                     <div className="question_number text-uppercase">
                                        <span>question {questionIndex} / {totalquestions}</span>
                                     </div>
@@ -491,6 +489,7 @@ const Livecontestnew = () => {
                                        </label>
                                     </div></>
                               }
+                            
                            </div>
                         </div>
                      </div>

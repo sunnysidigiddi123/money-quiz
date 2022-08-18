@@ -266,14 +266,24 @@ async paynewpollamount(request: IGetUserAuthInfoRequest){
 
 }
 
-async getPublishedContest(request: IGetUserAuthInfoRequest,page: number =1 ,limit:number =3 ){
+async getPublishedContest(request: IGetUserAuthInfoRequest,page: number =1 ,limit:number =3 ,OrderBy:number = -1  , sortBy:string = "contestTime" ){
      
+  const sort = {}
+
   try{
+    if(sortBy && OrderBy){
+      OrderBy = 'DESC' ? -1 : 1 
+      sort[sortBy] = OrderBy
+
+    }
+   
      const AppliedContests = await this.AppliedUserRepository.find({where:{userid:request.userId}})
-     const [contest,count] = await this.PublishedContestRepository.findAndCount({take:limit, skip:limit*(page-1),order: {contestTime:'DESC'}});
+     
+     const [contest,count] = await this.PublishedContestRepository.findAndCount({take:limit, skip:limit*(page-1),order:sort});
+     console.log('sssss')
      const user = await this.UserRepository.find({where:{id:request.userId}});
 
-     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet,page_size:limit,page_number:page,count:count}
+     return {appliedcontests:AppliedContests,contests:contest,page_size:limit,page_number:page,count:count,user:user[0].name,wallet:user[0].Wallet}
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)
   }
@@ -297,7 +307,7 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
         isApplied = true
   }
   console.log(isApplied,"aaa")
-  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,isApplied:isApplied }
+  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,contestName:contest.contestName,isApplied:isApplied }
   
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)
@@ -306,16 +316,19 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
 
 }
 
-async appliedcontests(request: IGetUserAuthInfoRequest ){
+async appliedcontests(request: IGetUserAuthInfoRequest  ){
   
   try{
   const appliedContest = await this.AppliedUserRepository.find({where:{userid:request.userId}})
   console.log(appliedContest[1])
   let arr = []
+
   for(let i=0 ;i<appliedContest.length;i++){
      
-   const contest = await this.PublishedContestRepository.find({where:{id:appliedContest[i].contestid}})
-    arr.push(contest.pop())
+   const contest = await this.PublishedContestRepository.find({where:{id:appliedContest[i].contestid},order: {contestTime:'DESC'}})
+ 
+   console.log(contest)
+   arr.push(contest.pop())
   
   }
 
