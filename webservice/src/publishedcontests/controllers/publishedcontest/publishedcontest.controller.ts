@@ -17,9 +17,9 @@ export class PublishedcontestController {
 
 @Get('getPublishedContest')
 @UseInterceptors(ClassSerializerInterceptor)   
-async getContest(@Req() request: IGetUserAuthInfoRequest,@Query('page') page:number,@Query('limit') limit:number,@Res() response:Response){
+async getContest(@Req() request: IGetUserAuthInfoRequest,@Query('page') page:number,@Query('OrderBy') OrderBy:number,@Query('sortBy') sortBy:string,@Query('limit') limit:number,@Res() response:Response){
 
-   const contests = await this.publishcontestService.getPublishedContest(request,page,limit);   
+   const contests = await this.publishcontestService.getPublishedContest(request,page,limit,OrderBy,sortBy);   
     if(contests){
        response.status(201).send(contests)
     }
@@ -109,7 +109,7 @@ async auditContest(@Body() createAuditContestDto:CreateAuditContestDto,@Res() re
 
  @Get('appliedcontests')
  @UsePipes(ValidationPipe)   
- async appliedcontests(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+ async appliedcontests(@Req() request: IGetUserAuthInfoRequest ,@Res() response:Response){
 
     const appliedcontest = await this.publishcontestService.appliedcontests(request);
     
