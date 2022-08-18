@@ -5,9 +5,9 @@ import { Publishedcontest } from "../contests/Publishedcontests"
 
 export enum QuestionTypes {
   Video = 'video',
-  Photo = 'photo',
+  Photo = 'image',
   Audio = 'audio',
-  Yes_No = 'yes/no',
+  MCQ = 'mcq',
   }
 
 @Entity()
@@ -43,6 +43,12 @@ export class Question {
         default:''
     })
     videolink: string
+
+    @Column({
+        nullable:false,
+        default:''
+    })
+    imagepath: string
 
     @Column({
         nullable:false,

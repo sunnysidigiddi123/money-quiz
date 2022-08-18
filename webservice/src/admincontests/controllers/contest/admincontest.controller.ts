@@ -1,5 +1,7 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Response } from 'express';
+import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, Res, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { request, Response } from 'express';
+import { diskStorage } from 'multer';
 import { AdminContestService, IGetUserAuthInfoRequest } from 'src/admincontests/services/contest/admincontest.service';
 import { CreateAdminContestDto } from 'src/dtos/contests/CreateAdminContest.dto';
 import { UsersService } from 'src/users/services/users/users.service';
@@ -60,6 +62,49 @@ export class AdminContestController {
 
     }
 
+    @Post('upload')
+    @UseInterceptors(
+        FileInterceptor("file",{
+          storage: diskStorage({
+            destination: './uploads',
+            filename:(req,file,cb)=>{
+              const name = file.originalname.split('.')[0];
+              const fileExtension = file.originalname.split('.')[1];
+              const newFileName = name.split(" ").join('_')+'_'+Date.now()+'.'+fileExtension;
 
+              cb(null,newFileName);
+            }
+          }),
+          fileFilter: (req,file,cb) => {
+            if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
+                 return cb(null,false);
+            }
+            cb(null,true);
+          }
+
+        })
+    )
+    uploadPhoto(@UploadedFile() file:Express.Multer.File ,@Res() res:Response){
+
+       console.log(file)
+       if(!file){
+         throw new BadRequestException('File is not an image');
+       }else{
+         const response = {
+            filePath: `http://localhost:4000/admincontest/pictures/${file.filename}`,
+            message:'photo uploaded '
+         }
+         res.status(201).send(response)
+       }
+    }
+
+
+   @Get('pictures/:filename')
+   async getPicture(@Param('filename') filename, @Res() res:Response){
+      
+      res.sendFile(filename,{root:'./uploads'})
+
+
+   }
 
 }

@@ -48,6 +48,11 @@ export class Publishedcontest {
         nullable:true,
     })
     LivecontestTime: Date
+
+    @Column({
+        nullable:true,
+    })
+    SegmentGoingOn: Date
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
@@ -57,5 +62,6 @@ export class Publishedcontest {
 
     @OneToMany(() => Question, question => question.publishedcontest)
     questions: Question[];
+  contest: any
 
 }

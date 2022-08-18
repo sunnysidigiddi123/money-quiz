@@ -4,7 +4,7 @@ import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Q
 import { Auditcontest } from 'src/typeorm/contests/Auditcontest';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
-import { Repository } from 'typeorm'; 
+import { ConnectionIsNotSetError, Repository } from 'typeorm'; 
 import { Request, Response } from 'express';
 import * as moment from "moment";
 
@@ -48,7 +48,8 @@ async publishContest(publishedcontestDto:CreatePublishedContestDto,admincontest:
               contestTime:publishedcontestDto.contestTime,
               EntryAmount:publishedcontestDto.EntryAmount,
               ParticularPoll:publishedcontestDto.EntryAmount,
-              LivecontestTime:publishedcontestDto.contestTime
+              LivecontestTime:publishedcontestDto.contestTime,
+              SegmentGoingOn:publishedcontestDto.contestTime
         });
         newContest.questions = admincontest.questions
       
@@ -186,17 +187,51 @@ async getData(request: IGetUserAuthInfoRequest){
   const contest = await this.PublishedContestRepository.findOne({where: {id:request.body.contestId},relations:['questions']})
   const user = await this.UserRepository.findOne({where:{id:request.userId}})
   // const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
- console.log("Cccccccccc",contest.questions[1],request.body.LivecontestTime,request.body.questionIndex)
-  try{
+ console.log("Cccccccccc",contest.questions[1],request.body.LivecontestTime,request.body.questionIndex,contest.SegmentGoingOn,contest.LivecontestTime)
+ const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
+ const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
+ try{
  if(user){
+      
+    //  //for segment 
+     
+    //  if(moment(contest.LivecontestTime).isSame(contest.SegmentGoingOn) ){
+    //      console.log("sssssss")
+    //     for(let i=contest.LiveQuestionIndex;i<contest.questions.length;i++ ){
+          
+    //        if(contest.questions[i+1].segmentId != null && contest.questions[i].segmentId == contest.questions[i+1].segmentId){
+    //         console.log("hhhhhh")
+    //       contest.SegmentGoingOn = moment(contest.SegmentGoingOn).add(contest.questions[i].totalQuestionTime+contest.questions[i+1].totalQuestionTime+60,'seconds').toDate()
+    //       console.log("vvvvvv",contest.SegmentGoingOn)  
+    //       contest.LivecontestTime = request.body.LivecontestTime
+    //       contest.LiveQuestionIndex = request.body.questionIndex
+    //       await this.PublishedContestRepository.save(contest)
+ 
+    //     }
+    //   }
+    //  }else{
+
+   
+    // when one user left in contest 
+
+    if(TotalLiveUsers == 1) {
+      
+      let particularPoll = contest.ParticularPoll;
+      user.Wallet = user.Wallet + particularPoll;
+      await this.liveUserRepository.remove(LiveUser);
+      await this.UserRepository.save(user);
+
+      throw new HttpException({message:'NO User Left To Play Contest'},HttpStatus.BAD_REQUEST)
+
+
+    }else
 
       contest.LivecontestTime = request.body.LivecontestTime
       contest.LiveQuestionIndex = request.body.questionIndex
       await this.PublishedContestRepository.save(contest)
     // if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
-    
-    return {message: "Poll Data ",status:1,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex]}
-
+    return {message: "Poll Data ",status:1,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex],liveindex:contest.LiveQuestionIndex}
+    //  }
   }
 }catch(e){
   throw new HttpException(e,HttpStatus.BAD_REQUEST)
@@ -231,14 +266,14 @@ async paynewpollamount(request: IGetUserAuthInfoRequest){
 
 }
 
-async getPublishedContest(request: IGetUserAuthInfoRequest,page: number =1 ){
+async getPublishedContest(request: IGetUserAuthInfoRequest,page: number =1 ,limit:number =3 ){
      
   try{
      const AppliedContests = await this.AppliedUserRepository.find({where:{userid:request.userId}})
-     const contest = await this.PublishedContestRepository.find();
+     const [contest,count] = await this.PublishedContestRepository.findAndCount({take:limit, skip:limit*(page-1),order: {contestTime:'DESC'}});
      const user = await this.UserRepository.find({where:{id:request.userId}});
 
-     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet}
+     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet,page_size:limit,page_number:page,count:count}
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)
   }
@@ -251,9 +286,18 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
   try{
   const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestid}})
   const liveusers = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
-
+  const appliedContest = await this.AppliedUserRepository.find({where:{userid:request.userId,contestid:request.body.contestid}})
   const totalWinningAmount = contest.EntryAmount * liveusers
-  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount }
+  console.log(appliedContest,request.userId)
+ 
+  let isApplied :Boolean
+  if(appliedContest.length == 0){
+       isApplied = false
+  }else{
+        isApplied = true
+  }
+  console.log(isApplied,"aaa")
+  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,isApplied:isApplied }
   
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)

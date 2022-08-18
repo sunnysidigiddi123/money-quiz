@@ -80,7 +80,12 @@ const Livecontestnew = () => {
       
 
          setVideoTime(Math.round(userDelayTime / 1000))
-       
+         console.log('userdelay',userDelayTime/1000)
+
+         if(userDelayTime/1000 >= questions.totalVideoTime){
+
+            setViewVideo(false)
+         }
       
          //when contest is running 
          if (afterDelayQuestionTime > 0) {
@@ -218,8 +223,9 @@ const Livecontestnew = () => {
             // setLgShows(true)
             setQuestions(post.data.question)
             setTimerTime(post.data.question.totalQuestionTime+STATS_DELAY_IN_SEC)
-            setQuestionIndex(questionIndex + 1)
-            sessionStorage.setItem("questionIndex",questionIndex+1)
+            setQuestionIndex(parseInt(post.data.liveindex) + 1)
+            console.log("qqqqqqq",parseInt(post.data.liveindex)+1)
+            sessionStorage.setItem("questionIndex",parseInt(post.data.liveindex)+1)
             if (post.data.question.videolink !== '') {
                setViewVideo(true)
             }
@@ -238,8 +244,11 @@ const Livecontestnew = () => {
 
 
       } catch (e) {
-
-         console.log("Oops! Something Went Wrong")
+          console.log(e.response.data.status,'qqqqq')
+         if(e.response.data.status == 400){
+              navigate('/userhome')
+            //   toast.success(e.response.data.message)
+         }
       }
 
    }
