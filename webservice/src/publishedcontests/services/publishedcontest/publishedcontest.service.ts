@@ -188,7 +188,9 @@ async getData(request: IGetUserAuthInfoRequest){
   const user = await this.UserRepository.findOne({where:{id:request.userId}})
   // const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
  console.log("Cccccccccc",contest.questions[1],request.body.LivecontestTime,request.body.questionIndex,contest.SegmentGoingOn,contest.LivecontestTime)
-  try{
+ const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
+ const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
+ try{
  if(user){
       
     //  //for segment 
@@ -208,6 +210,22 @@ async getData(request: IGetUserAuthInfoRequest){
     //     }
     //   }
     //  }else{
+
+   
+    // when one user left in contest 
+
+    if(TotalLiveUsers == 1) {
+      
+      let particularPoll = contest.ParticularPoll;
+      user.Wallet = user.Wallet + particularPoll;
+      await this.liveUserRepository.remove(LiveUser);
+      await this.UserRepository.save(user);
+
+      throw new HttpException({message:'NO User Left To Play Contest'},HttpStatus.BAD_REQUEST)
+
+
+    }else
+
       contest.LivecontestTime = request.body.LivecontestTime
       contest.LiveQuestionIndex = request.body.questionIndex
       await this.PublishedContestRepository.save(contest)
@@ -252,10 +270,10 @@ async getPublishedContest(request: IGetUserAuthInfoRequest,page: number =1 ,limi
      
   try{
      const AppliedContests = await this.AppliedUserRepository.find({where:{userid:request.userId}})
-     const contest = await this.PublishedContestRepository.find({take:limit, skip:limit*(page-1),order: {contestTime:'DESC'}});
+     const [contest,count] = await this.PublishedContestRepository.findAndCount({take:limit, skip:limit*(page-1),order: {contestTime:'DESC'}});
      const user = await this.UserRepository.find({where:{id:request.userId}});
 
-     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet}
+     return {appliedcontests:AppliedContests,contests:contest,user:user[0].name,wallet:user[0].Wallet,page_size:limit,page_number:page,count:count}
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)
   }
@@ -268,9 +286,18 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
   try{
   const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestid}})
   const liveusers = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
-
+  const appliedContest = await this.AppliedUserRepository.find({where:{userid:request.userId,contestid:request.body.contestid}})
   const totalWinningAmount = contest.EntryAmount * liveusers
-  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount }
+  console.log(appliedContest,request.userId)
+ 
+  let isApplied :Boolean
+  if(appliedContest.length == 0){
+       isApplied = false
+  }else{
+        isApplied = true
+  }
+  console.log(isApplied,"aaa")
+  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,isApplied:isApplied }
   
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)

@@ -64,7 +64,7 @@ const StatsModalWrong = (props) => {
                                                         <span>{props.initalusers}</span>
                                                     </li>
                                                     <li className="sportsmagazine-match-score">
-                                                    {props.totalquestions != sessionStorage.getItem('questionIndex') ?  <h5>Want To Re-enter </h5> : <h5>Lost </h5> }
+                                                    {props.totalquestions != sessionStorage.getItem('questionIndex') ?  <h5>Want To Re-enter </h5> : <h5>Reenter</h5> }
                                                         <p><strong className="sportsmagazine-color" style={{color:'red'}}>₹ {props.polldata[0]}</strong></p>
                                                     </li>
                                                     <li>

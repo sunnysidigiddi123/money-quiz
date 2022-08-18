@@ -1,15 +1,21 @@
 import axios from "axios";
 import React, { memo, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { Navigate,useNavigate } from "react-router-dom";
-
+import {  Modal } from "react-bootstrap";
+import { Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import { Button, Form } from "react-bootstrap";
+import { TiInputChecked } from "react-icons/ti";
 const NewQuestionModal = (props) => {
-  const { newQuestionModal = false, setnewQuestionModal,segment } = props;
-  
+  const { newQuestionModal = false, setnewQuestionModal, segment } = props;
+
   const closeNewQuestionModal = () => setnewQuestionModal(false);
   const handleChange = (e) => {
     setQuestionType(e.target.value);
   };
+  const onChangeHandler = (event) =>{
+    setSelectedFile(event.target.files[0]);
+    console.log(event.target.files[0]);
+}
   const [question, setQuestion] = useState("");
   const [optionA, setOptionA] = useState("");
   const [optionB, setOptionB] = useState("");
@@ -17,36 +23,71 @@ const NewQuestionModal = (props) => {
   const [optionD, setOptionD] = useState("");
   const [correctanswer, setCorrectAnswer] = useState("");
   const [questionType, setQuestionType] = useState("video");
-  const [segmentId,setSegmentId] = useState();
-  const [videolink,setVideolink] = useState("");
-  const [questionTime,setQuestionTime] = useState();
-  const [totalQuestions,setTotalQuestions] = useState();
-  const [totaltiming,setTotalTiming] = useState();
+  const [segmentId, setSegmentId] = useState();
+  const [videolink, setVideolink] = useState("");
+  const [questionTime, setQuestionTime] = useState();
+  const [totalQuestions, setTotalQuestions] = useState();
+  const [totaltiming, setTotalTiming] = useState();
+  const [selectedFile, setSelectedFile] = useState("");
+  const [filepath,setFilepath] = useState("");
+  const [uploaded,setUploaded] = useState(false);
   const navigate = useNavigate()
-  console.log(segment,"pppp")
+  console.log(segment, "pppp")
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    // formData.append("document", JSON.stringify(obj))
+
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/admincontest/upload`;
+
+    try {
+      let data = await axios.post(BASE_URL, formData, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+        },
+
+
+      }
+      );
+      toast.success("Image Uploaded Successfully");
+      setFilepath(data.data.filePath)
+      setUploaded(true)
+      console.log(data.data.filePath);
+    } catch (e) {
+      toast.error(e.message);
+      console.log(e.response)
+    }
+  }
+
   const saveQuestion = async () => {
-    console.log(segmentId,"pppp")
+    console.log(segmentId, "pppp")
     const BASE_URL = `${process.env.REACT_APP_BASE_URL}/question/createQuestion`;
     let sendData = {
       question: question,
-      correctanswer: correctanswer==''? optionA : correctanswer,
+      correctanswer: correctanswer == '' ? optionA : correctanswer,
       type: questionType,
-      videolink:videolink,
-      totalQuestionTime:totaltiming,
-      totalVideoTime:questionTime,
-      contestId:props.contestId,
-      segmentId: segmentId== undefined ? segment[0].id : segmentId
+      videolink: videolink,
+      totalQuestionTime: totaltiming,
+      totalVideoTime: questionTime,
+      contestId: props.contestId,
+      segmentId: segmentId == undefined ? segment[0].id : segmentId,
+      options : [optionA, optionB, optionC, optionD]
     };
-    if (questionType == "video") {
-      sendData.options = [optionA,optionB,optionC,optionD]
-       
+    if (questionType == "image") {
+      sendData.imagepath = filepath
+
     }
+   
+
     console.log(sendData);
     try {
       const data = await axios.post(BASE_URL, sendData);
       console.log(data);
       navigate('/adminHome')
-    } catch (error) {}
+    } catch (error) { }
   };
   console.log(
     optionA,
@@ -89,8 +130,10 @@ const NewQuestionModal = (props) => {
                       id="exampleFormControlSelect1"
                       onChange={handleChange}
                     >
-                      <option value="video">video</option>
-                      <option value="Yes/No">Yes/No</option>
+                      <option value="video">Video</option>
+                      <option value="image">Image</option>
+                      <option value="audio">Audio</option>
+                      <option value="mcq">MCQ</option>
                     </select>
                   </div>
                 </div>
@@ -98,9 +141,9 @@ const NewQuestionModal = (props) => {
                   {" "}
                   <div className="form-group questionType col-md-6">
                     <label for="exampleFormControlSelect1 questionheading">
-                      Select Segment 
+                      Select Segment
                     </label>
-                     <select
+                    <select
                       value={segmentId}
                       className="form-control"
                       id="exampleFormControlSelect1"
@@ -109,11 +152,11 @@ const NewQuestionModal = (props) => {
                       }}
                     >
                       {
-                        segment && segment.map((result)=>( <option value={result.id}>{result.segmentName}</option>))
+                        segment && segment.map((result) => (<option value={result.id}>{result.segmentName}</option>))
                       }
                       {/* <option value="MCQ">MCQ</option>
                       <option value="Yes/No">Yes/No</option> */}
-                    </select> 
+                    </select>
                   </div>
                 </div>
                 {questionType === "video" && (
@@ -186,7 +229,9 @@ const NewQuestionModal = (props) => {
                       </div>
                       <div className="form-row">
                         <div className="col questionName">
+
                           <label for="question questionheading">Add Video Streaming Link</label>
+
                           <input
                             type="text"
                             className="form-control"
@@ -212,8 +257,8 @@ const NewQuestionModal = (props) => {
                           />
                         </div>
                       </div>
-                    
-                
+
+
                       <div className="form-row">
                         <div className="col questionName">
                           <label for="question questionheading">Total Question timing</label>
@@ -221,7 +266,7 @@ const NewQuestionModal = (props) => {
                             type='number'
                             className="form-control"
                             placeholder="In Secs"
-                            
+
                             onChange={(e) => {
                               setTotalTiming(e.target.value);
                             }}
@@ -229,7 +274,7 @@ const NewQuestionModal = (props) => {
                         </div>
                       </div>
 
-                      
+
                     </form>
                   </>
                 )}
@@ -256,12 +301,12 @@ const NewQuestionModal = (props) => {
                     </form>
                   </>
                 )}
-                {questionType === "Yes/No" && (
+                {questionType === "audio" && (
                   <>
                     <form>
                       <div className="form-row">
-                        <div className="col questionheading">
-                          <label for="question">Question</label>
+                        <div className="col questionName">
+                          <label for="question questionheading">Question</label>
                           <input
                             type="text"
                             className="form-control"
@@ -273,9 +318,113 @@ const NewQuestionModal = (props) => {
                           />
                         </div>
                       </div>
-                      <div>
-                        {" "}
-                        <div className="form-group questionType col-md-6">
+
+                      <div className="form-row">
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionA questionheading">
+                            Option-A
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-A"
+                            value={optionA}
+                            onChange={(e) => setOptionA(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionB questionheading">
+                            Option-B
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-B"
+                            value={optionB}
+                            onChange={(e) => setOptionB(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionC questionheading">
+                            Option-C
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-C"
+                            value={optionC}
+                            onChange={(e) => setOptionC(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionD questionheading">
+                            Option-D
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-D"
+                            value={optionD}
+                            onChange={(e) => setOptionD(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="col questionName">
+
+                          <label for="question questionheading">Add Audio Streaming Link</label>
+
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Type Streaming Link"
+                            value={videolink}
+                            onChange={(e) => {
+                              setVideolink(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Total Audio Timing</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            placeholder="In Secs"
+                            value={questionTime}
+                            onChange={(e) => {
+                              setQuestionTime(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Total Question timing</label>
+                          <input
+                            type='number'
+                            className="form-control"
+                            placeholder="In Secs"
+
+                            onChange={(e) => {
+                              setTotalTiming(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+
+                    </form>
+                  </>
+                )}
+                {questionType === "audio" && (
+                  <>
+                    <form>
+                      <div className="form-row">
+                        <div className="col">
                           <label for="exampleFormControlSelect1">
                             Select Correct Answer
                           </label>
@@ -284,24 +433,286 @@ const NewQuestionModal = (props) => {
                             id="exampleFormControlSelect1"
                             onChange={(e) => setCorrectAnswer(e.target.value)}
                           >
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value={optionA}>Option-A</option>
+                            <option value={optionB}>Option-B</option>
+                            <option value={optionC}>Option-C</option>
+                            <option value={optionD}>Option-D</option>
                           </select>
                         </div>
                       </div>
                     </form>
                   </>
                 )}
+
+
+
+                {questionType === "mcq" && (
+                  <>
+                    <form>
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Question</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Type your question here"
+                            value={question}
+                            onChange={(e) => {
+                              setQuestion(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionA questionheading">
+                            Option-A
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-A"
+                            value={optionA}
+                            onChange={(e) => setOptionA(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionB questionheading">
+                            Option-B
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-B"
+                            value={optionB}
+                            onChange={(e) => setOptionB(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionC questionheading">
+                            Option-C
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-C"
+                            value={optionC}
+                            onChange={(e) => setOptionC(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionD questionheading">
+                            Option-D
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-D"
+                            value={optionD}
+                            onChange={(e) => setOptionD(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Total Question timing</label>
+                          <input
+                            type='number'
+                            className="form-control"
+                            placeholder="In Secs"
+
+                            onChange={(e) => {
+                              setTotalTiming(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+
+                    </form>
+                  </>
+                )}
+                {questionType === "mcq" && (
+                  <>
+                    <form>
+                      <div className="form-row">
+                        <div className="col">
+                          <label for="exampleFormControlSelect1">
+                            Select Correct Answer
+                          </label>
+                          <select
+                            className="form-control"
+                            id="exampleFormControlSelect1"
+                            onChange={(e) => setCorrectAnswer(e.target.value)}
+                          >
+                            <option value={optionA}>Option-A</option>
+                            <option value={optionB}>Option-B</option>
+                            <option value={optionC}>Option-C</option>
+                            <option value={optionD}>Option-D</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </>
+                )}
+
+                {/* // image type  */}
+
+                {questionType === "image" && (
+                  <>
+                    <form>
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Question</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Type your question here"
+                            value={question}
+                            onChange={(e) => {
+                              setQuestion(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionA questionheading">
+                            Option-A
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-A"
+                            value={optionA}
+                            onChange={(e) => setOptionA(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionB questionheading">
+                            Option-B
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-B"
+                            value={optionB}
+                            onChange={(e) => setOptionB(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionC questionheading">
+                            Option-C
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-C"
+                            value={optionC}
+                            onChange={(e) => setOptionC(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group col-md-3">
+                          <label for="inputOptionD questionheading">
+                            Option-D
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Option-D"
+                            value={optionD}
+                            onChange={(e) => setOptionD(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Total Question timing</label>
+                          <input
+                            type='number'
+                            className="form-control"
+                            placeholder="In Secs"
+
+                            onChange={(e) => {
+                              setTotalTiming(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="col questionName">
+                          <label for="question questionheading">Total Image Viewing Time</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            placeholder="In Secs"
+                            value={questionTime}
+                            onChange={(e) => {
+                              setQuestionTime(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>        
+
+                    </form>
+                  </>
+                )}
+                {questionType === "image" && (
+                  <>
+                    <Form>
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label><h4>Upload Image here</h4></Form.Label>
+                        <Form.Control
+                          className="fileupload"
+                          type="file"
+                          name="file"
+                          accept="image/*"
+                          onChange={onChangeHandler}
+                        />
+                      </Form.Group>
+
+                      {uploaded ? <Button variant="primary">Uploaded <TiInputChecked /></Button> :<Button variant="primary" onClick={handleSubmit}>Upload</Button>}
+                    </Form>
+                  </>
+                )}
+
+                {questionType === "image" && (
+                  <>
+                    <form>
+                      <div className="form-row">
+                        <div className="col">
+                          <label for="exampleFormControlSelect1">
+                            Select Correct Answer
+                          </label>
+                          <select
+                            className="form-control"
+                            id="exampleFormControlSelect1"
+                            onChange={(e) => setCorrectAnswer(e.target.value)}
+                          >
+                            <option value={optionA}>Option-A</option>
+                            <option value={optionB}>Option-B</option>
+                            <option value={optionC}>Option-C</option>
+                            <option value={optionD}>Option-D</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </>
+                )}
+
+
               </div>
-              {/* <div className="footer-wrap pd-20 mb-20 card-box adminfooter">
-            MoneyQuiz - Copyright © 2022 By <Link to="/adminhome">Calance</Link>
-          </div> */}
-              {/* <Footer /> */}
+
+
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          {questionType == "video" ? (
+          {questionType == "video" && 
             <Button
               disabled={
                 !optionA ||
@@ -314,15 +725,51 @@ const NewQuestionModal = (props) => {
               onClick={() => saveQuestion()}
             >
               Save
-            </Button>
-          ) : (
+            </Button>}
+            {questionType == "audio" && 
             <Button
-              disabled={!correctanswer || !question}
+              disabled={
+                !optionA ||
+                !optionB ||
+                !optionC ||
+                !optionD ||
+                // !correctanswer ||
+                !question
+              }
               onClick={() => saveQuestion()}
             >
-              Savelk
-            </Button>
-          )}
+              Save
+            </Button>}
+            {questionType == "mcq" && 
+            <Button
+              disabled={
+                !optionA ||
+                !optionB ||
+                !optionC ||
+                !optionD ||
+                // !correctanswer ||
+                !question
+              }
+              onClick={() => saveQuestion()}
+            >
+              Save
+            </Button>}
+            {questionType == "image" && 
+            <Button
+              disabled={
+                filepath == "" ||
+                !optionA ||
+                !optionB ||
+                !optionC ||
+                !optionD ||
+                // !correctanswer ||
+                !question
+              }
+              onClick={() => saveQuestion()}
+            >
+              Save
+            </Button>}
+       
         </Modal.Footer>
       </Modal>
     </>
