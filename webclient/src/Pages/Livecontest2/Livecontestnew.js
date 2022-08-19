@@ -145,7 +145,7 @@ const Livecontestnew = () => {
     
       if(post.data.status == 1){
          toast.success(post.data.message)
-         navigate('/userhome')
+         navigate('/appuserhome')
        }
       
    } catch (e) {
@@ -197,7 +197,7 @@ const Livecontestnew = () => {
      //  when contest gets over
      if (totalquestions == sessionStorage.getItem('questionIndex')) {
           
-      navigate('/userhome')
+      navigate('/appuserhome')
      }
       const selectedans = localStorage.getItem('selectedans');
       const BASE_URL = `${process.env.REACT_APP_BASE_URL}/publishedcontest/getData`;
@@ -221,7 +221,7 @@ const Livecontestnew = () => {
           //  when contest gets over
           if (totalquestions == questionIndex) {
             
-            navigate('/userhome')
+            navigate('/appuserhome')
          }
          
          console.log(post.data.question)
@@ -253,7 +253,7 @@ const Livecontestnew = () => {
       } catch (e) {
           console.log(e.response.data.status,'qqqqq')
          if(e.response.data.status == 400){
-              navigate('/userhome')
+              navigate('/appuserhome')
             //   toast.success(e.response.data.message)
          }
       }
