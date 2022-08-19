@@ -119,7 +119,7 @@ const StatsModalWrong = (props) => {
 
                                                             onComplete={() => {
                                                                if(!props.reentersuccess){
-                                                                navigate('/userhome')
+                                                                navigate('/appuserhome')
                                                                }
                                                                props.setReentersuccess(false)
                                                                
@@ -149,7 +149,7 @@ const StatsModalWrong = (props) => {
 
                                                             onComplete={() => {
                                                                if(!props.reentersuccess){
-                                                                navigate('/userhome')
+                                                                navigate('/appuserhome')
                                                                }
                                                                props.setReentersuccess(false)
                                                                
