@@ -246,7 +246,10 @@ export default function AppUserHome() {
                                 <p className='py-3 section-head'>Quizzes </p>
                             </div>
                         </div>
-                        <div className="row">
+                        {
+                            contests.length > 0 
+                            ?
+                            <div className="row">
                             {contests.map((res, index) => {
                                 return (<>
                                     {/* card item starts */}
@@ -283,7 +286,16 @@ export default function AppUserHome() {
                                 </>
                                 )
                             })}
-                        </div>
+                        </div> 
+                            :
+                            <div className="row">
+                                <div className="col-sm-12 text-center no-quiz">
+                                    <h1>No Quiz !!</h1>
+                                    <img src="./assets/images/no-quiz.png" alt="" />
+                                </div>
+                            </div>
+                        }
+                        
                     </section> {/* quiz today section Ends */}
                     {/* pagination starts */}
                     <section>

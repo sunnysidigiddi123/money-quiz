@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 /* =================  Remove this======================*/
-/* body{height: 6000px;} */
+body{height: 6000px;}
 
 /* =================  Reset css======================*/
 .container-fluid{width: 100%; max-width: 700px; margin: 0 auto;}
@@ -64,6 +64,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 
 /* =================   Quiz Today Section======================*/
 .bg-off-white-2{background-color: #f3f8ff;}
+.no-quiz img{width: 100%; max-width: 150px;}
 
 /* =================   Bottom Nav css ======================*/
 .bottom-nav{background-color: #ffffff; padding: 1rem;}
