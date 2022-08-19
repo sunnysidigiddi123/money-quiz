@@ -9,9 +9,9 @@ export class Applieduser {
 
     @Column({
         nullable:false,
-        default:''
+        default:0 // TO BE LOOKED _ ATUL
     })
-    contestid: string
+    contestid: number
 
     @Column({
         nullable:false,
