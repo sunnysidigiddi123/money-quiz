@@ -175,7 +175,7 @@ export default function AppUserHome() {
                             </div>
                         </div>
                     </section>
-                    <section className="remaining-quiz">
+                    {/* <section className="remaining-quiz">
                         <div className="row bg-lighter-gray py-5 b-radius-25">
                             <div className="col-3 col-xs-3">
                                 <i className="fa fa-trophy fa-5x trophy" aria-hidden="true"></i>
@@ -185,7 +185,7 @@ export default function AppUserHome() {
                                 <p className='fs-2 text-center'>{contests.length} quizzes <i className="fas fa-arrow-right " aria-hidden="true"></i></p>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
                     {/* next-quiz section starts */}
                     <section className="next-quiz">
                         <div className="row py-3">
