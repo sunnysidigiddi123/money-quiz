@@ -272,6 +272,8 @@ export default function SingleQuizDetail() {
                                         <span className="countdown-wrapper text-white position-absolute">
                                                     <CountdownCircleTimer
                                                         isPlaying
+                                                        duration={20}
+                                                        initialRemainingTime={20}
                                                         duration={startsin}
                                                         initialRemainingTime={startsin}
                                                         colors={['#004777', '#F7B801', '#A30000', '#A30000']}

@@ -12,6 +12,9 @@ import { FaCrown,FaExclamation,FaSmile} from "react-icons/fa";
 import StatsModal from './StatsModal/StatsModal';
 import StatsModalWrong from './StatsModal/StatsModalWrong';
 import { STATS_DELAY_IN_MILLISEC,STATS_DELAY_IN_SEC } from '../../config/config';
+import AppHeader from "../../Components/AppHeader/AppHeader";
+import BottomNav from "../../Components/BottomNav/BottomNav";
+
 
 const Livecontestnew = () => {
 
@@ -365,12 +368,12 @@ const Livecontestnew = () => {
    //for  getting selected option value . 
 
    function add(e) {
-      const allActiveClasses = document.querySelectorAll('.step_1')
-      for (let i = 0; i < allActiveClasses.length; i++) {
-         allActiveClasses[i].classList.remove('active');
-      }
+      // const allActiveClasses = document.querySelectorAll('.step_1')
+      // for (let i = 0; i < allActiveClasses.length; i++) {
+      //    allActiveClasses[i].classList.remove('active');
+      // }
 
-      e.currentTarget.classList.add('active');
+      // e.currentTarget.classList.add('active');
       if (e.target.value === undefined) {
          setValue('')
       } else
@@ -386,9 +389,11 @@ const Livecontestnew = () => {
 
    function submitAns() {
 
-      var childNodes = document.getElementById("containers");
-      childNodes.style.pointerEvents = 'none';
       localStorage.setItem('selectedans',value );
+      var childNodes = document.getElementById("containersoption");
+       console.log(childNodes)
+      childNodes.style.pointerEvents = 'none';
+     
 
 
    }
@@ -397,16 +402,20 @@ const Livecontestnew = () => {
    
    function nextQuestion() {
 
-      var childNodes = document.getElementById("containers");
+      var childNodes = document.getElementById("containersoption");
       childNodes.style.pointerEvents = 'auto';
-
-
+      var radioNodes = document.getElementsByName('radio')
+      console.log(radioNodes,"qqqqqq")
+      for(var i=0;i<radioNodes.length;i++){
+         radioNodes[i].checked = false;
+      }
+     
    }
 
 
    return (
       <>
-         <div className="wrapper position-relative overflow-hidden">
+         {/* <div className="wrapper position-relative overflow-hidden">
             <div className="container-fluid p-0">
                <div className="row">
                   <div className="col-md-6">
@@ -520,124 +529,139 @@ const Livecontestnew = () => {
                   >Submit </button>
                </div>
             </div>
-         </div>
+         </div> */}
 
 
-
-        {/* modal for stats  */}
-
-
-{/* 
-        <Modal
-            size="lg"
-            fullscreen={fullscreen}
-            show={lgShows}
-            onHide={() => setLgShows(false)}
-            // backdrop="static"
-            // keyboard={false}
-            aria-labelledby="example-modal-sizes-title-lg"
-         
-		
-      >
-        <Modal.Header >
-          <Modal.Title id="example-modal-sizes-title-lg">
-          Statistics
-          </Modal.Title>
-
-          </Modal.Header>
-
-           <Modal.Body className='bb2'>
-          
-              <div className="row">
-              <CountdownCircleTimer
+         <AppHeader />
+            <div className="inner-page-container">
+                <div className="container-fluid">
+                    {/*Active player ribbon starts */}
+                    <section className="single-question">
+                        <div className="row">
+                            <div className="col-xs-12 col-md-12 mt-2">
+                                <span className='text-white bg-dark-orange mt-2 d-inline-block small-ribbon'><CountdownCircleTimer
+                           key={key}
                            isPlaying
-                           duration={30}
+                           duration={timertime}
                            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
                            colorsTime={[7, 5, 2, 0]}
+                           initialRemainingTime
+                           size={70}
                            onComplete={() => {
+                              // do your stuff here
+                            
+                                 return { shouldRepeat: true , isPlaying: true , newInitialRemainingTime:timertime-STATS_DELAY_IN_SEC}
+                        
+                               // repeat animation in 1.5 seconds
+                            }}
+                            onUpdate={(remainingTime)=>{
+                                   if(remainingTime== 5 ){
+                                      getInitialUsers();
+                                   }
+                            }} 
+                        >
+                           {({ remainingTime }) => remainingTime}
+                        </CountdownCircleTimer></span>
+
+                        
                            
-                              // setLgShows(false)
-                              // setKey(key+1)
-                              
-                             
-                            }}
-                        >
-                           {({ remainingTime }) => remainingTime}
-                        </CountdownCircleTimer>
+                           {!viewVideo && questions ?
+                                <div className="info-oval-ribbon d-flex justify-content-between bg-dark-orange ps-5 py-3">
+                                    <div className="question-text text-white">
+                                    {questionIndex} / {totalquestions} {questions.question}
+                                    </div> 
+                                </div>: <></>}
+                            </div>
+                            
+                            {viewVideo && questions && !questions.imagepath ?    
+                            <div className="col-xs-12 col-sm-12 col-md-12 mt-3 d-flex justify-content-center">
+                                <div className='video-player-wraper'>
+                                <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
+                                       height='100%' muted></ReactPlayer>
+                                </div>
+                            </div>
+                            
+                               :<>
+                          {questions.imagepath && <div className="col-xs-12 col-sm-12 col-md-12 pt-3 d-flex justify-content-center">
 
-                    <div className="col-md-6">
-                        <div className="text-center mt-2"> <img src="https://i.imgur.com/zZUiqsU.png" width="200" /> </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="text-white mt-4"> <span className="intro-1">Oh no! Incorrect answer </span>
-                        <div className="mt-2"> <span className="intro-2">Initial Contestants : </span> </div>
-                            <div className="mt-2"> <span className="intro-2">Remaining Contestants :</span> </div>
-                           <div className="mt-2"> <span className="intro-2">Do You Want To Re-enter :</span> </div>
+                        <img src={questions.imagepath} className='ques-img' alt="" />
+                              </div> }
+
+                            <div className="col-xs-12 col-sm-12 col-md-12 pt-3">
+                                <div className="question-options" id='containersoption'>
+                                    <div class="radio-tile-group">
+                                        <div class="input-container">
+                                            <input id="walk" className="radio-button" type="radio" name="radio" value={questions.options[0]} onClick={(e) => add(e)}/>
+                                            <div className="radio-tile">
+                                                <label for="walk" className="radio-tile-label">A {questions.options[0]}</label>
+                                            </div>
+                                        </div>
+
+                                        <div className="input-container">
+                                            <input id="bike" className="radio-button" type="radio" name="radio" value={questions.options[1]} onClick={(e) => add(e)}/>
+                                            <div className="radio-tile">
+
+                                                <label for="bike" className="radio-tile-label">B {questions.options[1]}</label>
+                                            </div>
+                                        </div>
+
+                                        <div className="input-container">
+                                            <input id="drive" className="radio-button" type="radio" name="radio" value={questions.options[2]} onClick={(e) => add(e)}/>
+                                            <div className="radio-tile">
+
+                                                <label for="drive" className="radio-tile-label">C {questions.options[2]}</label>
+                                            </div>
+                                        </div>
+
+                                        <div className="input-container">
+                                            <input id="fly" className="radio-button" type="radio" name="radio" value={questions.options[3]} onClick={(e) => add(e)}/>
+                                            <div className="radio-tile">
+                                                <label for="fly" className="radio-tile-label">D {questions.options[3]}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                            <div className="col-xs-12 col-sm-12 col-md-12 d-flex justify-content-center pt-2 mt-4">                            
+                                    <button type="button" className="btn btn-orange" onClick={submitAns}>Submit</button>                                
+                            </div>
+                            </>}
                             
                         </div>
-                    </div>
+                    </section>{/* Active player ribbon ends */}
                 </div>
-
-			      </Modal.Body>
-           
-                  </Modal> */}
+            </div>
+            <BottomNav />
 
 
-{/* 
-     
-                  <Modal
-            size="lg"
-            fullscreen={fullscreen}
-            show={lgShowss}
-            onHide={() => setLgShowss(false)}
-            // backdrop="static"
-            // keyboard={false}
-            aria-labelledby="example-modal-sizes-title-lg"
-         
-		
-      >
-        <Modal.Header >
-          <Modal.Title id="example-modal-sizes-title-lg">
-          Statistics
-          </Modal.Title>
 
-          </Modal.Header>
 
-           <Modal.Body className='bb3'>
-          
-              <div className="row">
-              <CountdownCircleTimer
-                           isPlaying
-                           duration={30}
-                           colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-                           colorsTime={[7, 5, 2, 0]}
-                           onComplete={() => {
-                              // setLgShowss(false)
-                            
-                              // setKey(key+1)
-                              
-                              
-                            }}
-                        >
-                           {({ remainingTime }) => remainingTime}
-                        </CountdownCircleTimer>
 
-                    <div className="col-md-6">
-                        <div className="text-center mt-2"> <img src="https://i.imgur.com/zZUiqsU.png" width="200" /> </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="text-white mt-4"> <span className="intro-1">Correct Answer</span>
-                        <div className="mt-2"> <span className="intro-2">Initial Contestants : </span> </div>
-                            <div className="mt-2"> <span className="intro-2">Remaining Contestants :</span> </div>
-                           <div className="mt-2"> <span className="intro-2">Do You Want To Re-enter :</span> </div>
-                            
-                        </div>
-                    </div>
-                </div>
 
-			      </Modal.Body>
-           
-                  </Modal> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                   <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} />
                   <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} />
