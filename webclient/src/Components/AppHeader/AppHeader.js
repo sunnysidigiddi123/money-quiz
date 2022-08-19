@@ -13,7 +13,7 @@ export default function AppHeader(props) {
               <div className="profile">
                 <img src="./assets/images/profile.png" alt="Profile image" />
               </div>
-              <Link to={"/appuserhome"}><div className="logo"><h1>CLUTCH</h1></div></Link>              
+              <Link to={"/appuserhome"}><div className="logo"><img src="./assets/images/logo2.webp" alt="Profile image" /></div></Link>              
               <div className="total-coin">
                 <div className="wallet-coin">
                   {wallet} <i className="coin"></i>
