@@ -5,6 +5,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 //from lib
 import { ToastContainer, toast } from 'react-toastify';
+import moment from "moment";
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+
 
 //App components
 import AppHeader from "../../Components/AppHeader/AppHeader";
@@ -18,6 +21,7 @@ export default function SingleQuizDetail() {
     const location = useLocation()
     const [locationState, setLocationState] = useState({ contestName: "" });
     const [currentContestId, setCurrentContestId] = useState();
+    const [currentContestName, setCurrentContestName] = useState();
     const [entryFee, setEntryFee] = useState();
     const [activePlayerCount, setActivePlayerCount] = useState();
     const [totalPrize, setTotalPrize] = useState();
@@ -26,8 +30,22 @@ export default function SingleQuizDetail() {
     const [newpoll, setNewPoll] = useState([]);
     const [alldata, setAllData] = useState([]);
     const [lgShowsss, setLgShowsss] = useState(false);
+    const [startsin, setStartsin] = useState();
+    const [showPlaybtn, setShowPlaybtn] = useState(false);
 
 
+
+    const calculateDifference = (contestTime) => {
+
+        let contestDateTime = moment(contestTime)
+        // console.log(contestDateTime)
+        let currentdate = new Date()
+        let currentTime = moment(currentdate).format("h:mm:ss")
+        // console.log(currentdate)     
+        let newdifference = contestDateTime - currentdate;
+        console.log(newdifference)
+        return Math.floor(newdifference / 1000)
+    }
     //get detailed view of contest
     const getDetailedView = async (currentContestId) => {
         const DETAIL_VIEW_URL = CONSTANTS.DETAILVIEWCONTEST;
@@ -44,7 +62,9 @@ export default function SingleQuizDetail() {
                 setEntryFee(response?.entryamount);
                 setActivePlayerCount(response?.liveplayers)
                 setTotalPrize(response?.totalwinningamount)
-                setIsApplied(response?.isApplied)
+                setIsApplied(response?.isApplied);
+                setCurrentContestName(response?.contestName);
+                setStartsin(calculateDifference(response?.contestTime));
             });
 
         } catch (error) {
@@ -120,6 +140,19 @@ export default function SingleQuizDetail() {
             getDetailedView(_state.contestid);
         }
     }, [location]);
+    const renderTime = ({ remainingTime }) => {
+        if (remainingTime === 0) {
+            return <div className="timer text-dark-orange">Live</div>;
+        }
+
+        return (
+            <div className="timer">
+
+                <div className="value fs-6 text-blue">{remainingTime}</div>
+
+            </div>
+        );
+    };
     return (
         <div>
             <AppHeader />
@@ -130,8 +163,29 @@ export default function SingleQuizDetail() {
                         <div className="row bg-white border-bottom-left-round pb-1">
                             <div className="col-xs-12">
                                 <div className="d-flex justify-content-between py-3">
-                                    <h1 className='inner-page-heading'>{locationState.contestName}</h1>
-                                    <div className="start-in-time">Starts in 02:34 seconds</div>
+                                    <h1 className='inner-page-heading'>{currentContestName}</h1>
+                                    <div className="start-in-time position-relative sigleQuiztimer">
+                                    <span className="countdown-wrapper text-white position-absolute">
+                                                    <CountdownCircleTimer
+                                                        isPlaying
+                                                        duration={startsin}
+                                                        initialRemainingTime={startsin}
+                                                        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                                                        colorsTime={[15, 10, 5, 0]}
+                                                        size={70}
+                                                        strokeWidth={5}
+                                                        onComplete={() => ({ shouldRepeat: false, delay: 0 })}
+
+                                                        onUpdate={(remainingTime) => {
+                                                            if (remainingTime == 5) {
+                                                                
+                                                            }
+                                                        }}
+
+                                                    >
+
+                                                        {renderTime}</CountdownCircleTimer>
+                                                </span></div>
                                 </div>
                             </div>
                         </div>
@@ -187,8 +241,34 @@ export default function SingleQuizDetail() {
                                     // <Link to={"/livecontestnew"}  state= {{question1: alldata[0], totalquestions: alldata[1], ContestTime: alldata[2], InititalUsers: post.data.totalIntitalUsers, entryamount: alldata[3], contestid: alldata[4], questionIndex: post.data.questionIndex }}>
                                     <div className="info-oval-ribbon bg-dark-orange py-3 text-center">
                                         <p className="text-info-gray text-center fs-1">Good Luck !</p>
-                                        <p className='text-white text-center fs-3'>Starting in 2:34 seconds</p>
-                                        <button type="button" className="btn btn-sm btn-success" onClick={() => { PlayNow(locationState.contestid) }}>Play</button>
+                                        {/* <p className='text-white text-center fs-3'>Starting in 2:34 seconds</p> */}
+                                        {!showPlaybtn ?
+                                        <div className="start-in-time position-relative goodlucktimer">
+                                        <span className="countdown-wrapper text-white position-absolute">
+                                                    <CountdownCircleTimer
+                                                        isPlaying
+                                                        duration={20}
+                                                        initialRemainingTime={20}
+                                                        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                                                        colorsTime={[15, 10, 5, 0]}
+                                                        size={70}
+                                                        strokeWidth={5}
+                                                        onComplete={() => ({ shouldRepeat: false, delay: 0 })}
+
+                                                        onUpdate={(remainingTime) => {
+                                                            if (remainingTime == 0) {
+                                                                setShowPlaybtn(true)                                                         
+                                                            }
+                                                        }}
+                                                    >
+                                                        {renderTime}</CountdownCircleTimer>
+                                                </span>
+                                                </div> 
+                                        
+                                        : <button type="button" className="btn btn-sm btn-success" onClick={() => { PlayNow(locationState.contestid) }}>Play</button>
+                                        }
+                                        
+                                        
                                     </div>
                                     // </Link>
 

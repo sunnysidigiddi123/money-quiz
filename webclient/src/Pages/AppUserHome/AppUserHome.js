@@ -44,8 +44,6 @@ export default function AppUserHome() {
         let newdifference = contestDateTime - currentdate;
         console.log(newdifference)
         return Math.floor(newdifference / 1000)
-
-
     }
     // Handle Pagination click
     const handlePageClick = (item) => {
@@ -217,7 +215,8 @@ export default function AppUserHome() {
 
                                                     >
 
-                                                        {renderTime}</CountdownCircleTimer></span>
+                                                        {renderTime}</CountdownCircleTimer>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -259,7 +258,8 @@ export default function AppUserHome() {
                                                     </div>
                                                     </div>
                                                     <div className="quiz-text">
-                                                        <div className="h4 mb-0 pb-4">{moment(res.contestTime).format("h:mm")}</div>
+                                                        <div className="h6 mb-0 pb-1">{res?.contestName}</div>
+                                                        <div className="fs-6 mb-0 pb-1">Time:{moment(res.contestTime).format("h:mm")}</div>
                                                         <div className="">
                                                             <span className='text-gray d-inline-block pe-3 fs-4'>Prize</span>
                                                             <span className='text-yellow fs-5'>{`₹ ${res.EntryAmount}`} <i className='coin'></i></span>
@@ -267,11 +267,11 @@ export default function AppUserHome() {
                                                     </div>
                                                     <div className="quiz-arrow text-end">
                                                         {
-                                                            (calculateDifference(res.contestTime) > 0) 
-                                                            ? ""
-                                                            : <button className='btn btn-sm btn-success btn-live'>Live</button>
+                                                            (calculateDifference(res.contestTime) > 0)
+                                                                ? ""
+                                                                : <button className='btn btn-sm btn-success btn-live'>Live</button>
                                                         }
-                                                        
+
                                                         <i className="fas fa-arrow-right"></i>
                                                     </div>
                                                 </div>
