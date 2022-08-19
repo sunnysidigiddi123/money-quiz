@@ -11,11 +11,13 @@ body{
 ol,ul{padding-left:0}
 li{list-style:none!important;}
 .border-top-radius-50{border-top-left-radius:50px; border-top-right-radius:50px}
+.border-radius-50px{border-radius: 50px;}
 .text-orange{color: #f3ac58!important;}
 .text-dark-orange{color:#ff914d!important}
 .text-yellow{color: #fcbd11!important;}
 .text-gray{color:#8b8b8b!important;}
 .text-black{color: #000000!important;}
+.text-blue{color:#004777}
 .fw-500{font-weight: 500;}
 .section-head{font-weight: 500; color: #000000; font-size: 2rem;}
 .custom-fs-2{font-size:2rem;}
@@ -34,13 +36,16 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .bg-dark-gray{background-color: #918f8f;}
 .bg-yellow-orange{background-color: #ffbd59;}
 .bg-black{background-color: #000000;}
+.bg-green{background-color: #baf0ba!important;}
 .text-info-gray{color: #808080; font-weight: bold; font-size: 0.9rem; padding-bottom: 5px;}
 .fw-500{font-weight: 500;}
 .add-circle{width: 50px; height: 50px; padding: 12px;  border-radius: 50%;}
 .btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
+.btn-live{position: absolute; top:4px;right: 17px; border-radius: 50px;}
 /* ================= top-nav/ App Header Css ======================*/
+.logo img{width: 100%; max-width: 60px;}
 .top-nav{background-color: #ffffff;}
-.wallet-coin{border-radius: 23px; box-shadow: 0px 0px 5px #b5b5b5; width: 70px; padding: 8px; vertical-align: middle;}
+.wallet-coin{border-radius: 23px; box-shadow: 0px 0px 5px #b5b5b5; width: 70px; padding: 8px; vertical-align: middle; min-height: 31px;}
 .wallet-coin .coin:after{top:-5px; left: 5px;}
 .profile img{width: 50px; height: 50px; border-radius: 50%;}
 /* =================  Advertisement Section======================*/
@@ -87,8 +92,8 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .pagination .page-link{ color: #fcbd11; font-weight: bold; }
     
     /* =================   inner page css ======================*/
-.inner-page-heading{font-size: 2rem; font-weight: 700; color: #000000;}
-.start-in-time{ color: #a2a0a0; padding-top: 10px;  font-size: 0.9rem; font-weight: bold; word-spacing: 0.7px;}
+.inner-page-heading{font-size: 1.725rem; font-weight: 700; color: #000000;}
+.start-in-time{ color: #a2a0a0; padding-top: 10px;  font-size: 0.9rem; font-weight: bold; word-spacing: 0.7px;min-width: 100px;}
 
 /* =================   entry fee card css ======================*/
 .single-q-fee-box{color: #000000;}
@@ -106,7 +111,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .user-grp-icons img:first-child{z-index: 10;}
 .user-grp-icons img:nth-child(2){z-index: 9; left:33px;}
 .user-grp-icons img:nth-child(3){z-index: 8; left: 57px;}
-.quiz-name-small{font-size: 1.5rem; font-weight: bold;}
+.quiz-name-small{font-size: 1.225rem; font-weight: bold;}
 
 /* =================   time css ======================*/
 .clock_area img { width: 14rem !important; height: 12rem !important; padding-right: 50px;}
@@ -125,3 +130,17 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .radio-tile-group .input-container .radio-button:checked + .radio-tile .radio-tile-label {color: white; background-color: #ff914d;}
 .ques-img {border-radius: 20px;}
 .video-player-wraper{height: 250px;}
+
+
+ /* =================   Single quiz detai css ======================*/    
+.sigleQuiztimer .countdown-wrapper{ right: 15px; top:-26%}
+.goodlucktimer .countdown-wrapper{left: 39%; top: -12px;}
+.goodlucktimer{height: 50px;}
+.quizTimer {width: 25px;}
+.quizTimer .countdown-wrapper{right: 0; top:-10px;}
+
+
+@media (min-width: 768px) and (max-width: 1199.98px) { 
+    
+    .logo img{width: 100%; max-width: 100px;}
+ }
