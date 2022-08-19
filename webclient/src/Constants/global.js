@@ -5,6 +5,7 @@ const CONTESTPLAYCHECK = `${BASE_URL}/publishedcontest/contestplaycheck`;
 const APPLYCONTEST = `${BASE_URL}/publishedcontest/applycontest`;
 const DETAILVIEWCONTEST = `${BASE_URL}/publishedcontest/detailviewcontest`;
 const APPLIEDCONTESTLIST = `${BASE_URL}/publishedcontest/appliedcontests`;
+const PAYNEWPOLLAMOUNT = `${BASE_URL}/publishedcontest/paynewpollamount`
 
 
 export default {
@@ -13,5 +14,6 @@ export default {
     GETPUBLISHEDCONTEST,
     APPLYCONTEST,
     DETAILVIEWCONTEST,
-    APPLIEDCONTESTLIST
+    APPLIEDCONTESTLIST,
+    PAYNEWPOLLAMOUNT
 }

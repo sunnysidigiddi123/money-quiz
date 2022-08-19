@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from "moment";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import { Modal, Button, Form, Row, ModalFooter } from "react-bootstrap";
 
 
 //App components
@@ -131,6 +132,30 @@ export default function SingleQuizDetail() {
             toast.error(e.response.data.message)
         }
     }
+
+
+    const entered = async (e) => {
+        e.preventDefault();
+        const payNewPoll_URL = CONSTANTS.PAYNEWPOLLAMOUNT;
+    
+        const token = sessionStorage.getItem("token");
+        let dataToSend = { contestid: alldata[4], };
+        const HEADERS = {"authorization": token,}
+        try {
+          let post = await axios.post(payNewPoll_URL, dataToSend, {
+            headers: HEADERS,
+          });
+    
+          if (post.data.status == 1) {
+            console.log("aaaaaa", alldata[0], alldata[1], alldata[2])
+            navigate("/livecontestnew", { state: { question1: alldata[0], totalquestions: alldata[1], ContestTime: alldata[2], InititalUsers: post.data.totalIntitalUsers, entryamount: alldata[3], contestid: alldata[4], questionIndex: post.data.questionIndex } })
+          }
+    
+        } catch (e) {
+    
+          toast.error(e.response.data.message)
+        }
+      }
     useEffect(() => {
         if (location.state) {
             let _state = location.state;
@@ -298,6 +323,47 @@ export default function SingleQuizDetail() {
             </div>
             <BottomNav />
             <ToastContainer autoClose={3000} />
+            <Modal
+        size="md"
+        show={lgShowsss}
+        onHide={() => setLgShowsss(false)}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+
+        {/* <Modal.Title id="example-modal-sizes-title-lg">
+         Do You Want To Enter in Contest ?
+          </Modal.Title> */}
+
+        <Modal.Body>
+
+          {/* <form>
+        <div class="form-group">
+       <label for="exampleInputEmail1">Entry Amount : {newpoll && newpoll[0]}</label>
+       <label for="exampleInputEmail1">Current Entry Amount : {newpoll && newpoll[1]}</label>
+       <label for="exampleInputEmail1">You Have To Pay : {newpoll && (parseInt(newpoll[1])-(parseInt(newpoll[0])))}</label>
+       
+       </div>
+       <button type="submit" class="btn btn-primary" onClick={entered}>Yes</button>&nbsp;
+       <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
+       </form> */}
+            
+       <div className="modal-content py-md-5 px-md-4 p-sm-3 p-4">
+
+            <h3>Do You Want To Enter in Contest ?</h3> <i className="fa fa-bell ss"></i>
+            <p className="r3 px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
+            <br></br>
+            <p className="r3 px-md-5 px-sm-1">Current Entry Amount : {newpoll && newpoll[1]}</p>
+            <br>
+            </br>
+            <p className="r3 px-md-5 px-sm-1">You Have To Pay : {newpoll && (parseInt(newpoll[1]) - (parseInt(newpoll[0])))}</p>
+            <div className="text-center mb-3"> <button className="btn btn-primary w-50 rounded-pill b1" onClick={(e) => entered(e)}>Yes</button> </div> <a onClick={(e) => { e.preventDefault(); setLgShowsss(false) }}>Not now</a>
+          </div>
+
+        </Modal.Body>
+
+      </Modal>
         </div>
     )
 }
