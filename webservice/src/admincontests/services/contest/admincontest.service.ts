@@ -39,7 +39,8 @@ getSavedContestById(id:number){
     
       try{
 
-      return this.admincontestRepository.findOne(id ,{relations:['questions']})
+      // return this.admincontestRepository.findOne(id ,{relations:['questions']})
+      return this.admincontestRepository.findOne({where: { id }, relations: ['questions']})
      
      }catch(e){
       
