@@ -53,9 +53,9 @@ const Livecontestnew = () => {
    function addData() {
 
       setQuestions(location.state.question1)
-      if(location.state.question1.videolink == ''){
-         setViewVideo(false)
-      }
+      // if(location.state.question1.videolink == ''){
+      //    setViewVideo(false)
+      // }
       setContestTime(location.state.ContestTime)
       setEntryAmount(location.state.entryamount)
       setContestId(location.state.contestid)
@@ -452,14 +452,15 @@ const Livecontestnew = () => {
                         <div className="col-md-7 m-auto">
                            <div className="content_box position-relative">
 
-                              {viewVideo && questions ?
+                              {viewVideo && questions && !questions.imagepath ?
 
                                  <div className="player-wrapper">
                                     <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
                                        height='100%' muted></ReactPlayer></div>
                                  :
                                  <>
-                                   {questions.imagepath != '' ?<img src={questions.imagepath} alt="image" width="500" height="600"></img>:<></>}
+                                   {questions.imagepath && <img src={questions.imagepath} alt="image" width="500" height="600"></img>}
+                                  
                                     <div className="question_number text-uppercase">
                                        <span>question {questionIndex} / {totalquestions}</span>
                                     </div>
