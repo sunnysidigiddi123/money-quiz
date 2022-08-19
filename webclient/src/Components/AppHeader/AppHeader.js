@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function AppHeader(props) {
   let user = props.user;
@@ -12,7 +13,7 @@ export default function AppHeader(props) {
               <div className="profile">
                 <img src="./assets/images/profile.png" alt="Profile image" />
               </div>
-              <div className="logo"><h1>CLUTCH</h1></div>
+              <Link to={"/appuserhome"}><div className="logo"><h1>CLUTCH</h1></div></Link>              
               <div className="total-coin">
                 <div className="wallet-coin">
                   {wallet} <i className="coin"></i>

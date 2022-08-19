@@ -195,30 +195,31 @@ export default function AppUserHome() {
                                 {appliedcontests.length > 0 ?
 
                                     <div className="row">
-                                        <div className="col-xs-12 clock_area countdown_timer d-flex justify-content-center text-center">
-                                            <div className="position-relative">
-                                                <img src="./assets/images/clock/clock.png" alt="timer_image" />
-                                                <span className="countdown-wrapper text-white position-absolute">
-                                                    <CountdownCircleTimer
-                                                        isPlaying
-                                                        duration={startsin}
-                                                        initialRemainingTime={startsin}
-                                                        colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-                                                        colorsTime={[15, 10, 5, 0]}
-                                                        onComplete={() => ({ shouldRepeat: false, delay: 0 })}
 
-                                                        onUpdate={(remainingTime) => {
-                                                            if (remainingTime == 5) {
-                                                                getSingleContest();
-                                                            }
-                                                        }}
+                                        <div className="col-xs-12 clock_area countdown_timer d-flex justify-content-center text-center" >
+                                            <Link to={'/appliedcontest'}>
+                                                <div className="position-relative" role="button">
+                                                    <img src="./assets/images/clock/clock.png" alt="timer_image" />
+                                                    <span className="countdown-wrapper text-white position-absolute">
+                                                        <CountdownCircleTimer
+                                                            isPlaying
+                                                            duration={startsin}
+                                                            initialRemainingTime={startsin}
+                                                            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+                                                            colorsTime={[15, 10, 5, 0]}
+                                                            onComplete={() => ({ shouldRepeat: false, delay: 0 })}
+                                                            onUpdate={(remainingTime) => {
+                                                                if (remainingTime == 5) {
+                                                                    getSingleContest();
+                                                                }
+                                                            }}
 
-                                                    >
-
-                                                        {renderTime}</CountdownCircleTimer>
-                                                </span>
-                                            </div>
+                                                        >
+                                                            {renderTime}</CountdownCircleTimer>
+                                                    </span>
+                                                </div></Link>
                                         </div>
+
                                     </div>
                                     :
                                     <div className='row pt-2'>

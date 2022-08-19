@@ -9,7 +9,7 @@ import Livecontest from "./Pages/Livecontest/Livecontest"
 import Livecontestnew from "./Pages/Livecontest2/Livecontestnew";
 import AppUserHome from "./Pages/AppUserHome/AppUserHome";
 import SingleQuizDetail from "./Components/SingleQuizDetail/SingleQuizDetail";
-import QuizTodayList from "./Components/QuizTodayList/QuizTodayList";
+import AppliedContestList from "./Components/AppliedContestList/AppliedContestList";
 import SingleQuestion from "./Components/SingleQuestion/SingleQuestion";
 
 
@@ -26,7 +26,7 @@ function App() {
         <Route exact path="/livecontestnew" element={<Livecontestnew />} />
         <Route exact path="/appuserhome" element={<AppUserHome />} />
         <Route exact path="/singlequizdetail" element={<SingleQuizDetail />} />
-        <Route exact path="/quiztodaylist" element={<QuizTodayList />} />
+        <Route exact path="/appliedcontest" element={<AppliedContestList />} />
         <Route exact path="/singlequestion" element={<SingleQuestion />} />
         
         
