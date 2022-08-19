@@ -633,7 +633,7 @@ const Livecontestnew = () => {
                     </section>{/* Active player ribbon ends */}
                 </div>
             </div>
-            <BottomNav />
+           
 
 
 
