@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 /* =================  Remove this======================*/
-body{height: 6000px;}
+/* body{height: 6000px;} */
 
 /* =================  Reset css======================*/
 .container-fluid{width: 100%; max-width: 700px; margin: 0 auto;}
@@ -122,7 +122,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 
  /* =================   custom radio button css ======================*/    
 .radio-tile-group {display: flex; flex-wrap: wrap; justify-content: center;}
-.radio-tile-group .input-container {position: relative; height: 2.5rem; width: 9rem; margin: 0.5rem; }
+.radio-tile-group .input-container {position: relative; height: auto; width: 9rem; margin: 0.5rem; }
 .radio-tile-group .input-container .radio-button {opacity: 0;position: absolute; top: 0; left: 0;height: 100%; width: 100%; margin: 0; cursor: pointer;  }
 .radio-tile-group .input-container .radio-tile {display: flex;flex-direction: row; align-items: center;justify-content: center; width: 100%; height: 100%; background: #e0e0e9; border: 2px solid #dcdcde; 
     border-radius: 20px; padding: 1rem;transition: transform 300ms ease;box-shadow: 2px 2px 13px #ffffff;-webkit-box-shadow: 2px 2px 13px #ffffff;}
@@ -139,6 +139,18 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .goodlucktimer{height: 50px;}
 .quizTimer {width: 25px;}
 .quizTimer .countdown-wrapper{right: 0; top:-10px;}
+
+
+ /* =================   Live quiz css ======================*/    
+
+.user-info-item{width: 30px;
+    height: 30px;
+    box-shadow: 0px 1px 8px #aea9a9;
+    border-radius: 50%;
+    padding: 3px 4px;
+    text-align: center;
+    margin: 0 4px;}
+.live-top-info{border-bottom-left-radius: 90px;}
 
 
 @media (min-width: 768px) and (max-width: 1199.98px) { 
