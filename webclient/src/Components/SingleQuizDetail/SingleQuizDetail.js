@@ -118,11 +118,11 @@ export default function SingleQuizDetail() {
 
             if (post.data.status == 1) {
                 console.log(post.data.question1, "questions")
-                navigate("/livecontestnew", { state: { question1: post.data.question1, totalquestions: post.data.totalquestions, ContestTime: post.data.contestTime, InititalUsers: post.data.totalIntitalUsers, entryamount: result.EntryAmount, contestid: result.id, questionIndex: post.data.questionIndex } })
+                navigate("/livecontestnew", { state: { question1: post.data.question1, totalquestions: post.data.totalquestions, ContestTime: post.data.contestTime, InititalUsers: post.data.totalIntitalUsers, entryamount: entryFee, contestid: result, questionIndex: post.data.questionIndex } })
             }
             if (post.data.status == 2) {
                 // localStorage.clear('success')
-                setAllData([post.data.question1, post.data.totalquestions, post.data.contestTime, result.EntryAmount, result.id])
+                setAllData([post.data.question1, post.data.totalquestions, post.data.contestTime, entryFee, result])
                 setNewPoll([post.data.entryamount, post.data.particularPoll])
                 setLgShowsss(true)
             }
@@ -272,8 +272,7 @@ export default function SingleQuizDetail() {
                                         <span className="countdown-wrapper text-white position-absolute">
                                                     <CountdownCircleTimer
                                                         isPlaying
-                                                        duration={20}
-                                                        initialRemainingTime={20}
+
                                                         duration={startsin}
                                                         initialRemainingTime={startsin}
                                                         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
