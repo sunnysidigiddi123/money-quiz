@@ -535,11 +535,33 @@ const Livecontestnew = () => {
          <AppHeader />
             <div className="inner-page-container">
                 <div className="container-fluid">
+                  <section>
+                     <div className="row">
+                        <div className="col-sm-12 pt-3 bg-white live-top-info py-4 mt-3">
+                          <div className="d-flex justify-content-around">
+                           <div className="live-ques-detail">
+                              <div className="d-flex flex-column text-center">
+                                 <p className='fs-2 mb-0 fw-bold text-dark-orange'>Question {questionIndex}</p>
+                                 <p className='mb-0 fs-6 font-italic'>{questionIndex}/{totalquestions}</p>
+                              </div>
+                           </div>
+                           <div className="live-user-info">
+                              <div className="">
+                                 <span className='user-info-item d-inline-block'><i class="fas fa-user text-dark-orange"></i></span>
+                                 <span className='user-info-item  d-inline-block'>{initialusers}</span>
+                                 <span className='user-info-item  d-inline-block'><i class="fas fa-star"></i></span>
+                              </div>
+                           </div>
+                          </div>
+                        </div>
+                     </div>
+                  </section>
                     {/*Active player ribbon starts */}
                     <section className="single-question">
                         <div className="row">
                             <div className="col-xs-12 col-md-12 mt-2">
-                                <span className='text-white bg-dark-orange mt-2 d-inline-block small-ribbon'><CountdownCircleTimer
+                               <div className="page-timer d-flex justify-content-center">
+                               <span className='text-white bg-dark-orange mt-2 d-inline-block small-ribbon'><CountdownCircleTimer
                            key={key}
                            isPlaying
                            duration={timertime}
@@ -547,6 +569,7 @@ const Livecontestnew = () => {
                            colorsTime={[7, 5, 2, 0]}
                            initialRemainingTime
                            size={70}
+                           strokeWidth={5}
                            onComplete={() => {
                               // do your stuff here
                             
@@ -562,6 +585,7 @@ const Livecontestnew = () => {
                         >
                            {({ remainingTime }) => remainingTime}
                         </CountdownCircleTimer></span>
+                               </div>
 
                         
                            
@@ -633,7 +657,7 @@ const Livecontestnew = () => {
                     </section>{/* Active player ribbon ends */}
                 </div>
             </div>
-            <BottomNav />
+           
 
 
 

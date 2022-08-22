@@ -25,7 +25,11 @@ export class Publishedcontest {
     })
     contestTime: Date
 
-   
+    @Column({
+        nullable:true
+    })
+    contestEndTime: Date
+
     @Column({
         nullable:false,
         default:0
