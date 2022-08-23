@@ -67,7 +67,7 @@ export default function AppUserHome() {
                 let response = res?.data?.contest;
                 console.log('response is ',response);                
                 const sortedres = response.sort(function (a, b) {
-                    return moment.utc(a.contestTime).diff(moment.utc(b.contestTime))
+                    return moment.utc(b.contestTime).diff(moment.utc(a.contestTime))
                 });
                 console.log('soreted response is', sortedres);
                 let contesttime = sortedres[0]?.contestTime;
@@ -100,7 +100,7 @@ export default function AppUserHome() {
                 console.log(res);
                 let responseAll = res?.data?.contests;
                 const sortedAll = responseAll.sort(function (a, b) {
-                    return moment.utc(a.contestTime).diff(moment.utc(b.contestTime))
+                    return moment.utc(b.contestTime).diff(moment.utc(a.contestTime))
                 });
                 setContest([...sortedAll]);
                 setAppliedContests([...res?.data?.appliedcontests]);
