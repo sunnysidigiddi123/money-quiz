@@ -7,6 +7,7 @@ import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedCont
 import { ConnectionIsNotSetError, Repository } from 'typeorm'; 
 import { Request, Response } from 'express';
 import * as moment from "moment";
+import { dynamicSort } from 'config';
 
 export interface IGetUserAuthInfoRequest extends Request {
     userId: number // or any other type
@@ -317,7 +318,7 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
         isApplied = true
   }
   console.log(isApplied,"aaa")
-  return {message: "Detailed View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,contestName:contest.contestName,isApplied:isApplied }
+  return {message: "Detailed  View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,contestName:contest.contestName,isApplied:isApplied }
   
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)
@@ -335,14 +336,16 @@ async appliedcontests(request: IGetUserAuthInfoRequest  ){
 
   for(let i=0 ;i<appliedContest.length;i++){
      
-   const contest = await this.PublishedContestRepository.find({where:{id:appliedContest[i].contestid},order: {contestTime:'DESC'}})
+   const contest = await this.PublishedContestRepository.find({where:{id:appliedContest[i].contestid}})
  
    console.log(contest)
    arr.push(contest.pop())
   
   }
+  
+ arr.sort(dynamicSort("contestTime"));
 
-  return {message: "applied contests",contest:arr}
+  return {message: " applied of contests",contest:arr}
 
 
 }catch(e){
