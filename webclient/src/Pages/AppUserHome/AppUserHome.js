@@ -65,10 +65,12 @@ export default function AppUserHome() {
             }).then((res) => {
                 // console.log('from single for timer', res.data.contest);
                 let response = res?.data?.contest;
-                //console.log('response is ',response)
-                const sortedres = response.sort((a, b) => b.LivecontestTime - a.LivecontestTime);
+                console.log('response is ',response);                
+                const sortedres = response.sort(function (a, b) {
+                    return moment.utc(a.contestTime).diff(moment.utc(b.contestTime))
+                });
                 console.log('soreted response is', sortedres);
-                let contesttime = sortedres[0]?.LivecontestTime;
+                let contesttime = sortedres[0]?.contestTime;
                 setStartsin(calculateDifference(contesttime));
 
             });
@@ -96,7 +98,11 @@ export default function AppUserHome() {
                 headers: HEADERS,
             }).then((res) => {
                 console.log(res);
-                setContest([...res?.data?.contests]);
+                let responseAll = res?.data?.contests;
+                const sortedAll = responseAll.sort(function (a, b) {
+                    return moment.utc(a.contestTime).diff(moment.utc(b.contestTime))
+                });
+                setContest([...sortedAll]);
                 setAppliedContests([...res?.data?.appliedcontests]);
                 setUser(res?.data?.user)
                 setUserWallet(res?.data?.wallet);
@@ -229,7 +235,7 @@ export default function AppUserHome() {
                                         <div className="col-8 col-xs-8 col-sm-8">
                                             <div className="no-quiz-text text-secondary fs-3 lh-lg pt-2 fw-500">
                                                 <p className='mb-2 '>No Quiz registered. </p>
-                                                <p className='mb-0 '>Click here to join.</p>
+                                                <p className='mb-0 '>Please register to play.</p>
                                             </div>
                                         </div>
                                     </div>
