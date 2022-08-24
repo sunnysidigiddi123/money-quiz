@@ -21,6 +21,7 @@ import {
 	useNavigate,
 	Navigate
   } from "react-router-dom";
+  import { TiInputChecked } from "react-icons/ti";
 
 
 
@@ -50,9 +51,23 @@ const AdminHome = () => {
 	const [totalcon,setTotal] =useState([])
 	const [entryamount,setEntryAmount] = useState();
 	const [segment,setSegment] = useState();
-	
+	const [lgShowads,setLgShowAds] = useState(false);
+	const [uploaded,setUploaded] = useState(false);
+	const [filepath,setFilepath] = useState("");
+	const [adname,setAdName] = useState("");
+	const [adtime,setAdTime] = useState("");
+	const [adwinningamount,setAdWinningAmount] = useState();
+	const [selectedFile, setSelectedFile] = useState("");
+	const [addetails,setAdDetails] = useState("");
+	const [agefrom,setAgeFrom] = useState();
+	const [ageto , setAgeTo] = useState();
+	const [location,setLocation] = useState("");
 
-   
+	const onChangeHandler = (event) =>{
+		setSelectedFile(event.target.files[0]);
+		console.log(event.target.files[0]);
+	}
+
     const navigate = useNavigate();
    
 	const newArr = records.questions && records.questions.slice(first, second);
@@ -72,6 +87,34 @@ const AdminHome = () => {
              
          }
 
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    // formData.append("document", JSON.stringify(obj))
+
+    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/admincontest/upload`;
+
+    try {
+      let data = await axios.post(BASE_URL, formData, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+        },
+
+
+      }
+      );
+      toast.success("Image Uploaded Successfully");
+      setFilepath(data.data.filePath)
+      setUploaded(true)
+      console.log(data.data.filePath);
+    } catch (e) {
+      toast.error(e.message);
+      console.log(e.response)
+    }
   }
 
 	function onEdit(record) {
@@ -293,6 +336,56 @@ const AdminHome = () => {
 		data
 
   }
+
+  //create ads
+
+  const createAd = async (e)=> {
+	e.preventDefault()
+	const token = sessionStorage.getItem("token");
+	const refreshToken = localStorage.getItem("refreshToken");
+	const BASE_URL = `${process.env.REACT_APP_BASE_URL}/ads/createAd`
+	let sendData = {
+		adName:adname,
+		adImage:filepath,
+		adDetails:addetails,
+		adTime: adtime,
+		winningAmount: adwinningamount,
+	    publish:false,
+		ageGroup:[agefrom,ageto],
+		location:location
+	  
+	}
+	try {
+	  let post = await axios.post(BASE_URL, sendData,{ 
+		headers: {
+		"authorization": token,
+	  },
+	});
+   
+   
+      console.log(post.data.Ad.id,post.data.Ad.user.name,"cccccc")
+	
+	 
+  
+	  toast.success("Ad Created")
+	  setAdName("")
+	  setAdTime("")
+	  setAdDetails("")
+	  setLgShowAds(false)
+	  setUploaded(false)
+	 
+	  navigate("/ads",{state:{ adId:post.data.Ad.id,adminId:userId,user:user }   
+		});
+	} catch (e) {
+	
+	  toast.error(e.message);
+
+		  
+	}
+
+		  
+   }
+ 
 
 	const getContest = async (e)=> {
 	e.preventDefault()
@@ -634,6 +727,7 @@ function showq(){
 
 
 			<Button onClick={() => setLgShow(true)} style={{position:'absolute',right:'84px'}}>Create Contests</Button>
+			<Button onClick={() => setLgShowAds(true)} >Create Ads</Button>
 			<Modal
             size="lg"
             show={lgShow}
@@ -852,8 +946,109 @@ function showq(){
 					</div>
 				</div>
 				
+				
+           { /* //Create Ads  */}
+
+		   
+           
+
+		   <Modal
+            size="lg"
+            show={lgShowads}
+            onHide={() => setLgShowAds(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+		
+      >
+        <Modal.Header >
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Create Ads
+          </Modal.Title>
+		  <button  onClick={() => setLgShowAds(false)} type="button" class="close close-btn" data-dismiss="modal" aria-label="Close"><span class="" aria-hidden="true">&times;</span></button>
+          </Modal.Header>
+
+           <Modal.Body>
+			   
+		   <form style={{padding:'20px',paddingTop:'0px'}} className='createcontest'  id="style-1" onSubmit={createAd}>
+                        <div className='row'>
+					    <div className="col-md-6 col-sm-12 form-group con">
+	                  	<label>Ad Name</label>
+	                 	<input className="form-control" type="text"  
+                         placeholder="TalenX"  onChange={e => setAdName(e.target.value)}  required/>
+                     	</div>
+
+						 <div className="col-md-6 col-sm-12 form-group con">
+		                <label>Ad Time</label>
+			             <input className="form-control"    
+                         type={"datetime-local"}
+                         onChange={e => setAdTime(e.target.value)}
+						 required />     
+	                     </div>
+                          
+
+						 </div>
+
+						 <Form>
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label><h4>Upload Ad Image here</h4></Form.Label>
+                        <Form.Control
+                          className="fileupload"
+                          type="file"
+                          name="file"
+                          accept="image/*"
+                          onChange={onChangeHandler}
+                        />
+                      </Form.Group>
+
+                      {uploaded ? <Button variant="primary">Uploaded <TiInputChecked /></Button> :<Button variant="primary" onClick={handleSubmit}>Upload</Button>}
+                    </Form>
+                    
+                      <div className="form-group con">
+		             <label>Ad Details</label>
+		             <textarea className="form-control" onChange={e => setAdDetails(e.target.value)}  required></textarea>
+                    	</div>
+
+                        <div className='row'>
+                        <div className="col-md-6 col-sm-12 form-group con">
+		                <label>Winning Amount</label>
+			             <input className="form-control"    
+                         type='number'
+						 placeholder='Enter Contest amount'
+                         onChange={e => setAdWinningAmount(e.target.value)}
+						 required /> 
+	                     </div>
+
+						 </div>
+
+						 <div className='row'>
+					    <div className="col-md-6 col-sm-12 form-group con">
+	                  	<label>Age Group From</label>
+	                 	<input className="form-control" type="number"  
+                         placeholder="from"  onChange={e => setAgeFrom(e.target.value)}  required/>
+                     	</div>
+						 <div className="col-md-6 col-sm-12 form-group con">
+	                  	<label>To</label>
+	                 	<input className="form-control" type="number"  
+                         placeholder="to"  onChange={e => setAgeTo(e.target.value)}  required/>
+                     	</div>
+						 <div className="col-md-6 col-sm-12 form-group con">
+		                <label>Location</label>
+			             <input className="form-control"    
+                         type="text"
+						 placeholder='Gurgaon'
+                         onChange={e => setLocation(e.target.value)}
+						 required />     
+	                     </div>
+                          
+
+						 </div>
 
 
+						 
+						<button  className="btn btn-primary" type='submit' >Create</button>
+                        </form>   
+			   
+			      </Modal.Body>
+                   </Modal>
 
 
 

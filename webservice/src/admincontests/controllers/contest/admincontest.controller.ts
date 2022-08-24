@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { request, Response } from 'express';
 import { diskStorage } from 'multer';
 import { AdminContestService, IGetUserAuthInfoRequest } from 'src/admincontests/services/contest/admincontest.service';
+import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
 import { CreateAdminContestDto } from 'src/dtos/contests/CreateAdminContest.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
@@ -106,5 +107,8 @@ export class AdminContestController {
 
 
    }
+
+
+
 
 }

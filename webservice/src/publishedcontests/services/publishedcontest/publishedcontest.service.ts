@@ -63,7 +63,7 @@ async publishContest(publishedcontestDto:CreatePublishedContestDto,admincontest:
 
 
         }
-        newContest.contestEndTime = moment(newContest.contestTime).add(sum,'seconds').toDate()
+        newContest.contestEndTime = moment(newContest.contestTime).add(sum+(30*newContest.questions.length),'seconds').toDate()
         console.log(sum,"ssssss", newContest.contestEndTime)
 
         await this.contestRepository.save(admincontest);

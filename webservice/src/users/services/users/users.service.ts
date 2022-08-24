@@ -140,7 +140,7 @@ export class UsersService {
     try{
 
     // return this.userRepository.findOne(id, { relations: ['savedcontests'] })
-    return this.userRepository.findOne({where: { id }, relations: ['savedcontests']})
+    return this.userRepository.findOne({where: { id }, relations: ['savedcontests','ads']})
     
     }catch(e){
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
