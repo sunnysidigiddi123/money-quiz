@@ -31,7 +31,8 @@ export default function AppUserHome() {
     const [pagelimit, setPagelimit] = useState("3"); //need to remove after getting data from API
     const [totalrecCount, setTotalrecCount] = useState();//need to remove after getting data from API
     const [startsin, setStartsin] = useState();
-    const [pageCount, setPageCount] = useState()
+    const [pageCount, setPageCount] = useState();
+    const [nextQuizCounter, setNextQuizCounter] = useState(0);
 
     const navigate = useNavigate();
     const calculateDifference = (contestTime) => {
@@ -65,13 +66,29 @@ export default function AppUserHome() {
             }).then((res) => {
                 // console.log('from single for timer', res.data.contest);
                 let response = res?.data?.contest;
-                console.log('response is ',response);                
+                console.log('response is ', response);
                 const sortedres = response.sort(function (a, b) {
-                    return moment.utc(b.contestTime).diff(moment.utc(a.contestTime))
+                    return moment.utc(a.contestTime).diff(moment.utc(b.contestTime))
                 });
-                console.log('soreted response is', sortedres);
-                let contesttime = sortedres[0]?.contestTime;
-                setStartsin(calculateDifference(contesttime));
+                if (nextQuizCounter == 0) {
+                    let contesttime = sortedres[0]?.contestTime;
+                    let contestendtime = sortedres[0]?.contestEndTime;
+                    console.log('next record 0th', sortedres[0])
+                    setStartsin(calculateDifference(contesttime));
+                } else {
+                    if (sortedres[nextQuizCounter]) {
+                        let contesttime = sortedres[nextQuizCounter]?.contestTime;
+                        let contestendtime = sortedres[nextQuizCounter]?.contestEndTime;
+                        setStartsin(calculateDifference(contesttime));
+                    } else {
+                        setStartsin(0);
+                        setAppliedContests([]);
+                    }
+
+
+                }
+                setNextQuizCounter(nextQuizCounter + 1);
+
 
             });
         } catch (error) {
@@ -128,7 +145,7 @@ export default function AppUserHome() {
     //Render will return template to display on clock timer
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
-            return <div className="timer text-success">Live</div>;
+            return <div className="timer text-white fs-6">All Expired</div>;
         }
 
         return (
@@ -253,55 +270,59 @@ export default function AppUserHome() {
                             </div>
                         </div>
                         {
-                            contests.length > 0 
-                            ?
-                            <div className="row">
-                            {contests.map((res, index) => {
-                                return (<>
-                                    {/* card item starts */}
-                                    <div className="col-xl-3  col-sm-12 col-xs-12 mb-30" key={index}>
-                                        <Link to="/singleQuizdetail" state={{ contestName: res.contestName, EntryAmount: res.EntryAmount, contestTime: res.contestTime, contestid: res.id }} >
-                                            <div className="card-item-box height-100-p card-item" >
-                                                <div className="d-flex flex-wrap align-items-center">
-                                                    <div className="quiz-image"><div>
-                                                        <img src="./assets/images/quiz-icon.jpg" />
-                                                    </div>
-                                                    </div>
-                                                    <div className="quiz-text">
-                                                        <div className="h6 mb-0 pb-1">{res?.contestName}</div>
-                                                        <div className="fs-6 mb-0 pb-1">Time:{moment(res.contestTime).format("h:mm")}</div>
-                                                        <div className="">
-                                                            <span className='text-gray d-inline-block pe-3 fs-4'>Prize</span>
-                                                            <span className='text-yellow fs-5'>{`₹ ${res.EntryAmount}`} <i className='coin'></i></span>
+                            contests.length > 0
+                                ?
+                                <div className="row">
+                                    {contests.map((res, index) => {
+                                        return (<>
+                                            {/* card item starts */}
+                                            <div className="col-xl-3  col-sm-12 col-xs-12 mb-30" key={index}>
+                                                <Link to="/singleQuizdetail" state={{ contestName: res.contestName, EntryAmount: res.EntryAmount, contestTime: res.contestTime, contestid: res.id }} >
+                                                    <div className="card-item-box height-100-p card-item" >
+                                                        <div className="d-flex flex-wrap align-items-center">
+                                                            <div className="quiz-image"><div>
+                                                                <img src="./assets/images/quiz-icon.jpg" />
+                                                            </div>
+                                                            </div>
+                                                            <div className="quiz-text">
+                                                                <div className="h6 mb-0 pb-1">{res?.contestName}</div>
+                                                                <div className="fs-6 mb-0 pb-1">Time:{moment(res.contestTime).format("DD/MM HH:mm")}</div>
+                                                                <div className="">
+                                                                    <span className='text-gray d-inline-block pe-3 fs-4'>Prize</span>
+                                                                    <span className='text-yellow fs-5'>{`₹ ${res.EntryAmount}`} <i className='coin'></i></span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="quiz-arrow text-end">
+                                                                {
+                                                                    (moment().isBetween(moment(res.contestTime), moment(res.contestEndTime)))
+                                                                        ? <button className='btn btn-sm btn-success btn-live'>Live</button>
+                                                                        : (moment().isAfter(moment(res.contestTime)))
+                                                                            ? <button className='btn btn-sm btn-warning btn-live'>Expired</button>
+                                                                            : (moment().isBefore(moment(res.contestTime)))
+                                                                                ? ""
+                                                                                : ""
+                                                                }
+
+                                                                <i className="fas fa-arrow-right"></i>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div className="quiz-arrow text-end">
-                                                        {
-                                                            (calculateDifference(res.contestTime) > 0)
-                                                                ? ""
-                                                                : <button className='btn btn-sm btn-success btn-live'>Live</button>
-                                                        }
+                                                </Link>
 
-                                                        <i className="fas fa-arrow-right"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-
-                                    </div>{/* card item Ends */}
-                                </>
-                                )
-                            })}
-                        </div> 
-                            :
-                            <div className="row">
-                                <div className="col-sm-12 text-center no-quiz">
-                                    <h1>No Quiz !!</h1>
-                                    <img src="./assets/images/no-quiz.png" alt="" />
+                                            </div>{/* card item Ends */}
+                                        </>
+                                        )
+                                    })}
                                 </div>
-                            </div>
+                                :
+                                <div className="row">
+                                    <div className="col-sm-12 text-center no-quiz">
+                                        <h1>No Quiz !!</h1>
+                                        <img src="./assets/images/no-quiz.png" alt="" />
+                                    </div>
+                                </div>
                         }
-                        
+
                     </section> {/* quiz today section Ends */}
                     {/* pagination starts */}
                     <section>
