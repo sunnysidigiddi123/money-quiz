@@ -1,6 +1,6 @@
 import { AdsService } from 'src/ads/services/ads/ads.service';
 import { UsersService } from 'src/users/services/users/users.service';
-import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, Res, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Query, Req, Res, UploadedFile, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { request, Response } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
@@ -15,7 +15,18 @@ export class AdsController {
     @Inject('USER_SERVICE') private readonly userService: UsersService
    ) { }
 
- 
+   @Get('getAds')
+   @UseInterceptors(ClassSerializerInterceptor)
+   async getAds(@Res() response: Response) {
+
+       const savedcontest = await this.adsService.getAds();
+
+       if(savedcontest){
+           response.status(201).send(savedcontest)
+       }
+
+   }
+
    @Post('createAd')
    @UsePipes(ValidationPipe)
    async createAd(@Body() adsDto:CreateAdsDto, @Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
@@ -49,7 +60,6 @@ export class AdsController {
       return new Serializedquestion(question);
       else throw new HttpException("Question Not Created",HttpStatus.BAD_REQUEST)
    }
-
 
 
 

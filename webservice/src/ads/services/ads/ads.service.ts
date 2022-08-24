@@ -89,4 +89,19 @@ export class AdsService {
 
 }
 
+async getAds(){
+
+
+try{
+ 
+  
+   const ads = await this.adsRepository.find();
+   console.log('sssss')
+
+   return {ads:ads}
+}catch(e){
+  throw new HttpException(e,HttpStatus.BAD_REQUEST)
+}
+}
+
 }
