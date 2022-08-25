@@ -89,19 +89,44 @@ export class AdsService {
 
 }
 
-async getAds(){
+    async getAds() {
+
+        try {
+
+            const ads = await this.adsRepository.find();
+            console.log('sssss')
+
+            return { ads: ads }
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    async getAdsQuestions(request: IGetUserAuthInfoRequest) {
+
+        try {
+
+            const ads_question = await this.questionRepository.find({
+               
+                where: {
+                    ads: {
+                        id: request.body.adsId,
+                    },
+                },
+            });
+            console.log(request.body.adsId)
+
+            return {message:"Ads questions" , adsQuestion:ads_question }
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+        }
+    }
 
 
-try{
- 
-  
-   const ads = await this.adsRepository.find();
-   console.log('sssss')
 
-   return {ads:ads}
-}catch(e){
-  throw new HttpException(e,HttpStatus.BAD_REQUEST)
-}
-}
+
+
+
+
 
 }
