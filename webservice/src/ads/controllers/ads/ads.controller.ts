@@ -62,5 +62,17 @@ export class AdsController {
    }
 
 
+   @Post('getAdsQuestions')
+   @UsePipes(ValidationPipe)   
+   async getAdsQuestions(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+  
+     const adsQuestion = await  this.adsService.getAdsQuestions(request);
+  
+     if(adsQuestion){
+        response.status(201).send(adsQuestion)
+     }
+     
+   }
+
 
 }
