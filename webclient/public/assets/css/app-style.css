@@ -152,6 +152,14 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
     margin: 0 4px;}
 .live-top-info{border-bottom-left-radius: 90px;}
 
+ /* =================   Ads Winning Popup css ======================*/    
+
+
+.ads-winning-popup{ background: rgb(236 153 68 / 80%); top: 0;left: 0; bottom: 0; right: 0; z-index: 9999; }
+.winning-inner-text{border-radius: 50px 50px 0 50px; -webkit-border-radius:50px 50px 0 50px;}
+.winning-inner-text .coin::after{
+    top: 4px;
+}
 
 @media (min-width: 768px) and (max-width: 1199.98px) { 
     
