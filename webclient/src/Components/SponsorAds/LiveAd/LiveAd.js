@@ -108,6 +108,7 @@ const LiveAd = () => {
          setKey(key + 1);
          setAdIndex(adIndex + 1);
          setTimerTime(allQuestionList[adIndex].totalQuestionTime);
+         console.log("aaaaa",allQuestionList[adIndex].totalQuestionTime)
          sessionStorage.setItem("adIndex", adIndex + 1)
          setNewVideoTime(allQuestionList[adIndex].totalVideoTime)
          //console.log('next question called')
@@ -184,7 +185,7 @@ const LiveAd = () => {
    const checkAnswers = async (e) => {
       const selectedADans = localStorage.getItem('selectedADans');
       console.log(value, questions.totalQuestionTime);
-      const BASE_URL = `${process.env.REACT_APP_BASE_URL}/broadcast/answerCheck`;
+      const BASE_URL = `${process.env.REACT_APP_BASE_URL}/ads/answerCheck`;
       const token = sessionStorage.getItem("token");
       let sendData = {
          contestId: currentAdId,
@@ -200,10 +201,11 @@ const LiveAd = () => {
          console.log(post.data.status)
          if (post.data.status == 0) {
             //R  setLgShows(true)
-            console.log("cccccc", post.data.LiveUsers)
+            console.log("wrong")
          }
          if (post.data.status == 1) {
             //R  setLgShowss(true)
+            console.log("correct")
          }
 
          // setTimeout(() => {
@@ -300,16 +302,16 @@ const LiveAd = () => {
                               strokeWidth={5}
                               onComplete={() => {
                                  // do your stuff here
-
+                                 getnewQuestion()
                                  return { shouldRepeat: true, isPlaying: true, }
 
                                  // repeat animation in 1.5 seconds
                               }}
                               onUpdate={(remainingTime) => {
-                                 if (remainingTime == 3) {
-                                    // getInitialUsers();
-                                    getnewQuestion()
-                                 }
+                                 // if (remainingTime == 3) {
+                                 //    // getInitialUsers();
+                                 //    getnewQuestion()
+                                 // }
                               }}
                            >
                               {({ remainingTime }) => remainingTime}

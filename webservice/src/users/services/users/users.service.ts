@@ -10,6 +10,7 @@ import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import * as dotenv from "dotenv";
 import { IGetUserAuthInfoRequest, resfreshAuth } from 'src/users/middlewares/validate-user.middleware';
 import { Request } from 'express';
+import { Response } from 'express';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -191,7 +192,7 @@ export class UsersService {
   }
 
 
-  async forgotPassword(request: IGetUserAuthInfoRequest) {
+  async forgotPassword(request: IGetUserAuthInfoRequest,response:Response) {
 
     const email = request.body.email;
     console.log(email)
@@ -237,7 +238,7 @@ export class UsersService {
           } else {
             console.log("Email sent: " + info.response);
             if (info.response) {
-             return { message: "OTP has been sent successfully. Please check your mail.", status: 1 };
+             response.status(201).send({ message: "OTP has been sent successfully. Please check your mail.", status: 1 })
             }
           }
         });

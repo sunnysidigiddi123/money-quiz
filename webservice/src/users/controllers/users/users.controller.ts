@@ -89,7 +89,7 @@ export class UsersController {
 @Post('forgotPassword')
 @UsePipes(ValidationPipe)      
 async forgotPassword(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
-    const forgotpassword = await this.usersService.forgotPassword(request);
+    const forgotpassword = await this.usersService.forgotPassword(request,response);
      
     if(forgotpassword){
         response.status(201).send(forgotpassword)
