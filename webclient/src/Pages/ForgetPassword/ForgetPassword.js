@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
+import CONSTANTS from '../../Constants/global';
 
 
 const ForgetPassword = () => {
@@ -41,9 +42,9 @@ const ForgetPassword = () => {
 		const sendData = {
 		  email,
 		};
-		const BASE_URL = `${process.env.REACT_APP_BASE_URL}/forgot`;
+		const FORGOT_URL = CONSTANTS.FORGOTPASS;
 		try {
-		  const data = await axios.post(BASE_URL, sendData);
+		  const data = await axios.post(FORGOT_URL, sendData);
 		  console.log(data);
 		  setToastMessage(data.data.message);
 		  setshowMesaage(true);
@@ -68,12 +69,13 @@ const ForgetPassword = () => {
 		<div className="container-fluid d-flex justify-content-between align-items-center">
 			<div className="brand-logo">
 				<Link to='/'>
-					<img src="vendors/images/money3.png" alt="" />
+					{/* <img src="vendors/images/money3.png" alt="" /> */}
+          <img src="assets/images/log01.png" alt="" />
 				</Link>
 			</div>
 			<div className="login-menu">
 				<ul>
-					<li><Link to="/">Login</Link></li>
+					<li><Link to="/">Sign In</Link></li>
 				</ul>
 			</div>
 		</div>
@@ -81,17 +83,22 @@ const ForgetPassword = () => {
 	<div className="login-wrap d-flex align-items-center flex-wrap justify-content-center">
 		<div className="container">
 			<div className="row align-items-center">
-				<div className="col-md-6">
+				{/* <div className="col-md-6">
 					<img src="vendors/images/forgot-password.png" alt="" />
-				</div>
-				<div className="col-md-6">
-					<div className="login-box bg-white box-shadow border-radius-10">
+				</div> */}
+				<div className="col-sm-6">
+					<div className="login-box bg-white box-shadow border-radius-10 px-5">
 						<div className="login-title">
-							<h2 className="text-center text-primary">Forgot Password</h2>
+							<h2 className="text-center">Password Reset</h2>
 						</div>
 						<h6 className="mb-20">Enter your email address to reset your password</h6>
 						<form onSubmit={handleSubmit}>
                   <div className="input-group custom">
+                  <div className="input-group-prepend custom">
+                      <span className="input-group-text">
+                        <i className="fas fa-envelope" aria-hidden="true"></i>
+                      </span>
+                    </div>
                     <input
                       type="text"
                       className="form-control form-control-lg"
@@ -105,27 +112,24 @@ const ForgetPassword = () => {
                       }}
                     />
 
-                    <div className="input-group-append custom">
-                      <span className="input-group-text">
-                        <i className="fa fa-envelope-o" aria-hidden="true"></i>
-                      </span>
-                    </div>
+                    
                   </div>
                   {error && error.errorName === "email" && (
                     <div style={{ color: "red" }}>{error.errorMsg}</div>
                   )}
                   <div className="row align-items-center">
-                    <div className="col-5">
+                    <div className="col-12">
                       <div className="input-group mb-0">
-                        <input
+                      <button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Submit</span> <i class="fas fa-sign-in-alt"></i></button>
+                        {/* <input
                           className="btn btn-primary btn-lg btn-block"
                           type="submit"
-                          value="Submit"
-                        />
+                          value="Submit A"
+                        /> */}
                         {/* <a className="btn btn-primary btn-lg btn-block" href="index.html">Submit</a> */}
                       </div>
                     </div>
-                    <div className="col-2">
+                    {/* <div className="col-2">
                       <div
                         className="font-16 weight-600 text-center"
                         data-color="#707373"
@@ -142,7 +146,7 @@ const ForgetPassword = () => {
                           Login
                         </Link>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </form>
               </div>

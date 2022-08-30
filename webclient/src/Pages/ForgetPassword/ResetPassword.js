@@ -176,7 +176,7 @@ function ResetPassword() {
             </div>
             <div className="col-md-6">
               {currentPage === 1 && (
-                <div className="login-box bg-white box-shadow border-radius-10">
+                <div className="login-box bg-white box-shadow border-radius-10 px-5">
                   <div className="login-title">
                     <h2 className="text-center text-primary">
                       OTP Verification
@@ -219,7 +219,7 @@ function ResetPassword() {
               )}
 
               {currentPage === 2 && (
-                <div className="login-box bg-white box-shadow border-radius-10">
+                <div className="login-box bg-white box-shadow border-radius-10 px-5">
                   <div className="login-title">
                     <h2 className="text-center text-primary">Reset Password</h2>
                   </div>

@@ -130,14 +130,15 @@ const initialValues = {
 		<div className="container-fluid d-flex justify-content-between align-items-center">
 			<div className="brand-logo">
 				<Link to='/'>
-					<img src="vendors/images/money3.png" alt="" />
+					{/* <img src="vendors/images/money3.png" alt="" /> */}
+          <img src="assets/images/log01.png" alt="" />
 				</Link>
 			</div>
 			<div className="login-menu">
 				<ul>
 					<li><Link
                 to="/"
-              >Login</Link></li>
+              >Sign In</Link></li>
 				</ul>
 			</div>
 		</div>
@@ -145,10 +146,10 @@ const initialValues = {
   <div className="register-page-wrap d-flex align-items-center flex-wrap justify-content-center">
 		<div className="container">
 			<div className="row align-items-center">
-				<div className="col-md-6 col-lg-7">
+				{/* <div className="col-md-6 col-lg-7">
 					<img src="vendors/images/register-page-img.png" alt="" />
-				</div>
-				<div className="col-md-6 col-lg-5">
+				</div> */}
+				<div className="col-12">
 					<div className="register-box bg-white box-shadow border-radius-10">
 						<div className="wizard-content">
 

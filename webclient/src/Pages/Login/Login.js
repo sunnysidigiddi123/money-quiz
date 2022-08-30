@@ -78,7 +78,8 @@ function Login() {
 		<div className="container-fluid d-flex justify-content-between align-items-center">
 			<div className="brand-logo">
 				<Link to="/">
-					<img src="vendors/images/money3.png" alt="" />
+					{/* <img src="vendors/images/money3.png" alt="" /> */}
+					<img src="assets/images/log01.png" alt="" />
 				</Link>
 			</div>
 			<div className="login-menu">

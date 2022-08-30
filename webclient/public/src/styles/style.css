@@ -431,7 +431,7 @@ p {
 	font-family: 'Inter', sans-serif;
 	color: #131e22;
 	font-weight: 400;
-	height: 45px;
+	/* height: 45px; */
 	border-color: #d4d4d4;
 	letter-spacing: 0.035em;
 	-webkit-transition: all 0.3s ease-in-out;
@@ -477,7 +477,7 @@ textarea.form-control{
 }
 .form-control.height-auto{height: auto;}
 .input-group{
-	margin-bottom: 25px;
+	margin-bottom: 20px;
 }
 .input-group.custom > .form-control, .input-group.custom > .custom-select{
 	width: 100%;
@@ -1651,7 +1651,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before, tabl
 .login-wrap{
 	height: calc(100% - 70px);
 	overflow: auto;
-	padding: 30px 0;
+	padding: 20px 0;
 }
 body.IE .login-wrap,
 body.IE .register-page-wrap{
@@ -1674,7 +1674,7 @@ body.IE .register-page-wrap .container{
 .login-box{
 	max-width: 400px;
 	width: 100%;
-	padding: 40px 20px;
+	padding: 10px 20px;
 	margin: 5px auto;
 }
 .select-role{
@@ -1740,7 +1740,7 @@ body.IE .register-page-wrap .container{
 	max-width: 100px;
 }
 .forgot-password{
-	text-align: right;
+	text-align: right!important;
 }
 /*==============================================================
 	Login End
