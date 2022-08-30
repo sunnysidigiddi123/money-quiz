@@ -93,10 +93,6 @@ export default function AppliedContestList() {
                             </div>
                         </div>
                     </section>{/* inner-page-top Ends */}
-
-
-
-
                     {appliedcontests.map((item, index) => {
 
                         return (
@@ -235,6 +231,7 @@ export default function AppliedContestList() {
                 </div>
             </div>
             <BottomNav />
+            <ToastContainer autoClose={3000} />
         </div>
     )
 }

@@ -1,18 +1,26 @@
 .login-wrap {
 
-       height: 90vh;
+       height: 85vh;
  }
+ .login-header{padding: 16px 15px;}
  
  .select-role .btn-group {
  
          display: none !important;
  }
+ .login-box .login-title {
+       padding: 0 0 10px;
+       margin-bottom: 10px;
+   }
  
  .red {
  
         outline: none;
         border: 1px solid red;
          
+ }
+ .custom-file-input, .custom-file-label, .custom-select, .form-control{
+       height: 35px!important;
  }
  
  .errormsgs {
@@ -34,5 +42,19 @@
         color: #ffff !important;
  
  }
+ .btn-google{
+       background-color: #f14336;
+ }
+ .facebook-shadow{box-shadow: 3px 0px 7px #2076f6;}
+ .google-shadow{box-shadow:  3px 0px 7px #ff594d}
+ .trophy-circle{width: 100px; height: 100px; border-radius: 50%; background: #ececec; padding: 27px 20px 20px; 
+       box-shadow:1px 9px 9px #d0d0d0 ; margin: 0 auto;}
+
+
+       @media (max-width: 767px){
+.forgot-password {
+    text-align: right;
+}
+       }
  
  

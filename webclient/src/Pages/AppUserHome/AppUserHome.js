@@ -279,7 +279,7 @@ export default function AppUserHome() {
                                             <div className="col-xl-3  col-sm-12 col-xs-12 mb-30" key={index}>
                                                 <Link to="/singleQuizdetail" state={{ contestName: res.contestName, EntryAmount: res.EntryAmount, contestTime: res.contestTime, contestid: res.id }} >
                                                     <div className="card-item-box height-100-p card-item" >
-                                                        <div className="d-flex flex-wrap align-items-center">
+                                                        <div className="d-flex align-items-center">
                                                             <div className="quiz-image"><div>
                                                                 <img src="./assets/images/quiz-icon.jpg" />
                                                             </div>
