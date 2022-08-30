@@ -27,6 +27,18 @@ export class AdsController {
 
    }
 
+   @Get('getAdsAdmin')
+   @UseInterceptors(ClassSerializerInterceptor)
+   async getAdsAdmin(@Res() response: Response) {
+
+       const savedcontest = await this.adsService.getAdsAdmin();
+
+       if(savedcontest){
+           response.status(201).send(savedcontest)
+       }
+
+   }
+
    @Post('createAd')
    @UsePipes(ValidationPipe)
    async createAd(@Body() adsDto:CreateAdsDto, @Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
@@ -73,6 +85,18 @@ export class AdsController {
      }
      
    }
+
+
+    @Post('answerCheck')
+    @UsePipes(ValidationPipe)
+    async answerCheck(@Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
+
+        const answercheck = await this.adsService.answerCheck(request);
+
+        if (answercheck) {
+            response.status(201).send(answercheck)
+        }
+    }
 
 
 }

@@ -22,11 +22,14 @@ import {
 	Navigate
   } from "react-router-dom";
   import { TiInputChecked } from "react-icons/ti";
+import Table from '../../Components/Table';
 
 
 
 const AdminHome = () => {
    
+	const [dataads,setAdsDatas] = useState([]);
+	const [data , setDatas] = useState([]);
 	const [user, setUser] = useState("");
 	const [drafttime, setDraftTime] = useState("")
     const [draftcontestName, setDraftContestName] = useState("")
@@ -36,7 +39,6 @@ const AdminHome = () => {
 	const [lgShowsview, setLgShowsview] = useState(false);
 	const [userId, setUserId] = useState(0);
 	const [FilePath, setFilePath] = useState("")
-	const [data , setDatas] = useState([]);
 	const [editId , setEditId] = useState();
 	const [editcontestName,setEditContestName] = useState('');
 	const [editcontestDetails,setEditContestDetails] = useState('');
@@ -62,6 +64,7 @@ const AdminHome = () => {
 	const [agefrom,setAgeFrom] = useState();
 	const [ageto , setAgeTo] = useState();
 	const [location,setLocation] = useState("");
+	
 
 	const onChangeHandler = (event) =>{
 		setSelectedFile(event.target.files[0]);
@@ -219,6 +222,7 @@ const AdminHome = () => {
 
 	}
 
+	
 
 	
 	const columns =  React.useMemo(() => [
@@ -328,16 +332,17 @@ const AdminHome = () => {
 
 				}
 	  ]);
-
-
+    
+	 
   const tableData = {
        
 	    columns,
 		data
 
   }
+ 
 
-  //create ads
+ 
 
   const createAd = async (e)=> {
 	e.preventDefault()
@@ -553,6 +558,7 @@ const AdminHome = () => {
 		   )
         
 				setDatas(filteredData);	
+
 		
 	    
 		  });
@@ -573,6 +579,9 @@ const AdminHome = () => {
 	
    
 }
+
+  
+
 
 
 const getSegment =async(e)=>{
@@ -609,6 +618,7 @@ useEffect(() => {
 
 useEffect(() => {
 	getUser();
+
 	getDraftContest();
 		
 	  }, [userId]);
@@ -923,6 +933,7 @@ function showq(){
 						<h4 className="text-blue h4">Contests List</h4>
 					</div>
 					<div className="pb-20">
+					
                        
 					<div className="pl-20 pr-20">
 
@@ -941,11 +952,21 @@ function showq(){
 		 
                     />
                    </DataTableExtensions>
-		
-                    </div>
+
+						  </div>
+						  <div className="pd-20">
+						<h4 className="text-blue h4">Ads List</h4>
 					</div>
-				</div>
-				
+						  <div className="pl-20 pr-20">
+
+							 
+                        <Table userId={userId} user={user}/>
+
+						  </div>
+
+					  </div>
+				  </div>
+
 				
            { /* //Create Ads  */}
 

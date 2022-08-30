@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
-import { User, Ads, Ads_question, Ads_target } from 'src/typeorm';
+import { User, Ads, Ads_question, Ads_target, Ads_played_users } from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
 
@@ -21,6 +21,8 @@ export class AdsService {
         private readonly questionRepository: Repository<Ads_question>,
         @InjectRepository(Ads_target)
         private readonly adsTargetRepository: Repository<Ads_target>,
+        @InjectRepository(Ads_played_users)
+        private readonly adsPlayedUserRepository: Repository<Ads_played_users>,
 
     ) { }
 
@@ -102,6 +104,20 @@ export class AdsService {
         }
     }
 
+
+    async getAdsAdmin() {
+
+        try {
+
+            const ads = await this.adsRepository.find({relations:['user','questions']});
+            console.log('sssss')
+
+            return { ads: ads }
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+        }
+    }
+
     async getAdsQuestions(request: IGetUserAuthInfoRequest) {
 
         try {
@@ -115,14 +131,44 @@ export class AdsService {
                 },
             });
             console.log(request.body.adsId)
-
+            const playedList = this.adsPlayedUserRepository.create({
+                userId:request.userId,
+                adId:request.body.adsId
+            })
+            await this.adsPlayedUserRepository.save(playedList)
             return {message:"Ads questions" , adsQuestion:ads_question }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
         }
     }
 
-
+    async answerCheck(request: IGetUserAuthInfoRequest){
+   
+        const user = await this.UserRepository.findOne({where:{id:request.userId}})
+        const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
+        const ad = await this.adsRepository.findOne({where:{id:request.body.adId}})
+       
+        try{
+        if(user){
+          
+            if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
+    
+             return {message: "Congrats! You Gave Correct Answer ",status:1,winningamount:ad.winningAmount}
+    
+            if(question.correctanswer !== request.body.selectedOption || request.body.selectedOption === null || request.body.selectedOption === '' ){
+               
+             
+             return {message: "Oops! You Gave Wrong Answer" ,status:0}
+            }
+            
+           
+        }
+      }catch(e){
+    
+        throw new HttpException(e, HttpStatus.BAD_REQUEST)
+      }
+    
+      }
 
 
 

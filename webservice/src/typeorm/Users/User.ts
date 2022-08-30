@@ -35,6 +35,18 @@ export class User {
     })
     password: string
 
+    @Column({
+        nullable:false,
+        default:0
+    })
+    age: number
+
+    @Column({
+        nullable:false,
+        default:''
+    })
+    location: string
+
     
     @Column({
         nullable:false,

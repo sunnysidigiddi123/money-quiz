@@ -22,4 +22,10 @@ export class CreateUserDto {
      @IsNotEmpty()
      Wallet:number;
 
+     
+     age:number;
+
+   
+     location:string;
+
 }
