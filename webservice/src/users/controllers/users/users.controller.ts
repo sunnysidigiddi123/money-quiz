@@ -33,6 +33,16 @@ export class UsersController {
    
 }
 
+@Get('/profileinfo')
+async profileinfo(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+const user = await this.usersService.profileinfo(request); 
+if(user){
+
+response.status(201).send(user)
+}
+
+}
+
  @Get('/:id')
 @UseInterceptors(ClassSerializerInterceptor)   
     async getContestById(@Param('id' ,ParseIntPipe) id:number ,@Res() response:Response ){

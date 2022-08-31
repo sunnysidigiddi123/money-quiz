@@ -308,6 +308,24 @@ export class UsersService {
 
 }
 
+async profileinfo(request: IGetUserAuthInfoRequest) {
+
+  try{
+  const user = await this.userRepository.findOne({
+  where: {
+  id: request.userId,
+  },
+  });
+  if (user) {
+  return { message: "Profile data", name:user.name,email:user.email,role:user.role,location:user.location,wallet:user.Wallet };
+  }
+  
+  }catch(e){
+  
+  throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  }
+  
+  }
 
 
 
