@@ -33,6 +33,7 @@ export class UsersController {
    
 }
 
+
  @Get('/:id')
 @UseInterceptors(ClassSerializerInterceptor)   
     async getContestById(@Param('id' ,ParseIntPipe) id:number ,@Res() response:Response ){

@@ -40,7 +40,10 @@ const LiveAd = () => {
    const [adIndex, setAdIndex] = useState();
    const [adTime, setAdTime] = useState();
    const [allQuestionList, setAllQuestionList] = useState([]);
-
+   const [end , setEnd] = useState(0);
+   const [answercheck ,setAnswerCheck] = useState(false);
+   const [status,setStatus] = useState('')
+   const [winningAmount,setWinningAmount] = useState(0);
    // For adding values from userhome 
    // console.log(present.length,present)
    const navigate = useNavigate();
@@ -73,6 +76,7 @@ const LiveAd = () => {
          setCurrentAdId(res?.id);
          setTotalQuestions(res?.questions?.length);
          setAdIndex(1);
+         setEnd(res?.questions[0].totalVideoTime)
          setTimerTime(res?.questions[0]?.totalQuestionTime);
          sessionStorage.setItem("adIndex", 1)
       })
@@ -96,8 +100,8 @@ const LiveAd = () => {
    const getnewQuestion = () => {
 
       if (totalquestions == sessionStorage.getItem('adIndex')) {
-         //navigate('/appuserhome')
-         checkAnswers();
+         navigate('/adslist')
+         // checkAnswers();
       } else {
 
          setQuestions(allQuestionList[adIndex]);
@@ -106,11 +110,12 @@ const LiveAd = () => {
          }
 
          setKey(key + 1);
-         setAdIndex(adIndex + 1);
+         setAdIndex(parseInt(sessionStorage.getItem('adIndex')) + 1);
+         setEnd(allQuestionList[adIndex].totalVideoTime)
          setTimerTime(allQuestionList[adIndex].totalQuestionTime);
          console.log("aaaaa",allQuestionList[adIndex].totalQuestionTime)
-         sessionStorage.setItem("adIndex", adIndex + 1)
-         setNewVideoTime(allQuestionList[adIndex].totalVideoTime)
+         sessionStorage.setItem("adIndex", parseInt(sessionStorage.getItem('adIndex')) + 1)
+         // setNewVideoTime(allQuestionList[adIndex].totalVideoTime)
          //console.log('next question called')
          console.log('video time is ', allQuestionList[adIndex].totalVideoTime, 'out of total', allQuestionList[adIndex].totalQuestionTime)
       }
@@ -118,69 +123,6 @@ const LiveAd = () => {
 
    }
 
-   function addData() {
-      console.log('add data called')
-      //R setQuestions(location.state.question1)
-      // if(location.state.question1.videolink == ''){
-      //    setViewVideo(false)
-      // }
-      //R setContestTime(location.state.ContestTime)
-      //R setEntryAmount(location.state.entryamount)
-      //R setContestId(location.state.contestid)
-      // setPresent(location.state.present == null ? [] : location.state.present)
-      //R setTotalQuestions(location.state.totalquestions)
-      //R setQuestionIndex(location.state.questionIndex + 1)
-      //R sessionStorage.setItem("questionIndex", location.state.questionIndex + 1)
-      console.log(questions)
-   }
-
-   //broadcast Alogorithm 
-
-   useEffect(() => {
-      //R let contestStartTime = moment(contesttime)
-      let contestStartTime = moment(adTime)
-      //R let userEntersTime = new Date()
-      //R  let userDelayTime = userEntersTime - contestStartTime
-      let questionTime = questions.totalQuestionTime * 1000
-      // R console.log("Question Time", questionTime, userDelayTime)
-      //R let afterDelayQuestionTime = questionTime - userDelayTime
-      //R  setTimerTime(afterDelayQuestionTime / 1000)
-      //R console.log("Qufdd", afterDelayQuestionTime, contestStartTime, questionIndex)
-
-      // if (contestStartTime <= userEntersTime) {
-      //    setVideoTime(Math.round(userDelayTime / 1000))
-      //    console.log('userdelay', userDelayTime / 1000)
-
-      //    if (userDelayTime / 1000 >= questions.totalVideoTime) {
-      //       setViewVideo(false)
-      //    }
-
-      //    //when contest is running 
-      //    if (afterDelayQuestionTime > 0) {
-      //       const setTime = setTimeout(function () {
-      //          // checkAnswers();
-      //          getQuestions();
-      //          setLgShowss(false)
-      //          setLgShows(false)
-      //          setKey(key + 1)
-      //          console.log("aaaaaafffdss")
-      //          // clearTimeout(setTime)
-      //       }, afterDelayQuestionTime + STATS_DELAY_IN_MILLISEC)
-
-      //       const setNewTime = setTimeout(function () {
-      //          checkAnswers();
-      //          console.log("aaaaaafffdss")
-      //          // clearTimeout(setNewTime)
-      //       }, afterDelayQuestionTime)
-      //       return () => {
-      //          clearTimeout(setTime);
-      //          clearTimeout(setNewTime);
-      //       };
-
-      //    }
-      // }
-   }, [questions])
-   
    // It get calls after Question before stats screen 
    const checkAnswers = async (e) => {
       const selectedADans = localStorage.getItem('selectedADans');
@@ -188,7 +130,7 @@ const LiveAd = () => {
       const BASE_URL = `${process.env.REACT_APP_BASE_URL}/ads/answerCheck`;
       const token = sessionStorage.getItem("token");
       let sendData = {
-         contestId: currentAdId,
+         adId: currentAdId,
          questionId: questions.id,
          selectedOption: selectedADans
       };
@@ -199,12 +141,18 @@ const LiveAd = () => {
             },
          });
          console.log(post.data.status)
-         if (post.data.status == 0) {
+         if (post.data.status == 1) {
             //R  setLgShows(true)
+            setWinningAmount(post.data.winningamount)
+            setStatus('success')
+            setAnswerCheck(true)
+
             console.log("wrong")
          }
-         if (post.data.status == 1) {
+         if (post.data.status == 0) {
             //R  setLgShowss(true)
+            setStatus('fail')
+            setAnswerCheck(true)
             console.log("correct")
          }
 
@@ -303,15 +251,17 @@ const LiveAd = () => {
                               onComplete={() => {
                                  // do your stuff here
                                  getnewQuestion()
+                                 setAnswerCheck(false)
                                  return { shouldRepeat: true, isPlaying: true, }
 
                                  // repeat animation in 1.5 seconds
                               }}
                               onUpdate={(remainingTime) => {
-                                 // if (remainingTime == 3) {
-                                 //    // getInitialUsers();
-                                 //    getnewQuestion()
-                                 // }
+                                 if (remainingTime == 4) {
+                                    // getInitialUsers();
+                                    checkAnswers();
+                                    
+                                 }
                               }}
                            >
                               {({ remainingTime }) => remainingTime}
@@ -328,7 +278,7 @@ const LiveAd = () => {
                      {viewVideo && questions && !questions.imagepath ?
                         <div className="col-xs-12 col-sm-12 col-md-12 mt-3 d-flex justify-content-center">
                            <div className='video-player-wraper'>
-                              <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameBorder="0" allowFullScreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
+                              <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=0&end=${end}&modestbranding=1&showinfo=0&fs=0`} frameBorder="0" allowFullScreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false) } width='100%'
                                  height='100%' muted></ReactPlayer>
                            </div>
                         </div>
@@ -383,7 +333,7 @@ const LiveAd = () => {
                </section>{/* Active player ribbon ends */}
             </div>
          </div>
-         {/* <WinningMsg status={'success'} winningcoin={'47'} nextUrl={'/adslist'}></WinningMsg> */}
+        { answercheck && <WinningMsg status={status} winningcoin={winningAmount} nextUrl={'/adslist'}></WinningMsg>}
       </>
    )
 }

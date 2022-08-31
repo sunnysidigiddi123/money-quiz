@@ -29,6 +29,11 @@ export class UsersModule implements NestModule {
       method: RequestMethod.GET
   
      },
+     {
+      path: 'users/profileinfo',
+      method: RequestMethod.GET
+  
+     },
     
     )
   }
