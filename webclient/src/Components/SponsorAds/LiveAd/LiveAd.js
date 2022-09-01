@@ -43,6 +43,7 @@ const LiveAd = () => {
    const [status,setStatus] = useState('')
    const [winningAmount,setWinningAmount] = useState(0);
    const [ansList, setAnsList] = useState([]);
+   const [timerPlay, setTimerPlay] = useState(true);
    const navigate = useNavigate();
    let location = useLocation();
    // console.log(questions.totalQuestionTime)
@@ -92,7 +93,11 @@ const LiveAd = () => {
    // Get New question from the response stored in state
    const getnewQuestion = () => {
       if (totalquestions == sessionStorage.getItem('adIndex')) {
-         checkAnswers();         
+         //if no question remainning to play then set time time to 0, set playtimer again false & then call check answer API
+         setTimerTime(0)
+         setTimerPlay(false);   
+         checkAnswers();     
+          
       } else {
          setQuestions(allQuestionList[adIndex]);
          if (allQuestionList[adIndex].videolink !== '') {
@@ -114,7 +119,7 @@ const LiveAd = () => {
    const checkAnswers = async (e) => {
       console.log('ans list', ansList)
       console.log(value, questions.totalQuestionTime);
-      const BASE_URL = `${process.env.REACT_APP_BASE_URL}/ads/answerCheck`;
+      const BASE_URL = CONSTANTS.ADSANSWERCHECK;
       const token = sessionStorage.getItem("token");
       const HEADERS = {
          "authorization": token,
@@ -230,8 +235,8 @@ const LiveAd = () => {
                               onComplete={() => {
                                  // do your stuff here
                                  getnewQuestion()
-                                 setAnswerCheck(false)
-                                 return { shouldRepeat: true, isPlaying: true, }
+                                 //setAnswerCheck(false)
+                                 return { shouldRepeat: timerPlay, isPlaying: timerPlay, }
 
                                  // repeat animation in 1.5 seconds
                               }}

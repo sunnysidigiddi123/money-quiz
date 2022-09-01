@@ -9,7 +9,7 @@ const PAYNEWPOLLAMOUNT = `${BASE_URL}/publishedcontest/paynewpollamount`;
 
 const GETADLIST = `${BASE_URL}/ads/getAds`;
 const GETADBYID = `${BASE_URL}/ads`;
-
+const ADSANSWERCHECK = `${BASE_URL}/ads/answerCheck`
 
 export default {
     BASE_URL,
@@ -20,5 +20,6 @@ export default {
     APPLIEDCONTESTLIST,
     PAYNEWPOLLAMOUNT,
     GETADLIST,
-    GETADBYID
+    GETADBYID,
+    ADSANSWERCHECK
 }
