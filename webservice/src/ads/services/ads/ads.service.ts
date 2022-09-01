@@ -131,11 +131,7 @@ export class AdsService {
                 },
             });
             console.log(request.body.adsId)
-            const playedList = this.adsPlayedUserRepository.create({
-                userId:request.userId,
-                adId:request.body.adsId
-            })
-            await this.adsPlayedUserRepository.save(playedList)
+           
             return {message:"Ads questions" , adsQuestion:ads_question }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
@@ -144,31 +140,63 @@ export class AdsService {
 
     async answerCheck(request: IGetUserAuthInfoRequest){
    
-        const user = await this.UserRepository.findOne({where:{id:request.userId}})
-        const question = await this.questionRepository.findOne({where:{id:request.body.questionId}})
-        const ad = await this.adsRepository.findOne({where:{id:request.body.adId}})
-       
-        try{
-        if(user){
-          
-            if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
-    
-             return {message: "Congrats! You Gave Correct Answer ",status:1,winningamount:ad.winningAmount}
-    
-            if(question.correctanswer !== request.body.selectedOption || request.body.selectedOption === null || request.body.selectedOption === '' ){
-               
-             
-             return {message: "Oops! You Gave Wrong Answer" ,status:0}
+        const user = await this.UserRepository.findOne({ where: { id: request.userId } })
+        const ad = await this.adsRepository.findOne({ where: { id: request.body.adId }, relations: ['questions'] })
+
+        try {
+            if (user) {
+
+                const playedList = this.adsPlayedUserRepository.create({
+                    userId: request.userId,
+                    adId: request.body.adId,
+                    ansList: JSON.stringify(request.body.ansList)
+                })
+                await this.adsPlayedUserRepository.save(playedList)
+
+                // console.log(JSON.parse(playedList.ansList))
+
+                const userAnswered = JSON.parse(playedList.ansList)
+
+                let aaa = []
+
+                for (let i = 0; i < ad.questions.length; i++) {
+
+
+                    if (userAnswered[i].quesId == ad.questions[i].id && userAnswered[i].ans == ad.questions[i].correctanswer) {
+
+                        aaa.push(true)
+                    } else
+
+                        aaa.push(false)
+
+
+                }
+
+
+
+                if (aaa.includes(false)) {
+
+                    return { message: "Oops! You Gave Wrong Answer", status: 0 }
+
+                } else {
+
+                    user.Wallet = user.Wallet + ad.winningAmount
+                    await this.UserRepository.save(user)
+                    return { message: "Congrats! You Gave Correct Answer ", status: 1, winningamount: ad.winningAmount }
+                }
+
+
+
+
+
+
             }
-            
-           
+        } catch (e) {
+
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
         }
-      }catch(e){
-    
-        throw new HttpException(e, HttpStatus.BAD_REQUEST)
-      }
-    
-      }
+
+    }
 
 
 
