@@ -28,8 +28,6 @@ const LiveAd = () => {
    const [timertime, setTimerTime] = useState(0);
    const [runtimer, setRunTimer] = useState(true);
    const [fullscreen, setFullscreen] = useState(true);
-   //R  const [lgShows, setLgShows] = useState(false);
-   // R  const [lgShowss, setLgShowss] = useState(false);
    const [totalQuestionTime, setQuestionTotalTime] = useState();
    const [key, setKey] = useState(0);
    const [reentersuccess, setReentersuccess] = useState(false);
@@ -44,23 +42,19 @@ const LiveAd = () => {
    const [answercheck ,setAnswerCheck] = useState(false);
    const [status,setStatus] = useState('')
    const [winningAmount,setWinningAmount] = useState(0);
-   // For adding values from userhome 
-   // console.log(present.length,present)
+   const [ansList, setAnsList] = useState([]);
    const navigate = useNavigate();
    let location = useLocation();
    // console.log(questions.totalQuestionTime)
    console.log(adIndex, totalquestions, "vvvvvvvv", value);
 
-   // useEffect(() => {
-   //    addData();
-   // }, [])
+   
    useEffect(() => {
       getAdById();
    }, [])
+   //Get addvertisement details by add id
    const getAdById = async () => {
       console.log('get data by Id called')
-
-      console.log('inside get single')
       const getAdById_URL = `${CONSTANTS.GETADBYID}/${location.state.adId}`;
       const token = sessionStorage.getItem("token");
       const HEADERS = { "authorization": token, }
@@ -80,7 +74,6 @@ const LiveAd = () => {
          setTimerTime(res?.questions[0]?.totalQuestionTime);
          sessionStorage.setItem("adIndex", 1)
       })
-
       try {
 
       } catch (error) {
@@ -93,22 +86,18 @@ const LiveAd = () => {
          } else {
             toast.error('Something went wrong');
          }
-
       }
    }
 
+   // Get New question from the response stored in state
    const getnewQuestion = () => {
-
       if (totalquestions == sessionStorage.getItem('adIndex')) {
-         navigate('/adslist')
-         // checkAnswers();
+         checkAnswers();         
       } else {
-
          setQuestions(allQuestionList[adIndex]);
          if (allQuestionList[adIndex].videolink !== '') {
             setViewVideo(true)
          }
-
          setKey(key + 1);
          setAdIndex(parseInt(sessionStorage.getItem('adIndex')) + 1);
          setEnd(allQuestionList[adIndex].totalVideoTime)
@@ -119,48 +108,38 @@ const LiveAd = () => {
          //console.log('next question called')
          console.log('video time is ', allQuestionList[adIndex].totalVideoTime, 'out of total', allQuestionList[adIndex].totalQuestionTime)
       }
-
-
    }
 
    // It get calls after Question before stats screen 
    const checkAnswers = async (e) => {
-      const selectedADans = localStorage.getItem('selectedADans');
+      console.log('ans list', ansList)
       console.log(value, questions.totalQuestionTime);
       const BASE_URL = `${process.env.REACT_APP_BASE_URL}/ads/answerCheck`;
       const token = sessionStorage.getItem("token");
+      const HEADERS = {
+         "authorization": token,
+      }
       let sendData = {
          adId: currentAdId,
-         questionId: questions.id,
-         selectedOption: selectedADans
+         ansList: ansList
       };
       try {
          let post = await axios.post(BASE_URL, sendData, {
-            headers: {
-               "authorization": token,
-            },
+            headers: HEADERS,
          });
          console.log(post.data.status)
-         if (post.data.status == 1) {
-            //R  setLgShows(true)
+         if (post.data.status == 1) {           
             setWinningAmount(post.data.winningamount)
             setStatus('success')
             setAnswerCheck(true)
-
             console.log("wrong")
          }
-         if (post.data.status == 0) {
-            //R  setLgShowss(true)
+         if (post.data.status == 0) {           
             setStatus('fail')
             setAnswerCheck(true)
             console.log("correct")
          }
-
-         // setTimeout(() => {
-         //    getpollvalues();
-         // }, 1000)
-
-         localStorage.removeItem('selectedADans')
+         
       } catch (e) {
          console.log("Oops! Something Went Wrong")
       }
@@ -183,12 +162,12 @@ const LiveAd = () => {
 
    }
 
-
-
    //submit of answer 
 
    function submitAns() {
-      localStorage.setItem('selectedADans', value);
+      
+      let tempObj = {"quesId":questions.id,"ans":value}
+      setAnsList(ansList => [...ansList, tempObj]);      
       var childNodes = document.getElementById("containersoption");
       console.log(childNodes)
       childNodes.style.pointerEvents = 'none';
@@ -259,7 +238,7 @@ const LiveAd = () => {
                               onUpdate={(remainingTime) => {
                                  if (remainingTime == 4) {
                                     // getInitialUsers();
-                                    checkAnswers();
+                                    //checkAnswers();
                                     
                                  }
                               }}
@@ -302,7 +281,6 @@ const LiveAd = () => {
                                     <div className="input-container">
                                        <input id="option2" className="radio-button" type="radio" name="radio" value={questions.options[1]} onClick={(e) => add(e)} />
                                        <div className="radio-tile">
-
                                           <label htmlFor="option2" className="radio-tile-label">B {questions.options[1]}</label>
                                        </div>
                                     </div>
@@ -310,7 +288,6 @@ const LiveAd = () => {
                                     <div className="input-container">
                                        <input id="option3" className="radio-button" type="radio" name="radio" value={questions.options[2]} onClick={(e) => add(e)} />
                                        <div className="radio-tile">
-
                                           <label htmlFor="option3" className="radio-tile-label">C {questions.options[2]}</label>
                                        </div>
                                     </div>
