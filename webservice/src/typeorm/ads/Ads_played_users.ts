@@ -14,8 +14,15 @@ export class Ads_played_users {
    
     @Column({
         nullable:false,
+        default:0
     })
     adId: number
+
+    @Column(
+        {nullable: true}
+    )
+    ansList:string
+
 
     
     @CreateDateColumn({name: 'created_at'})
