@@ -11,6 +11,7 @@ import AppUserHome from "./Pages/AppUserHome/AppUserHome";
 import SingleQuizDetail from "./Components/SingleQuizDetail/SingleQuizDetail";
 import AppliedContestList from "./Components/AppliedContestList/AppliedContestList";
 import SingleQuestion from "./Components/SingleQuestion/SingleQuestion";
+import UserWallet from "./Pages/Wallet/UserWallet";
 
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
         <Route exact path="/singlequizdetail" element={<SingleQuizDetail />} />
         <Route exact path="/appliedcontest" element={<AppliedContestList />} />
         <Route exact path="/singlequestion" element={<SingleQuestion />} />
+        <Route exact path="/userwallet" element={<UserWallet />} />
+        
         
         
         
