@@ -11,7 +11,7 @@ export default function AppHeader(props) {
           <div className="col-xs-12">
             <div className="top-nav d-flex justify-content-around py-3 fixed-top">
               <div className="profile">
-                <img src="./assets/images/profile.png" alt="Profile image" />
+                <Link to={'/userprofile'}><img src="./assets/images/profile.png" alt="Profile image" /></Link>                
               </div>
               <Link to={"/appuserhome"}><div className="logo"><img src="./assets/images/logo2.webp" alt="Profile image" /></div></Link>              
               <div className="total-coin">
