@@ -12,6 +12,9 @@ import SingleQuizDetail from "./Components/SingleQuizDetail/SingleQuizDetail";
 import AppliedContestList from "./Components/AppliedContestList/AppliedContestList";
 import SingleQuestion from "./Components/SingleQuestion/SingleQuestion";
 import UserWallet from "./Pages/Wallet/UserWallet";
+import UserProfile from "./Pages/UserProfile/UserProfile";
+import UpdateProfile from "./Pages/UserProfile/UpdateProfile";
+
 
 
 function App() {
@@ -30,6 +33,9 @@ function App() {
         <Route exact path="/appliedcontest" element={<AppliedContestList />} />
         <Route exact path="/singlequestion" element={<SingleQuestion />} />
         <Route exact path="/userwallet" element={<UserWallet />} />
+        <Route exact path="/userprofile" element={<UserProfile />} />
+        <Route exact path="/updateprofile" element={<UpdateProfile />} />
+
         
         
         
