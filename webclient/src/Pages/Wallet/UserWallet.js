@@ -27,7 +27,7 @@ export default function UserWallet() {
                         </div>
                     </section>
                     <section>
-                        <div className="row bg-yellow-orange">
+                        <div className="row wallet-orange">
                             <div className="col-sm-12 text-center coin-section pt-5 pb-4">
                                 <p className='wallet-page-coin fw-bold text-dark-orange'>40  <span className=' ms-2 big coin'></span></p>
                                 <p className='text-white mt-3 position-relative'>Total G Coins <i class="fas fa-plus add-coin-icon"></i></p>
@@ -35,7 +35,7 @@ export default function UserWallet() {
                         </div>
                     </section>
                     <section>
-                        <div className="row py-5 bg-yellow-orange">
+                        <div className="row py-5 wallet-orange">
                             <div className="col-sm-12 text-center">
                                 <div className='mb-3'>
                                 <button type="button" class="btn btn-secondary wallet-button">Withdraw</button>
