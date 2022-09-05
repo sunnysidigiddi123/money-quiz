@@ -20,7 +20,7 @@ export default function BottomNav() {
               
               <a onClick={logout}><i className="fa fa-bolt  fa-2x" aria-hidden="true"></i></a>
               {/* <a onClick={logout}><i className='fas fa-wallet' style={{ fontSize: '24px' }}></i></a> */}
-              <Link to={'/userwallet'}><a><i className='fas fa-wallet' style={{ fontSize: '24px' }}></i></a></Link>
+              <Link to={'/userwallet'}><a><i className='fas fa-wallet fa-2x' ></i></a></Link>
             </div>
           </nav>
         </div>
