@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { Otp as OtpEntity, User as UserEntity } from 'src/typeorm';
+import { Otp as OtpEntity, User as UserEntity, user_profile } from 'src/typeorm';
 import { Admincontest as ContestEntity } from 'src/typeorm';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
@@ -10,6 +10,7 @@ import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import * as dotenv from "dotenv";
 import { IGetUserAuthInfoRequest, resfreshAuth } from 'src/users/middlewares/validate-user.middleware';
 import { Request } from 'express';
+import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -33,6 +34,8 @@ export class UsersService {
     private readonly contestRepository: Repository<ContestEntity>,
     @InjectRepository(OtpEntity)
     private readonly otpRepository: Repository<OtpEntity>,
+    @InjectRepository(user_profile)
+    private readonly userprofileRepository: Repository<user_profile>,
 
   ) {
 
@@ -46,103 +49,103 @@ export class UsersService {
 
   async signupUser(userDto: CreateUserDto) {
 
-    try{
+    try {
 
-    const userexist = await this.userRepository.findOne({ where: { email: userDto.email } })
-    if (userexist) {
-      throw new HttpException("Email Already Exist", HttpStatus.BAD_REQUEST);
+      const userexist = await this.userRepository.findOne({ where: { email: userDto.email } })
+      if (userexist) {
+        throw new HttpException("Email Already Exist", HttpStatus.BAD_REQUEST);
+      }
+      const password = encodePassword(userDto.password);
+      const newUser = this.userRepository.create({ ...userDto, password });
+      await this.userRepository.save(newUser);
+      console.log("adasdsads", newUser.id)
+      const id = newUser.id;
+      const token = jwt.sign({ id }, jwtSecret, {
+        expiresIn: parseInt(tokenLife),
+      });
+      const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
+        expiresIn: parseInt(refreshTokenLife),
+      });
+      const details = {
+        id: id,
+        name: userDto.name,
+        email: userDto.email,
+      };
+      console.log(token, refreshToken)
+      return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Registered Successfully" }
+
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
     }
-    const password = encodePassword(userDto.password);
-    const newUser = this.userRepository.create({ ...userDto, password });
-    await this.userRepository.save(newUser);
-    console.log("adasdsads", newUser.id)
-    const id = newUser.id;
-    const token = jwt.sign({ id }, jwtSecret, {
-      expiresIn: parseInt(tokenLife),
-    });
-    const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
-      expiresIn: parseInt(refreshTokenLife),
-    });
-    const details = {
-      id: id,
-      name: userDto.name,
-      email: userDto.email,
-    };
-    console.log(token, refreshToken)
-    return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Registered Successfully" }
-
-  }catch(e){
-      
-    throw new HttpException(e, HttpStatus.BAD_REQUEST)
-      
-  }
 
   }
 
 
   async loginUser(loginUserDto: LoginUserDto) {
-   
-    try{
-    const email = loginUserDto.email;
-    const password = loginUserDto.password;
 
-    const userexist = await this.userRepository.findOne({ where: { email: email } })
+    try {
+      const email = loginUserDto.email;
+      const password = loginUserDto.password;
 
-    if (userexist) {
+      const userexist = await this.userRepository.findOne({ where: { email: email } })
 
-      const validatePassword = await bcrypt.compare(
-        password,
-        userexist.password
-      );
+      if (userexist) {
 
-      if (validatePassword) {
-        const id = userexist.id;
-        const token = jwt.sign({ id }, jwtSecret, {
-          expiresIn: parseInt(tokenLife),
-        });
-        const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
-          expiresIn: parseInt(refreshTokenLife),
-        });
-        const details = {
-          id: userexist.id,
-          name: userexist.name,
-          email: userexist.email,
-          role: userexist.role
-        };
+        const validatePassword = await bcrypt.compare(
+          password,
+          userexist.password
+        );
 
-        return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Logged in successfully" }
+        if (validatePassword) {
+          const id = userexist.id;
+          const token = jwt.sign({ id }, jwtSecret, {
+            expiresIn: parseInt(tokenLife),
+          });
+          const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
+            expiresIn: parseInt(refreshTokenLife),
+          });
+          const details = {
+            id: userexist.id,
+            name: userexist.name,
+            email: userexist.email,
+            role: userexist.role
+          };
+
+          return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Logged in successfully" }
+        }
+
       }
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
 
     }
-  }catch(e){
-     
-    throw new HttpException(e, HttpStatus.BAD_REQUEST)
-
-  }
   }
 
 
   getUserByName(name: string) {
-    
-    try{
 
-    const names = this.userRepository.findOne({ where: { name: name } })
-    return names;
+    try {
 
-    }catch(e){
+      const names = this.userRepository.findOne({ where: { name: name } })
+      return names;
+
+    } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
     }
 
   }
 
   getUserById(id: number) {
-    
-    try{
 
-    // return this.userRepository.findOne(id, { relations: ['savedcontests'] })
-    return this.userRepository.findOne({where: { id }, relations: ['savedcontests']})
-    
-    }catch(e){
+    try {
+
+      // return this.userRepository.findOne(id, { relations: ['savedcontests'] })
+      return this.userRepository.findOne({ where: { id }, relations: ['savedcontests'] })
+
+    } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
     }
 
@@ -150,12 +153,12 @@ export class UsersService {
 
   async home(request: IGetUserAuthInfoRequest) {
     console.log(request.userId, "Dsfsfdsdss")
-    
-    try{
-    const user = await this.userRepository.findOne({ where: { id: request.userId } })
-    return user
 
-    }catch(e){
+    try {
+      const user = await this.userRepository.findOne({ where: { id: request.userId } })
+      return user
+
+    } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
 
     }
@@ -164,30 +167,30 @@ export class UsersService {
 
 
   async refreshtoken(request: IGetUserAuthInfoRequest) {
-   
-    try{
-    const refreshToken = request.body.refreshToken;
-    if (!refreshToken) {
-      throw new HttpException("Please send Refresh Token", HttpStatus.BAD_REQUEST)
-    } else {
-      const userId = resfreshAuth(refreshToken);
-      if (userId) {
-        const token = jwt.sign({ userId }, jwtSecret, {
-          expiresIn: parseInt(tokenLife),
-        });
-        const user = await this.userRepository.findOne({ where: { id: userId } })
-        return { token: token, userId: userId, name: user.name }
+
+    try {
+      const refreshToken = request.body.refreshToken;
+      if (!refreshToken) {
+        throw new HttpException("Please send Refresh Token", HttpStatus.BAD_REQUEST)
       } else {
-        throw new HttpException("Refresh Token expired", HttpStatus.UNAUTHORIZED);
+        const userId = resfreshAuth(refreshToken);
+        if (userId) {
+          const token = jwt.sign({ userId }, jwtSecret, {
+            expiresIn: parseInt(tokenLife),
+          });
+          const user = await this.userRepository.findOne({ where: { id: userId } })
+          return { token: token, userId: userId, name: user.name }
+        } else {
+          throw new HttpException("Refresh Token expired", HttpStatus.UNAUTHORIZED);
+        }
+
       }
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
 
     }
-  }catch(e){
-     
-    throw new HttpException(e, HttpStatus.BAD_REQUEST)
-
-
-  }
   }
 
 
@@ -195,8 +198,8 @@ export class UsersService {
 
     const email = request.body.email;
     console.log(email)
-   
-    try{
+
+    try {
       const user = await this.userRepository.findOne({ where: { email: email } });
 
       if (user) {
@@ -237,26 +240,26 @@ export class UsersService {
           } else {
             console.log("Email sent: " + info.response);
             if (info.response) {
-             return { message: "OTP has been sent successfully. Please check your mail.", status: 1 };
+              return { message: "OTP has been sent successfully. Please check your mail.", status: 1 };
             }
           }
         });
 
       } else {
-        return {message: "E-mail doesn't exists"};
+        return { message: "E-mail doesn't exists" };
       }
 
-    }catch(e){
+    } catch (e) {
 
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
     }
-    
+
   }
 
 
   async otpVerification(request: IGetUserAuthInfoRequest) {
 
-   try{
+    try {
       const otp = await this.otpRepository.findOne({
         where: {
           email: request.body.email,
@@ -268,15 +271,15 @@ export class UsersService {
         let currentTime = new Date().getTime();
         let diff = Number(otp.expireIn) - currentTime;
         if (diff < 0) {
-          return {message:"Token Expired"};
+          return { message: "Token Expired" };
         } else {
           return { message: "OTP verified successfully", status: 1 };
         }
 
       } else {
-        return {message:"Invalid Otp" };
+        return { message: "Invalid Otp" };
       }
-    }catch(e){
+    } catch (e) {
 
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
     }
@@ -285,7 +288,7 @@ export class UsersService {
 
   async resetPassword(request: IGetUserAuthInfoRequest) {
 
-  try{
+    try {
       const user = await this.userRepository.findOne({
         where: {
           email: request.body.email,
@@ -299,32 +302,74 @@ export class UsersService {
         const updatedPass = await this.userRepository.save(user);
         return { message: "Password changed successfully", status: 2 };
       }
-   
 
-  }catch(e){
 
-    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+    }
+
   }
 
-}
+  async profileinfo(request: IGetUserAuthInfoRequest) {
 
-async profileinfo(request: IGetUserAuthInfoRequest) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id: request.userId,
+        },
+      });
+      if (user) {
+        return { message: "Profile data", name: user.name, email: user.email, role: user.role, location: user.location, wallet: user.Wallet };
+      }
 
-  try{
-  const user = await this.userRepository.findOne({
-  where: {
-  id: request.userId,
-  },
-  });
-  if (user) {
-  return { message: "Profile data", name:user.name,email:user.email,role:user.role,location:user.location,wallet:user.Wallet };
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+    }
+
+  }
+
+
+  async updateprofile(request: IGetUserAuthInfoRequest,userprofileDto:CreateUserProfileDto) {
+
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id: request.userId,
+        },
+        relations:['userProfile']
+      });
+  
+      if (user) {
+        
+          const profile = this.userprofileRepository.create({
+            dob:userprofileDto.dob,
+            gender:userprofileDto.gender,
+            age:userprofileDto.age,
+            incomegroup:userprofileDto.incomegroup,
+            location:userprofileDto.location
+          })
+          await this.userprofileRepository.save(profile)
+          user.userProfile = profile
+          console.log(user.userProfile,"ddd",user)
+          await this.userRepository.save(user)
+          return {message:"profile update successfully ",profile:profile}
+
+      }
+
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+    }
+
   }
   
-  }catch(e){
-  
-  throw new HttpException(e, HttpStatus.BAD_REQUEST)
-  }
-  
+
+  async getdetails(request: IGetUserAuthInfoRequest){
+
+      
+    return await this.userRepository.find({relations:['user_profile']})
   }
 
 

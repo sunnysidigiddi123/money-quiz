@@ -1,39 +1,35 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Admincontest } from "../contests/Admincontest";
-import { user_profile } from "./user_profile";
+import { User } from "./User";
 
 
 
-export enum RoleTypes {
-    Admin = 'admin',
-    User = 'user'
+export enum GenderTypes {
+    MALE = 'male',
+    FEMALE = 'female',
+    OTHERS = 'others'
     }
+
+    
 
 
 @Entity()
-export class User {
+export class user_profile {
 
     @PrimaryGeneratedColumn('increment')
     id: number
 
     @Column({
         nullable: false,
-        default:''
+
          })
-    name: string
-
-    @Column({
-        unique:true,
-        nullable:false,
-        default:''
-    })
-    email: string
+    dob: Date
 
     @Column({
         nullable:false,
-        default:''
+        type:'text'
     })
-    password: string
+    gender: GenderTypes
 
     @Column({
         nullable:false,
@@ -44,29 +40,17 @@ export class User {
     @Column({
         nullable:false,
         default:''
+       
     })
     location: string
 
-    
     @Column({
         nullable:false,
-        type:'text'
+        default:''
+       
     })
-    role: RoleTypes
+    incomegroup: string
     
-    @Column({
-        nullable:false,
-        default:0})
-    Wallet: number
-
-    @OneToOne(() => user_profile)
-    @JoinColumn()
-    userProfile: user_profile
-
-  
-    @OneToMany(() => Admincontest, savedcontest => savedcontest.user)
-    savedcontests: Admincontest[];
-
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

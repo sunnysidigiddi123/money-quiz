@@ -1,10 +1,11 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Req, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Inject, Param, ParseIntPipe, Post, Put, Req, Res, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 import { Serializeduser } from 'src/types';
 import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { Response } from 'express';
+import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
 
 
 
@@ -36,6 +37,16 @@ export class UsersController {
 @Get('/profileinfo')
 async profileinfo(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
 const user = await this.usersService.profileinfo(request); 
+if(user){
+
+response.status(201).send(user)
+}
+
+}
+
+@Get('/getdetails')
+async getdetails(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+const user = await this.usersService.getdetails(request); 
 if(user){
 
 response.status(201).send(user)
@@ -129,7 +140,16 @@ async resetPassword(@Req() request: IGetUserAuthInfoRequest,@Res() response:Resp
     }
 }
 
+@Post('update-profile')
+@UsePipes(ValidationPipe)      
+async updateprofile(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response,@Body() userprofileDto:CreateUserProfileDto ){
+    const updateprofile = await  this.usersService.updateprofile(request,userprofileDto);
 
+    if(updateprofile){
+
+        response.status(201).send(updateprofile)
+    }
+}
 
 
 }
