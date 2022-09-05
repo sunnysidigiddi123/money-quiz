@@ -318,9 +318,10 @@ export class UsersService {
         where: {
           id: request.userId,
         },
+        relations:['userProfile']
       });
       if (user) {
-        return { message: "Profile data", name: user.name, email: user.email, role: user.role, location: user.location, wallet: user.Wallet };
+        return { message: "Profile data", name: user.name, email: user.email, role: user.role, wallet: user.Wallet,userProfile:user.userProfile };
       }
 
     } catch (e) {
