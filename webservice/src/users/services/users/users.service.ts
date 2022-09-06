@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { Otp as OtpEntity, User as UserEntity, user_profile } from 'src/typeorm';
+import { Otp as OtpEntity, profile_address, User as UserEntity, user_profile } from 'src/typeorm';
 import { Admincontest as ContestEntity } from 'src/typeorm';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
@@ -37,6 +37,8 @@ export class UsersService {
     private readonly otpRepository: Repository<OtpEntity>,
     @InjectRepository(user_profile)
     private readonly userprofileRepository: Repository<user_profile>,
+    @InjectRepository(profile_address)
+    private readonly profileaddressRepository: Repository<profile_address>,
 
   ) {
 
@@ -344,35 +346,55 @@ export class UsersService {
       });
 
       const existprofile = await this.userprofileRepository.findOne({relations:{user:true},where:{user:{id:request.userId}}})
-  
+      const existprofileaddress = await this.profileaddressRepository.findOne({relations:{user_profile:true}, where:{user_profile:{user:{id:request.userId}}}})
+      console.log("sghjgss",existprofileaddress,existprofile)
       if (existprofile) {
 
 
         existprofile.dob = userprofileDto.dob
-        existprofile.gender=userprofileDto.gender
-        existprofile.age=userprofileDto.age
-        existprofile.incomegroup=userprofileDto.incomegroup
-        existprofile.location=userprofileDto.location
+        existprofile.gender = userprofileDto.gender
+        existprofile.age = userprofileDto.age
+        existprofile.incomegroup = userprofileDto.incomegroup
+
+        existprofileaddress.address1 = request.body.address1
+        existprofileaddress.address2 = request.body.address2
+        existprofileaddress.PIN = request.body.pin,
+        existprofileaddress.city = request.body.city,
+        existprofileaddress.state = request.body.state,
+        existprofileaddress.country = request.body.country
+
 
         await this.userprofileRepository.save(existprofile)
-        return {message:"profile update successfully ",profile:existprofile}
+        await this.profileaddressRepository.save(existprofileaddress)
+        return { message: "profile update successfully ", profile: existprofile ,address:existprofileaddress}
 
 
-      }else{
-        
+      } else {
+
           const profile = this.userprofileRepository.create({
             dob:userprofileDto.dob,
             gender:userprofileDto.gender,
             age:userprofileDto.age,
             incomegroup:userprofileDto.incomegroup,
-            location:userprofileDto.location,
             user: user
           })
-          await this.userprofileRepository.save(profile)
+      
+          const profile_address = this.profileaddressRepository.create({
+                    
+             address1:request.body.address1,
+             address2:request.body.address2,
+             PIN:request.body.pin,
+             city:request.body.city,
+             state:request.body.state,
+             country:request.body.country
+
+          })
+          profile.address = profile_address
           user.userProfile = profile
-          console.log(user.userProfile,"ddd",user)
+            await this.profileaddressRepository.save(profile_address)
+          await this.userprofileRepository.save(profile)
           await this.userRepository.save(user)
-          return {message:"profile update successfully ",profile:profile}
+          return {message:"profile update successfully ",profile:profile,address:profile_address}
 
       }
 
