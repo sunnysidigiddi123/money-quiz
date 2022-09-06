@@ -2,12 +2,12 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import {AdsService} from "./services/ads/ads.service"
 import {AdsController} from "./controllers/ads/ads.controller"
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Admincontest, Ads, Ads_played_users, Ads_question, Ads_target, Otp, User } from 'src/typeorm';
+import { Admincontest, Ads, Ads_played_users, Ads_question, Ads_target, Otp, User, user_profile } from 'src/typeorm';
 import { UsersService } from 'src/users/services/users/users.service';
 import { ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User,Admincontest,Otp,Ads,Ads_question,Ads_target,Ads_played_users])],
+    imports: [TypeOrmModule.forFeature([User,Admincontest,Otp,Ads,Ads_question,Ads_target,Ads_played_users, user_profile])],
     controllers: [AdsController],
     providers: [ 
     { 
