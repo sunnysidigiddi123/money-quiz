@@ -52,6 +52,9 @@ export class user_profile {
     incomegroup: string
     
 
+    @OneToOne(() => User, (user) => user.userProfile) // specify inverse side as a second parameter
+    user: User
+
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
   

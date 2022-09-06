@@ -59,7 +59,11 @@ export class User {
         default:0})
     Wallet: number
 
-    @OneToOne(() => user_profile)
+    // @OneToOne(() => user_profile)
+    // @JoinColumn()
+    // userProfile: user_profile
+
+    @OneToOne(() => user_profile, (profile) => profile.user) // specify inverse side as a second parameter
     @JoinColumn()
     userProfile: user_profile
 

@@ -341,15 +341,31 @@ export class UsersService {
         },
         relations:['userProfile']
       });
+
+      const existprofile = await this.userprofileRepository.findOne({relations:{user:true},where:{user:{id:request.userId}}})
   
-      if (user) {
+      if (existprofile) {
+
+
+        existprofile.dob = userprofileDto.dob
+        existprofile.gender=userprofileDto.gender
+        existprofile.age=userprofileDto.age
+        existprofile.incomegroup=userprofileDto.incomegroup
+        existprofile.location=userprofileDto.location
+
+        await this.userprofileRepository.save(existprofile)
+        return {message:"profile update successfully ",profile:existprofile}
+
+
+      }else{
         
           const profile = this.userprofileRepository.create({
             dob:userprofileDto.dob,
             gender:userprofileDto.gender,
             age:userprofileDto.age,
             incomegroup:userprofileDto.incomegroup,
-            location:userprofileDto.location
+            location:userprofileDto.location,
+            user: user
           })
           await this.userprofileRepository.save(profile)
           user.userProfile = profile
