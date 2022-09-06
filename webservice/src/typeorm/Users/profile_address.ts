@@ -1,59 +1,62 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Admincontest } from "../contests/Admincontest";
-import { profile_address } from "./profile_address";
 import { User } from "./User";
+import { user_profile } from "./user_profile";
 
-
-
-export enum GenderTypes {
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHERS = 'others'
-    }
-
-    
 
 
 @Entity()
-export class user_profile {
+export class profile_address {
 
     @PrimaryGeneratedColumn('increment')
     id: number
 
+
     @Column({
         nullable: false,
+        default:''
+   
+         })
+    address1: string
+
+    @Column({
+        nullable: false,
+        default:''
+   
+         })
+    address2: string
+
+    @Column({
+        nullable: false,
+        default:0
 
          })
-    dob: Date
-
-    @Column({
-        nullable:false,
-        type:'text'
-    })
-    gender: GenderTypes
-
-    @Column({
-        nullable:false,
-        default:0
-    })
-    age: number
-
+    PIN: number
 
     @Column({
         nullable:false,
         default:''
        
     })
-    incomegroup: string
-    
+    city: string
 
-    @OneToOne(() => User, (user) => user.userProfile) // specify inverse side as a second parameter
-    user: User
+    @Column({
+        nullable:false,
+        default:''
+       
+    })
+    state: string
 
-    @OneToOne(() => profile_address, (address) => address.user_profile) // specify inverse side as a second parameter
-    @JoinColumn()
-    address: profile_address
+    @Column({
+        nullable:false,
+        default:''
+       
+    })
+    country: string
 
+
+    @OneToOne(() => user_profile, (user) => user.address) // specify inverse side as a second parameter
+    user_profile: user_profile
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

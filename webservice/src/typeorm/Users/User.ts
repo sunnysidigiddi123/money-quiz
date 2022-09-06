@@ -35,19 +35,6 @@ export class User {
         default:''
     })
     password: string
-
-    @Column({
-        nullable:false,
-        default:0
-    })
-    age: number
-
-    @Column({
-        nullable:false,
-        default:''
-    })
-    location: string
-
     
     @Column({
         nullable:false,
@@ -60,7 +47,11 @@ export class User {
         default:0})
     Wallet: number
 
-    @OneToOne(() => user_profile)
+    // @OneToOne(() => user_profile)
+    // @JoinColumn()
+    // userProfile: user_profile
+
+    @OneToOne(() => user_profile, (profile) => profile.user) // specify inverse side as a second parameter
     @JoinColumn()
     userProfile: user_profile
 
