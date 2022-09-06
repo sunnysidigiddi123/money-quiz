@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Ads } from "../ads/Ads";
 import { Admincontest } from "../contests/Admincontest";
 import { user_profile } from "./user_profile";
 
@@ -71,6 +72,8 @@ export class User {
     @OneToMany(() => Admincontest, savedcontest => savedcontest.user)
     savedcontests: Admincontest[];
 
+    @OneToMany(() => Ads, ad => ad.user)
+    ads: Ads[];
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

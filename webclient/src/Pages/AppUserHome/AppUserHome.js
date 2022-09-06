@@ -188,6 +188,7 @@ export default function AppUserHome() {
             <AppHeader user={user} wallet={wallet} />
             <div className="page-container">
                 <div className="container-fluid">
+                    <Link to={'/adslist'}>
                     <section className='advertisement '>
                         <div className="row bg-light-orange pb-5">
                             <div className="col-sm-12 col-xs-12">
@@ -198,6 +199,8 @@ export default function AppUserHome() {
                             </div>
                         </div>
                     </section>
+                    </Link>
+                   
                     {/* <section className="remaining-quiz">
                         <div className="row bg-lighter-gray py-5 b-radius-25">
                             <div className="col-3 col-xs-3">

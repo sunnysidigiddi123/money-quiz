@@ -5,6 +5,7 @@ import { Form } from "react-bootstrap";
 import moment from "moment"
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import {  alternateEmailValidation,  charactersValidation,  emailValidation,  isNumberKey, numberValidation, } from "../../Utils/Utils"
 
 //import common components
 import AppHeader from "../../Components/AppHeader/AppHeader";
@@ -15,7 +16,8 @@ import CONSTANTS from '../../Constants/global'
 export default function UpdateProfile() {
     const navigate = useNavigate();
     const location = useLocation()
-
+    const [username, setUsername]= useState('');
+    const [error, setError] = useState({});
 
     const initialFormData = Object.freeze({
         name: "",
@@ -25,11 +27,12 @@ export default function UpdateProfile() {
         address1: "",
         address2: "",
         state: "",
-        city: "",
+        location: "",
         zip: "",
         altContact: "",
         aadhar: "",
-        pan: ""
+        pan: "",
+        incomegroup:"",
     });
     const [formData, updateFormData] = useState(initialFormData);
     const handleChange = (e) => {
@@ -45,7 +48,7 @@ export default function UpdateProfile() {
 
         e.preventDefault();
         console.log(formData);
-        let _URL = "users/profileUpdate";
+        let _URL = CONSTANTS.UPDATEPROFILE;
         const token = sessionStorage.getItem("token");        
         const HEADER = { "authorization": token, }
         try {
@@ -69,12 +72,29 @@ export default function UpdateProfile() {
             }
         }
 
+        
     }
+
+const MobileValidate = ()=>{
+    if (numberValidation(formData.altContact)) {
+        error.altContact = "Mobile Number must be a number";
+        
+      } else if (
+        formData.altContact &&
+        formData.altContact.toString().length !== 10
+      ) {
+        error.altContact = "Mobile Number must have 10 digits";       
+      } else {
+        error.altContact = "";
+      }
+}
     // update form data from location
     useEffect(() => {
+        console.log(location.state.userData)
         updateFormData({
-            ...location.state.userData
+            ...location.state.userData.userProfile
         });
+        setUsername(location.state.userData.name)
 
     }, [])
 
@@ -85,7 +105,7 @@ export default function UpdateProfile() {
                 <div className="container-fluid">
                     <div className="card my-3" >
                         <div className="card-body">
-                            <h4 className="card-title">Hello <span className='text-dark-orange'>{formData.name} !</span></h4>
+                            <h4 className="card-title">Hello <span className='text-dark-orange'>{username} !</span></h4>
                             <h5 className="card-subtitle mb-2 text-muted">Fill the information to complete your profile.</h5>
                         </div>
                     </div>
@@ -121,8 +141,15 @@ export default function UpdateProfile() {
                                             </div>
                                             <div className="col-md-6 pb-3">
                                                 <label htmlFor="altContact" className="form-label fw-bold">Alternate Contact Number</label>
-                                                <input className="form-control" id="altContact" name="altContact" type="number" onChange={handleChange} defaultValue={formData.altContact} />
+                                                <input className={(error.altContact && error.altContact) ? "form-control is-invalid" : "form-control"} id="altContact" name="altContact" type="text" onChange={handleChange} defaultValue={formData.altContact} 
+                                                 maxLength="10"
+                                                 onKeyPress={(e) => {
+                                                   if (!isNumberKey(e)) {e.preventDefault(); e.stopPropagation(); }
+                                                 }} 
+                                                onBlur={() => {MobileValidate();setError({ ...error }); }}/>
+                                                {(error.altContact && error.altContact) ? <><p className='text-danger'>Mobile Number must have 10 digits</p></> : ""}
                                             </div>
+                                            Test: {(Object.keys(error).length == 0) ? "not" : "disabled"}
                                             <div className="col-12 pb-3">
 
                                                 <label htmlFor="address1" className="form-label fw-bold">Address</label>
@@ -133,8 +160,8 @@ export default function UpdateProfile() {
                                                 <input type="text" className="form-control" id="address2" name="address1" placeholder="Apartment, studio, or floor" defaultValue={formData.address2} onChange={handleChange} />
                                             </div>
                                             <div className="col-md-6 pb-3">
-                                                <label htmlFor="city" className="form-label fw-bold">City</label>
-                                                <input type="text" className="form-control" id="city" name="city" defaultValue={formData.city} onChange={handleChange} />
+                                                <label htmlFor="location" className="form-label fw-bold">City</label>
+                                                <input type="text" className="form-control" id="location" name="location" defaultValue={formData.location} onChange={handleChange} />
                                             </div>
                                             <div className="col-md-4 pb-3">
 
@@ -172,6 +199,11 @@ export default function UpdateProfile() {
                                                 <label htmlFor="aadhar" className="form-label fw-bold">Aadhar Number</label>
                                                 <input className="form-control" id="aadhar" name="aadhar" type="text" defaultValue={formData.aadhar} onChange={handleChange} />
                                             </div>
+
+                                            <div className="col-md-6 pb-3">
+                                                <label htmlFor="incomegroup" className="form-label fw-bold">Income Group</label>
+                                                <input className="form-control" id="incomegroup" name="incomegroup" type="number" defaultValue={formData.incomegroup} onChange={handleChange} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +222,7 @@ export default function UpdateProfile() {
                             </div>
                         </div>
                         <div className="col-12 text-center">
-                            <button type="submit" className="btn btn-orange">Update Profile</button>
+                            <button type="submit" className="btn btn-orange" disabled={!(Object.keys(error).length == 0) ? "disabled" : ""} title={!(Object.keys(error).length == 0) ? "form fields validation" : "Submit to Update profile"}>Update Profile</button>
                         </div>
                     </form>
                 </div>

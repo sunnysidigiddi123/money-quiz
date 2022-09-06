@@ -10,7 +10,10 @@ import Livecontestnew from "./Pages/Livecontest2/Livecontestnew";
 import AppUserHome from "./Pages/AppUserHome/AppUserHome";
 import SingleQuizDetail from "./Components/SingleQuizDetail/SingleQuizDetail";
 import AppliedContestList from "./Components/AppliedContestList/AppliedContestList";
-import SingleQuestion from "./Components/SingleQuestion/SingleQuestion";
+import SingleQuestion from "./Components/SingleQuestion/SingleQuestion"; 
+import AdsList from "./Components/SponsorAds/AdsList/AdsList";
+import LiveAd from "./Components/SponsorAds/LiveAd/LiveAd";
+import UserWallet from "./Pages/Wallet/UserWallet";
 import UserProfile from "./Pages/UserProfile/UserProfile";
 import UpdateProfile from "./Pages/UserProfile/UpdateProfile";
 
@@ -31,10 +34,13 @@ function App() {
         <Route exact path="/singlequizdetail" element={<SingleQuizDetail />} />
         <Route exact path="/appliedcontest" element={<AppliedContestList />} />
         <Route exact path="/singlequestion" element={<SingleQuestion />} />
+        <Route exact path="/adslist" element={<AdsList />} />
+        <Route exact path="/livead" element={<LiveAd />} />
+              
+        <Route exact path="/userwallet" element={<UserWallet />} />
         <Route exact path="/userprofile" element={<UserProfile />} />
         <Route exact path="/updateprofile" element={<UpdateProfile />} />
 
-        
         
         
         

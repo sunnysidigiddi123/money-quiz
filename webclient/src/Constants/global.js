@@ -10,8 +10,12 @@ const FORGOTPASS = `${BASE_URL}/users/forgotPassword`;
 const USERLOGIN = `${BASE_URL}/users/login`;
 const USERSIGNUP = `${BASE_URL}/users/signup`;
 const GETUSER = `${BASE_URL}/users`;
-const  GETUSERPROFILE= `${BASE_URL}/users/profileinfo`
+const  GETUSERPROFILE= `${BASE_URL}/users/profileinfo`;
+const UPDATEPROFILE = `${BASE_URL}/users/update-profile`;
 
+const GETADLIST = `${BASE_URL}/ads/getAds`;
+const GETADBYID = `${BASE_URL}/ads`;
+const ADSANSWERCHECK = `${BASE_URL}/ads/answerCheck`
 
 export default {
     BASE_URL,
@@ -21,9 +25,13 @@ export default {
     DETAILVIEWCONTEST,
     APPLIEDCONTESTLIST,
     PAYNEWPOLLAMOUNT,
+    GETADLIST,
+    GETADBYID,
+    ADSANSWERCHECK,
     FORGOTPASS,
     USERLOGIN,
     USERSIGNUP,
     GETUSER,
-    GETUSERPROFILE
+    GETUSERPROFILE,
+    UPDATEPROFILE
 }

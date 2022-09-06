@@ -5,6 +5,7 @@ import { AdminContestsModule } from './admincontests/admincontests.module';
 import { QuestionsModule } from './questions/questions.module';
 import { PublishedcontestModule } from './publishedcontests/publishedcontest.module';
 import { BroadcastModule } from './broadcast/broadcast.module';
+import {AdsModule} from './ads/ads.module'
 import * as dotenv from "dotenv";
 import entities from './typeorm';
 
@@ -20,7 +21,7 @@ dotenv.config();
     database: process.env.DB_NAME,
     entities: entities,
     synchronize: true,
-  }), UsersModule, AdminContestsModule, QuestionsModule, PublishedcontestModule, BroadcastModule],
+  }), UsersModule, AdminContestsModule, QuestionsModule, PublishedcontestModule, BroadcastModule,AdsModule],
   controllers: [],
   providers: [],
 })
