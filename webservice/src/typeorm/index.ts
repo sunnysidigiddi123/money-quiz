@@ -11,10 +11,11 @@ import { Ads } from "./ads/Ads";
 import { Ads_target } from "./ads/Ads_target";
 import { Ads_question } from "./ads/Ads_question";
 import { Ads_played_users } from "./ads/Ads_played_users";
+import { userInfo } from "os";
+import { user_profile } from "./Users/user_profile";
 
-const entities = [User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp,Ads,Ads_target,Ads_question,Ads_played_users];
+const entities = [User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp,user_profile, Ads,Ads_target,Ads_question,Ads_played_users];
 
-
-export {User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp,Ads,Ads_target,Ads_question,Ads_played_users};
+export {User,Admincontest,Publishedcontest,Auditcontest,Question,Applieduser,Liveuser,Segment,Otp,user_profile,Ads,Ads_target,Ads_question,Ads_played_users};
 
 export default entities ;

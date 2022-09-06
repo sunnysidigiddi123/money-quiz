@@ -13,6 +13,10 @@ import AppliedContestList from "./Components/AppliedContestList/AppliedContestLi
 import SingleQuestion from "./Components/SingleQuestion/SingleQuestion"; 
 import AdsList from "./Components/SponsorAds/AdsList/AdsList";
 import LiveAd from "./Components/SponsorAds/LiveAd/LiveAd";
+import UserWallet from "./Pages/Wallet/UserWallet";
+import UserProfile from "./Pages/UserProfile/UserProfile";
+import UpdateProfile from "./Pages/UserProfile/UpdateProfile";
+
 
 
 function App() {
@@ -33,6 +37,11 @@ function App() {
         <Route exact path="/adslist" element={<AdsList />} />
         <Route exact path="/livead" element={<LiveAd />} />
               
+        <Route exact path="/userwallet" element={<UserWallet />} />
+        <Route exact path="/userprofile" element={<UserProfile />} />
+        <Route exact path="/updateprofile" element={<UpdateProfile />} />
+
+        
         
         
         

@@ -10,6 +10,7 @@ import {
 import hidePasswordImg from "./eyesslash.svg";
 import showPasswordImg from "./eyes.svg";
 import { ToastContainer, toast } from 'react-toastify';
+import CONSTANTS from '../../Constants/global'
 
 
 const Form = ({
@@ -49,7 +50,7 @@ const Form = ({
 
     async function signupp(e) {
       e.preventDefault();
-      const API_URL = `${process.env.REACT_APP_BASE_URL}/users/signup`;
+      const API_URL = CONSTANTS.USERSIGNUP;
       const email = values.email;
       const user = values.firstName;
       const password = values.password;
@@ -93,7 +94,7 @@ const Form = ({
     useEffect(() => {
       let status = localStorage.getItem("loginStatus");
       if (status) {
-        navigate("/userhome");
+        navigate("/appuserhome");
       }
     }, []);
 
@@ -101,10 +102,15 @@ const Form = ({
   return (
   <>
   
-  <form className="tab-wizard2 wizard-circle wizard" style={{padding:'25px'}} onSubmit={signupp} autoComplete="off">
-								<h5>Basic Account Credentials</h5>
+  <form className="tab-wizard2 wizard-circle wizard px-5"  onSubmit={signupp} autoComplete="off">
+								
+                <h2 className="text-start ">Sign Up</h2>
                                 <br></br>
-                                <br></br>
+                                
+                                <div className="input-group mb-0">									
+								<button className="btn btn-primary btn-sm btn-block facebook-shadow mb-1 py-1" type="submit" ><i class="fab fa-facebook-f" aria-hidden="true"></i> Sign In with Facebook</button>
+                <button className="btn btn-sm btn-block btn-google text-white google-shadow" type="submit" ><i class="fab fa-google" aria-hidden="true"></i> Sign In with Google</button>
+						</div>
 								<section>
 									<div className="form-wrap max-width-600 mx-auto">
 									<div className="form-group row">
@@ -200,7 +206,46 @@ const Form = ({
                     ):(
                       <></>
                     )}
-                                        <br></br>
+                                      
+
+
+                                        <div className="form-group row">
+											<label className="col-sm-4 col-form-label">Age<span style={{ color: "red" }}>*</span></label>
+											<div className="col-sm-8">
+												<input  
+                               type='number'
+                                                className='form-control'
+                                                id="age"
+                                                placeholder="18"
+                                                
+                                    
+                                                onChange={(e)=> {setAge(e.target.value)}}
+                                            
+                                                name="age"
+                                                required
+                                                />
+                                               
+											</div>
+										</div>
+
+                    <div className="form-group row">
+											<label className="col-sm-4 col-form-label">Location<span style={{ color: "red" }}>*</span></label>
+											<div className="col-sm-8">
+												<input  
+                               type='text'
+                                                className='form-control'
+                                                id="age"
+                                                placeholder="Delhi"
+                                                
+                                    
+                                                onChange={(e)=> {setLocation(e.target.value)}}
+                                            
+                                                name="location"
+                                                required
+                                                />
+                                               
+											</div>
+										</div>
 
                                         <div className="form-group row">
 											<label className="col-sm-4 col-form-label">Age<span style={{ color: "red" }}>*</span></label>
@@ -264,9 +309,16 @@ const Form = ({
 
 
 
-
-                                        <button type="submit" className="btn btn-primary">Submit</button>
+<button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Sign Up</span> <i class="fas fa-sign-in-alt"></i></button>
+                                        {/* <button type="submit" className="btn btn-primary">Submit</button> */}
 									</div>
+                  <dov className="row">
+                  <div className=" col-sm-12 pt-3">
+                    <p className="fs-5">Already have an account?  <Link
+                to="/"
+              ><span className="text-dark-orange fw-bold">Sign In</span></Link></p>
+                  </div>
+                  </dov>
 								</section>
 						
 								

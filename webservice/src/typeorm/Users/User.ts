@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Ads } from "../ads/Ads";
 import { Admincontest } from "../contests/Admincontest";
+import { user_profile } from "./user_profile";
 
 
 
@@ -59,7 +60,11 @@ export class User {
         default:0})
     Wallet: number
 
-   
+    @OneToOne(() => user_profile)
+    @JoinColumn()
+    userProfile: user_profile
+
+  
     @OneToMany(() => Admincontest, savedcontest => savedcontest.user)
     savedcontests: Admincontest[];
 
