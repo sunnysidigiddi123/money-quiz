@@ -6,6 +6,7 @@ import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import ResetPassword from "./Pages/ForgetPassword/ResetPassword";
 import AdminHome from "./Pages/AdminHome/AdminHome";
 import Contest from "./Pages/Contest/Contest"
+import Ads from "./Pages/Ads/Ads";
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/resetPassword" element={<ResetPassword />} />
         <Route exact path="/adminhome" element={<AdminHome />} />
         <Route exact path="/contest" element={<Contest />} /> 
+        <Route exact path="/ads" element={<Ads />} /> 
         
       </Routes>
     </Router>

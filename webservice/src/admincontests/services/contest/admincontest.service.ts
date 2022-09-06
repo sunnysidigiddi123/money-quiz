@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admincontest, Segment, User } from 'src/typeorm';
+import { Admincontest, Ads, Segment, User } from 'src/typeorm';
 import { CreateAdminContestDto } from 'src/dtos/contests/CreateAdminContest.dto';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
+import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
 
 
 export interface IGetUserAuthInfoRequest extends Request {
@@ -20,7 +21,9 @@ export class AdminContestService {
   @InjectRepository(User)
   private readonly UserRepository: Repository<User>,
   @InjectRepository(Segment)
-  private readonly segmentRepository: Repository<Segment>
+  private readonly segmentRepository: Repository<Segment>,
+
+
  
   
   ){}
@@ -104,6 +107,9 @@ async getSegment(request:IGetUserAuthInfoRequest){
       }
 
 }
+
+
+
 
 
 }

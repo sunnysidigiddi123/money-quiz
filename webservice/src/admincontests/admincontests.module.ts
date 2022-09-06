@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Admincontest, Otp, Segment, User, user_profile } from 'src/typeorm';
+import { Admincontest, Ads, Otp, Segment, User, user_profile } from 'src/typeorm';
 import { ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 import { UsersService } from 'src/users/services/users/users.service';
 import { AdminContestController } from './controllers/contest/admincontest.controller';
@@ -34,6 +34,11 @@ export class AdminContestsModule implements NestModule {
      {
       path: 'admincontest/getContest',
       method: RequestMethod.GET
+  
+     },
+     {
+      path: 'admincontest/createAd',
+      method: RequestMethod.POST
   
      },
     

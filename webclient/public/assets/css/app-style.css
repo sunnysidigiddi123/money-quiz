@@ -26,7 +26,8 @@ li{list-style:none!important;}
 body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!important;}
 .b-radius-25{ border-radius: 25px;}
 .body-bg{background-color: #fdfeff;}
-.btn-orange{background-color: #f3ac58;}
+.btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
+.btn-gray{background-color: #a7a7a7; color: #ffffff; border-radius: 20px;}
 .page-container{padding:90px 0;}
 .inner-page-container{padding:80px 0; background-color: #eeeef2;}
 .border-bottom-left-round{border-bottom-left-radius:55px}
@@ -37,17 +38,20 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .bg-yellow-orange{background-color: #ffbd59;}
 .bg-black{background-color: #000000;}
 .bg-green{background-color: #baf0ba!important;}
+.bg-darker-gray{background-color: #5b5b5b;}
 .text-info-gray{color: #808080; font-weight: bold; font-size: 0.9rem; padding-bottom: 5px;}
 .fw-500{font-weight: 500;}
 .add-circle{width: 50px; height: 50px; padding: 12px;  border-radius: 50%;}
-.btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
+
 .btn-live{position: absolute; top:4px;right: 17px; border-radius: 50px;}
+.gold-coin-big{ background-color: #ffcc01; width: 25px; height: 23px; border-radius: 50%; display: inline-block; box-shadow: 1px 7px 2px 2px #f9ba10 inset;  padding: 10px; position: relative; top: 2px;}
 /* ================= top-nav/ App Header Css ======================*/
 .logo img{width: 100%; max-width: 60px;}
 .top-nav{background-color: #ffffff;}
 .wallet-coin{border-radius: 23px; box-shadow: 0px 0px 5px #b5b5b5; width: 70px; padding: 8px; vertical-align: middle; min-height: 31px;}
 .wallet-coin .coin:after{top:-5px; left: 5px;}
 .profile img{width: 50px; height: 50px; border-radius: 50%;}
+
 /* =================  Advertisement Section======================*/
 .bg-light-orange{background-color: #f3ac58;}
 .advertisement  h1{color:#ffffff;}
@@ -152,6 +156,17 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
     margin: 0 4px;}
 .live-top-info{border-bottom-left-radius: 90px;}
 
+ /* =================   Ads Winning Popup css ======================*/    
+
+
+.ads-winning-popup{ background: rgb(236 153 68 / 80%); top: 0;left: 0; bottom: 0; right: 0; z-index: 9999; }
+.winning-inner-text{border-radius: 50px 50px 0 50px; -webkit-border-radius:70px 70px 0 70px; width: 90%;}
+.winning-inner-text .coin::after{
+    top: 4px;
+}
+ /* =================   Ads List css ======================*/  
+.ad-list-card{width: 80%; margin: 0 auto; border-radius: 0 70px 0 70px;}
+.ad-list-card img{min-height: 261px;   width: 95%;   margin: 0 auto;  display: block;}
 
 /* =================   wallet page css ======================*/  
 .wallet-page-coin {font-size: 2rem;}

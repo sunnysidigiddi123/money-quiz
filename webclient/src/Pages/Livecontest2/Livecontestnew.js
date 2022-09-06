@@ -53,6 +53,7 @@ const Livecontestnew = () => {
 
    }, [])
 
+
    function addData() {
 
       setQuestions(location.state.question1)
@@ -600,8 +601,8 @@ const Livecontestnew = () => {
                             {viewVideo && questions && !questions.imagepath ?    
                             <div className="col-xs-12 col-sm-12 col-md-12 mt-3 d-flex justify-content-center">
                                 <div className='video-player-wraper'>
-                                <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
-                                       height='100%' muted></ReactPlayer>
+                                 <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
+                                       height='100%' muted></ReactPlayer> 
                                 </div>
                             </div>
                             

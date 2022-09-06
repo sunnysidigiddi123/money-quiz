@@ -10,6 +10,7 @@ import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import * as dotenv from "dotenv";
 import { IGetUserAuthInfoRequest, resfreshAuth } from 'src/users/middlewares/validate-user.middleware';
 import { Request } from 'express';
+import { Response } from 'express';
 import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
@@ -143,7 +144,7 @@ export class UsersService {
     try {
 
       // return this.userRepository.findOne(id, { relations: ['savedcontests'] })
-      return this.userRepository.findOne({ where: { id }, relations: ['savedcontests'] })
+      return this.userRepository.findOne({ where: { id }, relations: ['savedcontests', 'ads'] })
 
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
@@ -194,7 +195,7 @@ export class UsersService {
   }
 
 
-  async forgotPassword(request: IGetUserAuthInfoRequest) {
+  async forgotPassword(request: IGetUserAuthInfoRequest,response:Response) {
 
     const email = request.body.email;
     console.log(email)
@@ -240,7 +241,7 @@ export class UsersService {
           } else {
             console.log("Email sent: " + info.response);
             if (info.response) {
-              return { message: "OTP has been sent successfully. Please check your mail.", status: 1 };
+             response.status(201).send({ message: "OTP has been sent successfully. Please check your mail.", status: 1 })
             }
           }
         });
@@ -372,7 +373,6 @@ export class UsersService {
       
     return await this.userRepository.find({relations:['user_profile']})
   }
-
 
 
 }

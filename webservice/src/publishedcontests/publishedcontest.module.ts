@@ -11,10 +11,10 @@ import { UsersService } from 'src/users/services/users/users.service';
 import { PublishedcontestController } from './controllers/publishedcontest/publishedcontest.controller';
 import { PublishedcontestService } from './services/publishedcontest/publishedcontest.service';
 import { AdminContestService } from 'src/admincontests/services/contest/admincontest.service';
-import { Otp, Question, Segment, user_profile } from 'src/typeorm';
+import { Ads, Otp, Question, Segment, user_profile } from 'src/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment,Question,Otp,user_profile])],
+  imports: [TypeOrmModule.forFeature([Admincontest,Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Segment,Question,Otp,user_profile, Ads])],
   controllers: [PublishedcontestController],
   providers: [
     {
