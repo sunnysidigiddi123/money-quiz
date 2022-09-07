@@ -323,8 +323,9 @@ export class UsersService {
         },
         relations:['userProfile']
       });
+      const address = await this.profileaddressRepository.findOne({relations:{user_profile:true}, where:{user_profile:{user:{id:request.userId}}}})
       if (user) {
-        return { message: "Profile data", name: user.name, email: user.email, role: user.role, wallet: user.Wallet,userProfile:user.userProfile };
+        return { message: "Profile data", name: user.name, email: user.email, role: user.role, wallet: user.Wallet,userProfile:user.userProfile , address:address };
       }
 
     } catch (e) {
