@@ -15,6 +15,7 @@ import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const pincode = require('get-indian-places-on-pincodes')
 dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET
@@ -409,9 +410,33 @@ export class UsersService {
 
   async getdetails(request: IGetUserAuthInfoRequest){
 
-      
-    return await this.userRepository.find({relations:['user_profile']})
+    return await this.userRepository.find({relations:['userProfile']})
+    
   }
 
+
+
+  async getpincodedata(request: IGetUserAuthInfoRequest){
+
+    console.log(pincode(342001))
+    try{
+      
+      const user = await this.userRepository.findOne({where:{id:request.userId}});
+    
+      if(user){
+
+         const pincodeData = pincode(request.body.pincode)
+
+         return { message:"Pinocde details" , pincode:pincodeData }
+      }
+
+
+  } catch (e) {
+
+    throw new HttpException(e, HttpStatus.BAD_REQUEST)
+  
+    
+  }
+}
 
 }

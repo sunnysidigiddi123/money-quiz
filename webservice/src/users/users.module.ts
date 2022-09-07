@@ -39,8 +39,13 @@ export class UsersModule implements NestModule {
       method: RequestMethod.POST
   
      },
+     {
+      path: 'users/getpincodedata',
+      method: RequestMethod.POST
+  
+     },
     
-    
+     
     )
   }
  

@@ -151,5 +151,16 @@ async updateprofile(@Req() request: IGetUserAuthInfoRequest,@Res() response:Resp
     }
 }
 
+@Post('getpincodedata')
+@UsePipes(ValidationPipe)      
+async getpincodedata(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+    const getpincodedata = await  this.usersService.getpincodedata(request);
+
+    if(getpincodedata){
+
+        response.status(201).send(getpincodedata)
+    }
+}
+
 
 }
