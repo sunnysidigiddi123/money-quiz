@@ -28,6 +28,9 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .body-bg{background-color: #fdfeff;}
 .btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
 .btn-gray{background-color: #a7a7a7; color: #ffffff; border-radius: 20px;}
+.btn-green{background-color: #4ece42; border-radius: 20px;}
+.btn-green:hover{color:#ffffff!important}
+.btn-confirmation{border-bottom: 2px solid rgb(227, 225, 225); border-bottom-left-radius: 40px; padding: 20px 0;}
 .page-container{padding:90px 0;}
 .inner-page-container{padding:80px 0; background-color: #eeeef2;}
 .border-bottom-left-round{border-bottom-left-radius:55px}
@@ -39,6 +42,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .bg-black{background-color: #000000;}
 .bg-green{background-color: #baf0ba!important;}
 .bg-darker-gray{background-color: #5b5b5b;}
+.bg-badge{background-color: #e5d5c9;}
 .text-info-gray{color: #808080; font-weight: bold; font-size: 0.9rem; padding-bottom: 5px;}
 .fw-500{font-weight: 500;}
 .add-circle{width: 50px; height: 50px; padding: 12px;  border-radius: 50%;}
@@ -143,6 +147,9 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .goodlucktimer{height: 50px;}
 .quizTimer {width: 25px;}
 .quizTimer .countdown-wrapper{right: 0; top:-10px;}
+.stats .countdown-wrapper{top:-11px;}
+.stats .user-info-item{font-size: 16px;}
+
 
 
  /* =================   Live quiz css ======================*/    
@@ -212,7 +219,8 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
     flex: 0 0 33.333333%;
     display: block;
   } */
-
+.game-info-card{  border-top-right-radius: 50px; border-bottom-right-radius: 50px;}
+.stats-num-text{font-weight: 800;}
 @media (min-width: 768px) and (max-width: 1199.98px) { 
     
     .logo img{width: 100%; max-width: 100px;}

@@ -11,6 +11,8 @@ import { Modal, Button, Form, Row, ModalFooter } from "react-bootstrap";
 import { FaCrown,FaExclamation,FaSmile} from "react-icons/fa";
 import StatsModal from './StatsModal/StatsModal';
 import StatsModalWrong from './StatsModal/StatsModalWrong';
+import WrongAnswer from "./contestStats/WrongAnswer";
+import CorrectAnswer from "./contestStats/CorrectAnswer";
 import { STATS_DELAY_IN_MILLISEC,STATS_DELAY_IN_SEC } from '../../config/config';
 import AppHeader from "../../Components/AppHeader/AppHeader";
 import BottomNav from "../../Components/BottomNav/BottomNav";
@@ -688,10 +690,10 @@ const Livecontestnew = () => {
 
 
 
-                  <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} />
-                  <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} />
-
-
+                  {/* <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} /> 
+                  <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} /> */}
+                   <WrongAnswer lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers}/>
+<CorrectAnswer  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} /> 
 
       </>
    )
