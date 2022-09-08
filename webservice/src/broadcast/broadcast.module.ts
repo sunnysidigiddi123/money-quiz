@@ -1,12 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Applieduser, Auditcontest, Liveuser, Publishedcontest, Question, User } from 'src/typeorm';
+import { Applieduser, aud_contests, aud_liveusers, Liveuser, Publishedcontest, Question, User } from 'src/typeorm';
 import { FakeValidateUserMiddleWare, ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 import { BroadcastController } from './controllers/broadcast/broadcast.controller';
 import { BroadcastService } from './services/broadcast/broadcast.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Publishedcontest,Auditcontest,User,Applieduser,Liveuser,Question])],
+  imports: [TypeOrmModule.forFeature([Publishedcontest,aud_contests,User,Applieduser,Liveuser,Question,aud_liveusers])],
   controllers: [BroadcastController],
   providers: [ 
   { 

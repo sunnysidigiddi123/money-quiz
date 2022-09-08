@@ -1,6 +1,6 @@
 import { Injectable ,HttpException, HttpStatus} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Applieduser, Auditcontest, Liveuser, Publishedcontest, Question, User } from 'src/typeorm';
+import { Applieduser, aud_contests, aud_liveusers, Liveuser, Publishedcontest, Question, User } from 'src/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 
@@ -16,8 +16,8 @@ export class BroadcastService {
     constructor(
     @InjectRepository(Publishedcontest)
     private readonly PublishedContestRepository: Repository<Publishedcontest>,
-    @InjectRepository(Auditcontest)
-    private readonly AuditContestRepository: Repository<Auditcontest>,
+    @InjectRepository(aud_contests)
+    private readonly AuditContestRepository: Repository<aud_contests>,
     @InjectRepository(User)
     private readonly UserRepository: Repository<User>,
     @InjectRepository(Applieduser)
@@ -26,6 +26,8 @@ export class BroadcastService {
     private readonly liveUserRepository: Repository<Liveuser>,
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectRepository(aud_liveusers)
+    private readonly audLiveUsersRepository: Repository<aud_liveusers>,
     
     ){}
 
@@ -37,7 +39,7 @@ export class BroadcastService {
     const LiveUser = await this.liveUserRepository.findOne({where:{userId:request.userId,contestId:request.body.contestId}})
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
     // console.log("sssss",await this.AppliedUserRepository.count({where:{contestid:1}}))
-    console.log(request.body.selectedOption,LiveUser,"aaaaaaaaaa")
+    console.log(request.body.selectedOption,LiveUser,"aaaaaaaaaa",question)
     try{
     if(user){
       
@@ -62,6 +64,15 @@ export class BroadcastService {
         }
 
          await this.PublishedContestRepository.save(contest);
+         const auditliveUsers = this.audLiveUsersRepository.create({
+          userId:user.id,
+          contestId:contest.id,
+          questionId:request.body.questionId,
+          flag:"Wrong Answer"
+         })
+         
+          console.log(auditliveUsers,"Aaaa")
+         await this.audLiveUsersRepository.save(auditliveUsers)
          
          return {message: "Oops! You Gave Wrong Answer" ,ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:0}
         }
@@ -126,7 +137,14 @@ export class BroadcastService {
       let particularPoll = contest.ParticularPoll;
       user.Wallet = user.Wallet + particularPoll;
       console.log("total old live users", TotalLiveUsers)
-      await this.liveUserRepository.remove(LiveUser);
+      await this.liveUserRepository.remove(LiveUser); 
+
+     // for auditing 
+     console.log(user.id,contest.id,"Aaaa")
+
+
+    ///
+
       const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
       if(TotalLiveUsersnew == 0){
         
@@ -141,6 +159,15 @@ export class BroadcastService {
     
       await this.PublishedContestRepository.save(contest);
       await this.UserRepository.save(user);
+      const auditliveUsers = this.audLiveUsersRepository.create({
+        userId:user.id,
+        contestId:contest.id,
+        questionId:request.body.questionId,
+        flag:"cashout"
+       })
+       
+        console.log(auditliveUsers,"Aaaa")
+       await this.audLiveUsersRepository.save(auditliveUsers)
       return {mesage:"Cashout Successfully",ParticularPoll:particularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll,status:1}
     }
   }catch(e){
@@ -175,8 +202,17 @@ export class BroadcastService {
           console.log("total live users", TotalLiveUsersnew)
         contest.ParticularPoll = totalPoll/TotalLiveUsersnew;
         }
-
+        
         await this.PublishedContestRepository.save(contest);
+        const auditliveUsers = this.audLiveUsersRepository.create({
+          userId:user.id,
+          contestId:contest.id,
+          questionId:request.body.questionId,
+          flag:"Wrong Answer"
+         })
+         
+          console.log(auditliveUsers,"Aaaa")
+         await this.audLiveUsersRepository.save(auditliveUsers)
         return {mesage:"Quit Successfully",ParticularPoll:contest.ParticularPoll,LiveUsers:TotalLiveUsersnew,TotalPoll:totalPoll}
 
     }
@@ -193,6 +229,7 @@ export class BroadcastService {
 
     const user = await this.UserRepository.findOne({where:{id:request.userId}})
     const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
+    const Alreadyentered = await this.liveUserRepository.findOne({where:{userId:user.id,contestId:contest.id}})
    
     try{
 
@@ -202,6 +239,13 @@ export class BroadcastService {
         throw new HttpException({message:"Insufficient Cash In Your Wallet",status:0},HttpStatus.BAD_REQUEST);
         }
         if(user.Wallet >= contest.ParticularPoll){
+          
+          if(Alreadyentered){
+            
+            throw new HttpException({message:"You are already in the game",status:0},HttpStatus.BAD_REQUEST);
+
+          }else{
+
           user.Wallet = user.Wallet - (contest.ParticularPoll);
           const liveUsers = this.liveUserRepository.create({
             userId:user.id,
@@ -210,6 +254,9 @@ export class BroadcastService {
            await this.liveUserRepository.save(liveUsers);
            await this.UserRepository.save(user)
            return {mesage:"Re-Enter successfully",status:1}
+
+          }
+
         }  
      
     }

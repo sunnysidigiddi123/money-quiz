@@ -69,7 +69,9 @@ export class Question {
     @JoinColumn({ name: "contest_id" })
     contest: Admincontest;
 
-    @ManyToOne(() => Publishedcontest, contest => contest.questions)
+    @ManyToOne(() => Publishedcontest, contest => contest.questions, {
+        onDelete: "CASCADE", 
+      })
     @JoinColumn({ name: "publishedcontest_id" })
     publishedcontest: Publishedcontest;
     

@@ -2,41 +2,39 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Up
 
 
 @Entity()
-export class Auditcontest {
+export class aud_liveusers {
   
     @PrimaryGeneratedColumn('increment')
     id: number
 
     @Column({
         nullable:false,
-        default:''
     })
-    contestName: string
-
-    @Column({
-        nullable:false,
-        default:''
-    })
-    contestDetails: string
-
-    @Column({
-        nullable:false
-    })
-    contestTime: Date
-
+    userId: number
    
     @Column({
         nullable:false,
-        default:0
     })
-    EntryAmount: number
+    contestId: number
+
+    @Column({
+        nullable:false,
+    })
+    questionId: number
+
+
+    @Column({
+        nullable:false,
+    })
+    flag: string
+
+
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
   
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
-
  
 
 }
