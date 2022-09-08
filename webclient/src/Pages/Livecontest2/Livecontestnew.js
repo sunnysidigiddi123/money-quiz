@@ -16,6 +16,7 @@ import CorrectAnswer from "./contestStats/CorrectAnswer";
 import { STATS_DELAY_IN_MILLISEC,STATS_DELAY_IN_SEC } from '../../config/config';
 import AppHeader from "../../Components/AppHeader/AppHeader";
 import BottomNav from "../../Components/BottomNav/BottomNav";
+import WinningMsg from "../../Components/SponsorAds/WinningMsg/WinningMsg";
 
 
 const Livecontestnew = () => {
@@ -41,7 +42,8 @@ const Livecontestnew = () => {
    const [polldata , setPollData] = useState([]);
    const [creditlastamount , setCreditLastAmount] = useState(0);
    const [initialusers , setInitialUsers] = useState(0);
-   
+   const [showWinning, setShowWinning] =useState(false)
+   const [cashOutCoin, setcashOutCoin] =useState(0)
    // For adding values from userhome 
    // console.log(present.length,present)
    const navigate = useNavigate();
@@ -133,11 +135,13 @@ const Livecontestnew = () => {
 
   // Cashout 
 
-  const cashout = async (e) => {
+  const cashout = async (cashoutQuesId) => {
+   console.log('in cashout')
    const BASE_URL = `${process.env.REACT_APP_BASE_URL}/broadcast/cashout`;
    const token = sessionStorage.getItem("token");
    let sendData = {
       contestId: contestid,
+      questionId:cashoutQuesId
    };
    try {
       let post = await axios.post(BASE_URL, sendData,{
@@ -147,8 +151,13 @@ const Livecontestnew = () => {
        });
     
       if(post.data.status == 1){
-         toast.success(post.data.message)
-         navigate('/appuserhome')
+         console.log('cashout success')
+         setLgShowss(false);
+         setShowWinning(true);
+         setcashOutCoin(post.data.ParticularPoll);
+        
+         // toast.success(post.data.message)
+         // navigate('/appuserhome')
        }
       
    } catch (e) {
@@ -536,7 +545,8 @@ const Livecontestnew = () => {
 
 
          <AppHeader />
-            <div className="inner-page-container">
+         {showWinning && <WinningMsg status={'success'} winningcoin={cashOutCoin} nextUrl={'/adslist'} isCashout={true}></WinningMsg>}
+            <div className="inner-page-container">            
                 <div className="container-fluid">
                   <section>
                      <div className="row">
@@ -620,7 +630,7 @@ const Livecontestnew = () => {
                                         <div class="input-container">
                                             <input id="walk" className="radio-button" type="radio" name="radio" value={questions.options[0]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
-                                                <label for="walk" className="radio-tile-label">A {questions.options[0]}</label>
+                                                <label htmlFor="walk" className="radio-tile-label">A {questions.options[0]}</label>
                                             </div>
                                         </div>
 
@@ -628,7 +638,7 @@ const Livecontestnew = () => {
                                             <input id="bike" className="radio-button" type="radio" name="radio" value={questions.options[1]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
 
-                                                <label for="bike" className="radio-tile-label">B {questions.options[1]}</label>
+                                                <label htmlFor="bike" className="radio-tile-label">B {questions.options[1]}</label>
                                             </div>
                                         </div>
 
@@ -636,14 +646,14 @@ const Livecontestnew = () => {
                                             <input id="drive" className="radio-button" type="radio" name="radio" value={questions.options[2]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
 
-                                                <label for="drive" className="radio-tile-label">C {questions.options[2]}</label>
+                                                <label htmlFor="drive" className="radio-tile-label">C {questions.options[2]}</label>
                                             </div>
                                         </div>
 
                                         <div className="input-container">
                                             <input id="fly" className="radio-button" type="radio" name="radio" value={questions.options[3]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
-                                                <label for="fly" className="radio-tile-label">D {questions.options[3]}</label>
+                                                <label htmlFor="fly" className="radio-tile-label">D {questions.options[3]}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -693,7 +703,7 @@ const Livecontestnew = () => {
                   {/* <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} /> 
                   <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} /> */}
                    <WrongAnswer lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers}/>
-<CorrectAnswer  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} /> 
+<CorrectAnswer  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} currentQuesId = {questions.id}/> 
 
       </>
    )
