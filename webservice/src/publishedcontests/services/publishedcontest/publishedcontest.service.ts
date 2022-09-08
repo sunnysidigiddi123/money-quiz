@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Question } from 'src/typeorm';
-import { Auditcontest } from 'src/typeorm/contests/Auditcontest';
+import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Question, aud_contests } from 'src/typeorm';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
 import { ConnectionIsNotSetError, Repository } from 'typeorm'; 
@@ -21,8 +20,8 @@ export class PublishedcontestService {
     private readonly contestRepository: Repository<Admincontest> ,
     @InjectRepository(Publishedcontest)
     private readonly PublishedContestRepository: Repository<Publishedcontest>,
-    @InjectRepository(Auditcontest)
-    private readonly AuditContestRepository: Repository<Auditcontest>,
+    @InjectRepository(aud_contests)
+    private readonly AuditContestRepository: Repository<aud_contests>,
     @InjectRepository(User)
     private readonly UserRepository: Repository<User>,
     @InjectRepository(Applieduser)
@@ -241,6 +240,34 @@ async getData(request: IGetUserAuthInfoRequest){
       contest.LiveQuestionIndex = request.body.questionIndex
       await this.PublishedContestRepository.save(contest)
     // if(question.correctanswer === request.body.selectedOption  && request.body.selectedOption !== '' && request.body.selectedOption !== null)
+     const question = contest.questions[request.body.questionIndex]
+     if(contest.questions.length == request.body.questionIndex ){
+       
+      const contestalreadyaudited = await this.AuditContestRepository.findOne({where: {contestId:request.body.contestId}})
+      const [liveusers ,count] = await this.liveUserRepository.findAndCount({where:{contestId:request.body.contestId}})
+
+      if(!contestalreadyaudited){
+        
+        
+        const auditcontest = this.AuditContestRepository.create({
+         
+          contestId:contest.id,
+          contestDetails:contest.contestDetails,
+          contestName:contest.contestName,
+          contestTime:contest.contestTime,
+          EntryAmount:contest.EntryAmount,
+          winningAmount:contest.ParticularPoll,
+          remainingUsers: count
+
+
+
+        }) 
+
+        await this.PublishedContestRepository.remove(contest)
+        await this.AuditContestRepository.save(auditcontest)
+          
+      }
+    }
     return {message: "Poll Data ",status:1,entryamount:contest.EntryAmount,particularPoll:contest.ParticularPoll,question:contest.questions[request.body.questionIndex],liveindex:contest.LiveQuestionIndex}
     //  }
   }

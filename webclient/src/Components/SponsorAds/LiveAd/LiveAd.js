@@ -74,6 +74,9 @@ const LiveAd = () => {
          setEnd(res?.questions[0].totalVideoTime)
          setTimerTime(res?.questions[0]?.totalQuestionTime);
          sessionStorage.setItem("adIndex", 1)
+         if(res?.questions[0].videolink == ''){
+            setViewVideo(false)
+         }
       })
       try {
 
@@ -112,6 +115,11 @@ const LiveAd = () => {
          // setNewVideoTime(allQuestionList[adIndex].totalVideoTime)
          //console.log('next question called')
          console.log('video time is ', allQuestionList[adIndex].totalVideoTime, 'out of total', allQuestionList[adIndex].totalQuestionTime)
+
+         if(allQuestionList[adIndex].videolink !== ''){
+            setViewVideo(true)
+         }
+         nextQuestion();
       }
    }
 
@@ -254,7 +262,7 @@ const LiveAd = () => {
                         {!viewVideo && questions ?
                            <div className="info-oval-ribbon d-flex justify-content-between bg-dark-orange ps-5 py-3">
                               <div className="question-text text-white"questions>
-                                 {adIndex} / {totalquestions} {questions.question}
+                                 {adIndex} .   {questions.question}
                               </div>
                            </div> : <></>}
                      </div>
