@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AppHeader from "../../AppHeader/AppHeader"
 
@@ -7,6 +7,8 @@ export default function WinningMsg(props) {
     let winningcoin = props.winningcoin;
     let nextUrl = props.nextUrl;
     let status = props.status;
+    let isCashout = props.isCashout;
+    useEffect(()=>{console.log('winning called')},[])
     return (
         <>
             <div className="inner-page-container">
@@ -22,9 +24,15 @@ export default function WinningMsg(props) {
                                 <p className='fs-3'>You have given wrong answer. You don't win any money. </p></>
                                 }
                                 
-                                <div className="winning-navigation text-right pt-3">                                    
-                                    <Link to={'/appuserhome'}><button type="button" className="btn  btn-sm me-2 btn-gray">Home</button></Link>
+                                <div className="winning-navigation text-right pt-3">  
+                                {!isCashout
+                                ? <>
+                                <Link to={'/appuserhome'}><button type="button" className="btn  btn-sm me-2 btn-gray">Home</button></Link>
                                     <Link to={nextUrl}><button type="button" className="btn btn-sm btn-orange">Next</button></Link>
+                                </>
+                                :<>
+                                <Link to={'/appuserhome'}><button type="button" className="btn btn-sm btn-orange">Ok</button></Link></>}                                  
+                                    
                                 </div>
                             </div>
                         </div>
