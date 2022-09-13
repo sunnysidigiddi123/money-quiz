@@ -32,8 +32,7 @@ const Form = ({
    const [showmessage, setshowMesaage] = useState(false);
    const [toastMessage, setToastMessage] = useState("");
    const [toastColor, setToastColor] = useState("");
-   const [age ,setAge] = useState()
-   const [location,setLocation] = useState('');
+
    const navigate = useNavigate();
    
    const showHidePassword = () => {
@@ -61,8 +60,7 @@ const Form = ({
         password,
         Wallet:0,
         role: "user",
-        age:age,
-        location:location
+     
       };
       try{
       
@@ -207,83 +205,6 @@ const Form = ({
                       <></>
                     )}
                                       
-
-
-                                        <div className="form-group row">
-											<label className="col-sm-4 col-form-label">Age<span style={{ color: "red" }}>*</span></label>
-											<div className="col-sm-8">
-												<input  
-                               type='number'
-                                                className='form-control'
-                                                id="age"
-                                                placeholder="18"
-                                                
-                                    
-                                                onChange={(e)=> {setAge(e.target.value)}}
-                                            
-                                                name="age"
-                                                required
-                                                />
-                                               
-											</div>
-										</div>
-
-                    <div className="form-group row">
-											<label className="col-sm-4 col-form-label">Location<span style={{ color: "red" }}>*</span></label>
-											<div className="col-sm-8">
-												<input  
-                               type='text'
-                                                className='form-control'
-                                                id="age"
-                                                placeholder="Delhi"
-                                                
-                                    
-                                                onChange={(e)=> {setLocation(e.target.value)}}
-                                            
-                                                name="location"
-                                                required
-                                                />
-                                               
-											</div>
-										</div>
-
-                                        <div className="form-group row">
-											<label className="col-sm-4 col-form-label">Age<span style={{ color: "red" }}>*</span></label>
-											<div className="col-sm-8">
-												<input  
-                               type='number'
-                                                className='form-control'
-                                                id="age"
-                                                placeholder="18"
-                                                
-                                    
-                                                onChange={(e)=> {setAge(e.target.value)}}
-                                            
-                                                name="age"
-                                                required
-                                                />
-                                               
-											</div>
-										</div>
-
-                    <div className="form-group row">
-											<label className="col-sm-4 col-form-label">Location<span style={{ color: "red" }}>*</span></label>
-											<div className="col-sm-8">
-												<input  
-                               type='text'
-                                                className='form-control'
-                                                id="age"
-                                                placeholder="Delhi"
-                                                
-                                    
-                                                onChange={(e)=> {setLocation(e.target.value)}}
-                                            
-                                                name="location"
-                                                required
-                                                />
-                                               
-											</div>
-										</div>
 
                                         { backerrorpassword == " " ? (
                                             <> </>

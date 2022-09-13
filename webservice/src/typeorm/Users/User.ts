@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Ads } from "../ads/Ads";
 import { Admincontest } from "../contests/Admincontest";
@@ -29,11 +30,13 @@ export class User {
         default:''
     })
     email: string
-
+    
+  
     @Column({
         nullable:false,
         default:''
     })
+    @Exclude()
     password: string
     
     @Column({
@@ -51,7 +54,9 @@ export class User {
     // @JoinColumn()
     // userProfile: user_profile
 
-    @OneToOne(() => user_profile, (profile) => profile.user) // specify inverse side as a second parameter
+    @OneToOne(() => user_profile, (profile) => profile.user, {
+        onDelete: "CASCADE", 
+      }) // specify inverse side as a second parameter
     @JoinColumn()
     userProfile: user_profile
 

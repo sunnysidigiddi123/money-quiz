@@ -23,9 +23,5 @@ export class CreateUserDto {
      Wallet:number;
 
      
-     age:number;
-
-   
-     location:string;
 
 }

@@ -360,15 +360,17 @@ export class UsersService {
 
         existprofileaddress.address1 = request.body.address1
         existprofileaddress.address2 = request.body.address2
-        existprofileaddress.PIN = request.body.pin,
+        existprofileaddress.pin = request.body.pin,
         existprofileaddress.city = request.body.city,
         existprofileaddress.state = request.body.state,
         existprofileaddress.country = request.body.country
 
-
+       console.log(existprofile.id)
         await this.userprofileRepository.save(existprofile)
         await this.profileaddressRepository.save(existprofileaddress)
-        return { message: "profile update successfully ", profile: existprofile ,address:existprofileaddress}
+        const profile = await this.userprofileRepository.findOne({where:{id:existprofile.id}}) 
+        const address = await this.profileaddressRepository.findOne({where:{id:existprofileaddress.id}})
+        return { message: "profile update successfully ", profile:profile ,address:address}
 
 
       } else {
@@ -385,7 +387,7 @@ export class UsersService {
                     
              address1:request.body.address1,
              address2:request.body.address2,
-             PIN:request.body.pin,
+             pin:request.body.pin,
              city:request.body.city,
              state:request.body.state,
              country:request.body.country
@@ -418,7 +420,7 @@ export class UsersService {
 
   async getpincodedata(request: IGetUserAuthInfoRequest){
 
-    console.log(pincode(342001))
+    
     try{
       
       const user = await this.userRepository.findOne({where:{id:request.userId}});
@@ -426,7 +428,7 @@ export class UsersService {
       if(user){
 
          const pincodeData = pincode(request.body.pincode)
-
+         console.log(pincodeData)
          return { message:"Pinocde details" , pincode:pincodeData }
       }
 
