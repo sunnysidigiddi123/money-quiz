@@ -63,16 +63,10 @@ const Formlogin = ({
           localStorage.setItem("loginStatus", true);
          
           setTimeout(() => {
-            if(data.data.details.role == "user") {
+
               navigate("/appuserhome");
               window.location.reload();
 
-           }else
-          {
-         
-            toast.error("Invalid User")
-        
-          }
           }, 1000);
         }
         } catch (e) {

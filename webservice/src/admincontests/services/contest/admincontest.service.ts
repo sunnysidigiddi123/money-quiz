@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admincontest, Ads, Segment, User } from 'src/typeorm';
+import { Admin, Admincontest, Ads, Segment, User } from 'src/typeorm';
 import { CreateAdminContestDto } from 'src/dtos/contests/CreateAdminContest.dto';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
@@ -22,7 +22,8 @@ export class AdminContestService {
   private readonly UserRepository: Repository<User>,
   @InjectRepository(Segment)
   private readonly segmentRepository: Repository<Segment>,
-
+  @InjectRepository(Admin)
+  private readonly adminRepository: Repository<Admin>,
 
  
   
@@ -31,7 +32,7 @@ export class AdminContestService {
 getSavedContest(){
      try{
 
-       return this.admincontestRepository.find({relations:['user','questions']});
+       return this.admincontestRepository.find({relations:['admin','questions']});
      
       }catch(e){
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
@@ -51,10 +52,10 @@ getSavedContestById(id:number){
       }
 }
 
-async createContest(admincontestDto:CreateAdminContestDto,user:User,request:IGetUserAuthInfoRequest){
+async createContest(admincontestDto:CreateAdminContestDto,admin:Admin,request:IGetUserAuthInfoRequest){
     
     try{
-      const users = await this.UserRepository.findOne({where:{id:request.userId}})
+      const users = await this.adminRepository.findOne({where:{id:request.userId}})
       console.log(users,"Sfsdfds")
          const newContest = this.admincontestRepository.create({
                contestName:admincontestDto.contestName,
@@ -62,13 +63,13 @@ async createContest(admincontestDto:CreateAdminContestDto,user:User,request:IGet
                contestTime:admincontestDto.contestTime,
                EntryAmount:admincontestDto.EntryAmount,
                publish:admincontestDto.publish,
-               user:users
+               admin:users
          });
-         user.savedcontests = [...user.savedcontests , newContest]
-         console.log("Contests" , user.savedcontests)
+         admin.savedcontests = [...admin.savedcontests , newContest]
+         console.log("Contests" , admin.savedcontests)
 
          
-         await this.UserRepository.save(user)
+         await this.adminRepository.save(admin)
          await this.admincontestRepository.save(newContest)
 
          //for saving segment 

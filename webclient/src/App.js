@@ -35,17 +35,10 @@ function App() {
         <Route exact path="/appliedcontest" element={<AppliedContestList />} />
         <Route exact path="/singlequestion" element={<SingleQuestion />} />
         <Route exact path="/adslist" element={<AdsList />} />
-        <Route exact path="/livead" element={<LiveAd />} />
-              
+        <Route exact path="/livead" element={<LiveAd />} />       
         <Route exact path="/userwallet" element={<UserWallet />} />
         <Route exact path="/userprofile" element={<UserProfile />} />
         <Route exact path="/updateprofile" element={<UpdateProfile />} />
-
-        
-        
-        
-        
-
         
       </Routes>
     </Router>

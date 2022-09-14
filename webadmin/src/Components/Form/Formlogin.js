@@ -45,7 +45,7 @@ const Formlogin = ({
              email,
             password
         }
-        const API_URL = `${process.env.REACT_APP_BASE_URL}/users/login`;
+        const API_URL = `${process.env.REACT_APP_BASE_URL}/users/admin/login`;
 
         // try {
         //     const data = await axios.post(BASE_URL, sendData)
@@ -89,16 +89,9 @@ const Formlogin = ({
           localStorage.setItem("loginStatus", true);
          
           setTimeout(() => {
-            if(data.data.details.role == "admin") {
               navigate("/adminhome");
               window.location.reload();
 
-           }else
-          {
-         
-            toast.error("Invalid User")
-        
-          }
           }, 1000);
         }
         } catch (e) {

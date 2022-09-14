@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { Otp as OtpEntity, profile_address, User as UserEntity, user_profile } from 'src/typeorm';
+import { Admin, Otp as OtpEntity, profile_address, User as UserEntity, user_profile } from 'src/typeorm';
 import { Admincontest as ContestEntity } from 'src/typeorm';
 import { CreateUserDto } from 'src/dtos/Users/CreateUser.dto';
 import { encodePassword } from 'src/utils/bcrypt';
@@ -12,6 +12,7 @@ import { IGetUserAuthInfoRequest, resfreshAuth } from 'src/users/middlewares/val
 import { Request } from 'express';
 import { Response } from 'express';
 import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
+import { CreateAdminDto } from 'src/dtos/Users/CreateAdmin.dto';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -40,6 +41,8 @@ export class UsersService {
     private readonly userprofileRepository: Repository<user_profile>,
     @InjectRepository(profile_address)
     private readonly profileaddressRepository: Repository<profile_address>,
+    @InjectRepository(Admin)
+    private readonly adminRepository: Repository<Admin>,
 
   ) {
 
@@ -87,6 +90,44 @@ export class UsersService {
   }
 
 
+  async signupAdmin(adminDto: CreateAdminDto) {
+
+    try {
+
+      const userexist = await this.adminRepository.findOne({ where: { email: adminDto.email } })
+      if (userexist) {
+        throw new HttpException("Email Already Exist", HttpStatus.BAD_REQUEST);
+      }
+      const password = encodePassword(adminDto.password);
+      const newUser = this.adminRepository.create({ ...adminDto, password });
+      await this.adminRepository.save(newUser);
+      console.log("adasdsads", newUser.id)
+      const id = newUser.id;
+      const token = jwt.sign({ id }, jwtSecret, {
+        expiresIn: parseInt(tokenLife),
+      });
+      const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
+        expiresIn: parseInt(refreshTokenLife),
+      });
+      const details = {
+        id: id,
+        name: adminDto.name,
+        email: adminDto.email,
+      };
+      console.log(token, refreshToken)
+      return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Registered Successfully" }
+
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+    }
+
+  }
+
+
+
+
   async loginUser(loginUserDto: LoginUserDto) {
 
     try {
@@ -114,7 +155,48 @@ export class UsersService {
             id: userexist.id,
             name: userexist.name,
             email: userexist.email,
-            role: userexist.role
+      
+          };
+
+          return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Logged in successfully" }
+        }
+
+      }
+    } catch (e) {
+
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+    }
+  }
+
+  async loginAdmin(loginUserDto: LoginUserDto) {
+
+    try {
+      const email = loginUserDto.email;
+      const password = loginUserDto.password;
+
+      const userexist = await this.adminRepository.findOne({ where: { email: email } })
+
+      if (userexist) {
+
+        const validatePassword = await bcrypt.compare(
+          password,
+          userexist.password
+        );
+
+        if (validatePassword) {
+          const id = userexist.id;
+          const token = jwt.sign({ id }, jwtSecret, {
+            expiresIn: parseInt(tokenLife),
+          });
+          const refreshToken = jwt.sign({ id }, jwtRefreshSecret, {
+            expiresIn: parseInt(refreshTokenLife),
+          });
+          const details = {
+            id: userexist.id,
+            name: userexist.name,
+            email: userexist.email,
+      
           };
 
           return { auth: true, token: token, refreshToken: refreshToken, details: details, message: "User Logged in successfully" }
@@ -147,7 +229,7 @@ export class UsersService {
     try {
 
       // return this.userRepository.findOne(id, { relations: ['savedcontests'] })
-      return this.userRepository.findOne({ where: { id }, relations: ['savedcontests', 'ads'] })
+      return this.adminRepository.findOne({ where: { id }, relations: ['savedcontests', 'ads'] })
 
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST)
@@ -160,6 +242,20 @@ export class UsersService {
 
     try {
       const user = await this.userRepository.findOne({ where: { id: request.userId } })
+      return user
+
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+    }
+
+  }
+
+  async adminhome(request: IGetUserAuthInfoRequest) {
+    console.log(request.userId, "Dsfsfdsdss")
+
+    try {
+      const user = await this.adminRepository.findOne({ where: { id: request.userId } })
       return user
 
     } catch (e) {
@@ -326,7 +422,7 @@ export class UsersService {
       });
       const address = await this.profileaddressRepository.findOne({relations:{user_profile:true}, where:{user_profile:{user:{id:request.userId}}}})
       if (user) {
-        return { message: "Profile data", name: user.name, email: user.email, role: user.role, wallet: user.Wallet,userProfile:user.userProfile , address:address };
+        return { message: "Profile data", name: user.name, email: user.email, wallet: user.Wallet,userProfile:user.userProfile , address:address };
       }
 
     } catch (e) {
@@ -429,7 +525,8 @@ export class UsersService {
 
          const pincodeData = pincode(request.body.pincode)
          console.log(pincodeData)
-         return { message:"Pinocde details" , pincode:pincodeData }
+    
+         return { message:"Pincode details" , pincode:pincodeData }
       }
 
 

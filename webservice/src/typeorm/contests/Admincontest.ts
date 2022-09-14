@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm"
 import { Question } from "../questions/questions"
+import { Admin } from "../Users/Admin"
 import { User } from "../Users/User"
 
 @Entity()
@@ -38,9 +39,9 @@ export class Admincontest {
     })
     publish: boolean
 
-    @ManyToOne(() => User, user => user.savedcontests)
-    @JoinColumn({ name: "user_id" })
-    user: User;
+    @ManyToOne(() => Admin, user => user.savedcontests)
+    @JoinColumn({ name: "admin" })
+    admin: Admin;
     
 
     @OneToMany(() => Question, question => question.contest)

@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, OneToOne } from "typeorm"
+import { Admin } from "../Users/Admin"
 import { User } from "../Users/User"
 import { Ads_question } from "./Ads_question"
 import { Ads_target } from "./Ads_target"
@@ -44,9 +45,9 @@ export class Ads {
     })
     publish: boolean
 
-    @ManyToOne(() => User, user => user.ads)
-    @JoinColumn({ name: "user_id" })
-    user: User;
+    @ManyToOne(() => Admin, admin => admin.ads)
+    @JoinColumn({ name: "admin_id" })
+    admin: Admin;
     
     @OneToOne(() => Ads_target)
     @JoinColumn()

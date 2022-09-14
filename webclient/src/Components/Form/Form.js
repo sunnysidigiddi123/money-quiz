@@ -59,7 +59,6 @@ const Form = ({
         email,
         password,
         Wallet:0,
-        role: "user",
      
       };
       try{

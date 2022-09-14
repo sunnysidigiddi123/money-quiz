@@ -368,7 +368,7 @@ const AdminHome = () => {
 	});
    
    
-      console.log(post.data.Ad.id,post.data.Ad.user.name,"cccccc")
+      console.log(post.data.Ad.id,post.data.Ad.admin.name,"cccccc")
 	
 	 
   
@@ -378,7 +378,7 @@ const AdminHome = () => {
 	  setAdDetails("")
 	  setLgShowAds(false)
 	  setUploaded(false)
-	 
+	 console.log(userId,user,"aaa")
 	  navigate("/ads",{state:{ adId:post.data.Ad.id,adminId:userId,user:user }   
 		});
 	} catch (e) {
@@ -420,7 +420,7 @@ const AdminHome = () => {
    
 
 	 const filteredData = res.data.filter((item)=>
-	  item.user.id == userId
+	  item.admin.id == userId
 	  
 	 )
 
@@ -461,7 +461,7 @@ const AdminHome = () => {
     const getUser =async()=>{
         const token = sessionStorage.getItem("token");
 		const refreshToken = localStorage.getItem("refreshToken");
-		const BASE_URL = `${process.env.REACT_APP_BASE_URL}/users/getuserid`;
+		const BASE_URL = `${process.env.REACT_APP_BASE_URL}/users/admin/getuserid`;
         try{
          let data = await axios.get(BASE_URL,{
 			headers: {
@@ -525,7 +525,7 @@ const AdminHome = () => {
 		 }).then((res) => {
     
 			const filteredData = res.data.filter((item)=>
-			item.user.id == userId
+			item.admin.id == userId
 			
 		   )
 		  
@@ -553,7 +553,7 @@ const AdminHome = () => {
 	 }).then((res) => {
 			setTotal(res.data)
 			const filteredData = res.data.filter((item)=>
-			item.user.id == userId
+			item.admin.id == userId
 			
 		   )
         

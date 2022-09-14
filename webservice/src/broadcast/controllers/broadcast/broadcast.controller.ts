@@ -4,6 +4,7 @@ import { Response } from 'express';
 
 @Controller('broadcast')
 export class BroadcastController {
+  tokensRepository: any;
 
     constructor(@Inject('BROADCAST_SERVICE') private readonly broadcastService: BroadcastService,
    
@@ -84,5 +85,6 @@ export class BroadcastController {
 }
 
 
-
 }
+
+
