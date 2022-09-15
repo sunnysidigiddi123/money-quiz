@@ -12,10 +12,10 @@ const USERSIGNUP = `${BASE_URL}/users/signup`;
 const GETUSER = `${BASE_URL}/users`;
 const  GETUSERPROFILE= `${BASE_URL}/users/profileinfo`;
 const UPDATEPROFILE = `${BASE_URL}/users/update-profile`;
-
 const GETADLIST = `${BASE_URL}/ads/getAds`;
 const GETADBYID = `${BASE_URL}/ads`;
-const ADSANSWERCHECK = `${BASE_URL}/ads/answerCheck`
+const ADSANSWERCHECK = `${BASE_URL}/ads/answerCheck`;
+const GETPINDETAILS = `${BASE_URL}/users/getpincodedata`;
 
 export default {
     BASE_URL,
@@ -33,5 +33,6 @@ export default {
     USERSIGNUP,
     GETUSER,
     GETUSERPROFILE,
-    UPDATEPROFILE
+    UPDATEPROFILE,
+    GETPINDETAILS
 }

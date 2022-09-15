@@ -120,7 +120,7 @@ const ForgetPassword = () => {
                   <div className="row align-items-center">
                     <div className="col-12">
                       <div className="input-group mb-0">
-                      <button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Submit</span> <i class="fas fa-sign-in-alt"></i></button>
+                      <button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Submit</span> <i className="fas fa-sign-in-alt"></i></button>
                         {/* <input
                           className="btn btn-primary btn-lg btn-block"
                           type="submit"

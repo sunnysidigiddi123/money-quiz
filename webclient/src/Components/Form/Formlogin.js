@@ -100,8 +100,8 @@ const Formlogin = ({
 							<h2 className="text-start ">Sign In</h2>
 						</div>
             <div className="input-group mb-0">									
-								<button className="btn btn-primary btn-sm btn-block facebook-shadow mb-1 py-1" type="submit" ><i class="fab fa-facebook-f" aria-hidden="true"></i> Sign In with Facebook</button>
-                <button className="btn btn-sm btn-block btn-google text-white google-shadow" type="submit" ><i class="fab fa-google" aria-hidden="true"></i> Sign In with Google</button>
+								<button className="btn btn-primary btn-sm btn-block facebook-shadow mb-1 py-1" type="submit" ><i className="fab fa-facebook-f" aria-hidden="true"></i> Sign In with Facebook</button>
+                <button className="btn btn-sm btn-block btn-google text-white google-shadow" type="submit" ><i className="fab fa-google" aria-hidden="true"></i> Sign In with Google</button>
 						</div>
             <section className="remaining-quiz">
                         <div className="row pt-5 pb-3 b-radius-25">
@@ -134,7 +134,7 @@ const Formlogin = ({
 							</div>
 							<div className="input-group custom">
               <div className="input-group-prepend custom">
-									<span className="input-group-text"><i class="fas fa-user"></i></span>
+									<span className="input-group-text"><i className="fas fa-user"></i></span>
 								</div>
 								<input 
 								type="email" 
@@ -158,7 +158,7 @@ const Formlogin = ({
                     )}
 							<div className="input-group custom">
               <div className="input-group-prepend custom">
-									<span className="input-group-text"><i class="fas fa-lock"></i></span>
+									<span className="input-group-text"><i className="fas fa-lock"></i></span>
 								</div>
               
 								<input 
@@ -199,7 +199,7 @@ const Formlogin = ({
                                             <> </>
                                                 ) :
                                                 (
-                                                  <div class="alert alert-danger" role="alert">
+                                                  <div className="alert alert-danger" role="alert">
                                                   {backerror}
                                                   </div>
     
@@ -210,7 +210,7 @@ const Formlogin = ({
 								<div className="col-sm-12">
 									<div className="input-group mb-0">
 									
-											<button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Sign In</span> <i class="fas fa-sign-in-alt"></i></button>
+											<button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Sign In</span> <i className="fas fa-sign-in-alt"></i></button>
 										
 										{/* <a className="btn btn-primary btn-lg btn-block" href="index.html">Sign In</a> */}
 									</div>

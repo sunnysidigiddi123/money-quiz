@@ -12,7 +12,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export default function UserProfile() {
     const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState();
+    const [userProfileInfo, setUserProfileInfo] = useState();
+    const [userAddressInfo, setUserAddressInfo] = useState()
 
     const getUserDetails = async () => {
         const _URL = CONSTANTS.GETUSERPROFILE;
@@ -23,7 +24,8 @@ export default function UserProfile() {
                 headers: HEADERS,
             }).then((res) => {
                 console.log(res);
-                setUserInfo(res?.data);
+                setUserProfileInfo(res?.data?.userProfile);
+                setUserAddressInfo(res?.data?.address)
             })
 
         } catch (error) {
@@ -50,8 +52,8 @@ export default function UserProfile() {
                     <img className='img-fluid w-100' src="./assets/images/banner.webp" alt="Profile Banner" />
                     <div className="banner-text">
                         <div className="user-detail text-center">
-                            <h2 className='text-white mb-0 text-shadow-gray'>{userInfo?.name}</h2>
-                            <h5 className='text-white mt-0 text-shadow-gray'>{userInfo?.location}</h5>
+                            <h2 className='text-white mb-0 text-shadow-gray'>{userProfileInfo?.name}</h2>
+                            <h5 className='text-white mt-0 text-shadow-gray'>{userProfileInfo?.location}</h5>
                         </div>
                     </div>
                 </section>
@@ -74,7 +76,7 @@ export default function UserProfile() {
                     </section>
                 </div> */}
                     <div className="row">
-                        <Link to={'/updateprofile'} state={{ userData: userInfo }}>
+                        <Link to={'/updateprofile'} state={{ userProfileData: userProfileInfo, userAddressData: userAddressInfo}}>
                             <div className="col-sm-12 my-5">
                                 <div className="user-box d-flex justify-content-start">
                                     <div className="col-1 pt-4"><i className="fas fa-user-alt"></i></div>

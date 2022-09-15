@@ -340,14 +340,14 @@ export default function SingleQuizDetail() {
         <Modal.Body>
 
           {/* <form>
-        <div class="form-group">
+        <div className="form-group">
        <label for="exampleInputEmail1">Entry Amount : {newpoll && newpoll[0]}</label>
        <label for="exampleInputEmail1">Current Entry Amount : {newpoll && newpoll[1]}</label>
        <label for="exampleInputEmail1">You Have To Pay : {newpoll && (parseInt(newpoll[1])-(parseInt(newpoll[0])))}</label>
        
        </div>
-       <button type="submit" class="btn btn-primary" onClick={entered}>Yes</button>&nbsp;
-       <button type="submit" class="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
+       <button type="submit" className="btn btn-primary" onClick={entered}>Yes</button>&nbsp;
+       <button type="submit" className="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
        </form> */}
             
        <div className="modal-content py-md-5 px-md-4 p-sm-3 p-4">
