@@ -110,8 +110,8 @@ export default function AppliedContestList() {
                                                         <div className="card-body bg-dark-gray">
                                                             <div className="card-text"><div className='text-white text-center fs-1'><i className="big coin pe-5"></i>  {item.EntryAmount}</div></div>
                                                             <div className="entry-card-footer d-flex justify-content-around">
-                                                                <div className='quiz-prize text-white'> {item.totalwinningamount} <i class="small coin ps-1"></i></div>
-                                                                <div className='quiz-user text-white'>{item.liveplayers} <i class="fas fa-users text-white"></i> </div>
+                                                                <div className='quiz-prize text-white'> {item.totalwinningamount} <i className="small coin ps-1"></i></div>
+                                                                <div className='quiz-user text-white'>{item.liveplayers} <i className="fas fa-users text-white"></i> </div>
 
                                                             </div>
                                                         </div>
@@ -171,8 +171,8 @@ export default function AppliedContestList() {
                                         <div className="card-body bg-dark-gray">
                                             <div className="card-text"><div className='text-white text-center fs-1'><i className="big coin pe-5"></i>  100</div></div>
                                             <div className="entry-card-footer d-flex justify-content-around">
-                                            <div className='quiz-prize text-white'> 56000 <i class="small coin ps-1"></i></div>
-                                            <div className='quiz-user text-white'>516 <i class="fas fa-users text-white"></i> </div>
+                                            <div className='quiz-prize text-white'> 56000 <i className="small coin ps-1"></i></div>
+                                            <div className='quiz-user text-white'>516 <i className="fas fa-users text-white"></i> </div>
 
                                         </div>
                                         </div>
@@ -205,8 +205,8 @@ export default function AppliedContestList() {
                                         <div className="card-body bg-dark-gray">
                                             <div className="card-text"><div className='text-white text-center fs-1'><i className="big coin pe-5"></i>  100</div></div>
                                             <div className="entry-card-footer d-flex justify-content-around">
-                                            <div className='quiz-prize text-white'> 56000 <i class="small coin ps-1"></i></div>
-                                            <div className='quiz-user  text-white'>516 <i class="fas fa-users text-white"></i> </div>
+                                            <div className='quiz-prize text-white'> 56000 <i className="small coin ps-1"></i></div>
+                                            <div className='quiz-user  text-white'>516 <i className="fas fa-users text-white"></i> </div>
 
                                         </div>
                                         </div>

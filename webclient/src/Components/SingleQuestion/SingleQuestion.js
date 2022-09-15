@@ -34,34 +34,34 @@ export default function SingleQuestion() {
 
                             <div className="col-xs-12 col-sm-12 col-md-12 pt-3">
                                 <div className="question-options">
-                                    <div class="radio-tile-group">
-                                        <div class="input-container">
-                                            <input id="walk" class="radio-button" type="radio" name="radio" />
-                                            <div class="radio-tile">
-                                                <label for="walk" class="radio-tile-label">A</label>
+                                    <div className="radio-tile-group">
+                                        <div className="input-container">
+                                            <input id="walk" className="radio-button" type="radio" name="radio" />
+                                            <div className="radio-tile">
+                                                <label for="walk" className="radio-tile-label">A</label>
                                             </div>
                                         </div>
 
-                                        <div class="input-container">
-                                            <input id="bike" class="radio-button" type="radio" name="radio" />
-                                            <div class="radio-tile">
+                                        <div className="input-container">
+                                            <input id="bike" className="radio-button" type="radio" name="radio" />
+                                            <div className="radio-tile">
 
-                                                <label for="bike" class="radio-tile-label">B</label>
+                                                <label for="bike" className="radio-tile-label">B</label>
                                             </div>
                                         </div>
 
-                                        <div class="input-container">
-                                            <input id="drive" class="radio-button" type="radio" name="radio" />
-                                            <div class="radio-tile">
+                                        <div className="input-container">
+                                            <input id="drive" className="radio-button" type="radio" name="radio" />
+                                            <div className="radio-tile">
 
-                                                <label for="drive" class="radio-tile-label">C</label>
+                                                <label for="drive" className="radio-tile-label">C</label>
                                             </div>
                                         </div>
 
-                                        <div class="input-container">
-                                            <input id="fly" class="radio-button" type="radio" name="radio" />
-                                            <div class="radio-tile">
-                                                <label for="fly" class="radio-tile-label">D</label>
+                                        <div className="input-container">
+                                            <input id="fly" className="radio-button" type="radio" name="radio" />
+                                            <div className="radio-tile">
+                                                <label for="fly" className="radio-tile-label">D</label>
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@ export default function SingleQuestion() {
 
                             </div>
                             <div className="col-xs-12 col-sm-12 col-md-12 d-flex justify-content-center pt-2 mt-4">                            
-                                    <button type="button" class="btn btn-orange">Submit</button>                                
+                                    <button type="button" className="btn btn-orange">Submit</button>                                
                             </div>
                         </div>
                     </section>{/* Active player ribbon ends */}

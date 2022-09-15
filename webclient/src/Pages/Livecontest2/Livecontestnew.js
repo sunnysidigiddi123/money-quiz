@@ -438,9 +438,9 @@ const Livecontestnew = () => {
                      </div>
                   </div>
                   <div className="col-md-6  d-md-block" >
-                     {questions && <> <div class="clock_area countdown_timer position-relative mt-5 me-5 float-end" data-countdown="2022/10/24">
+                     {questions && <> <div className="clock_area countdown_timer position-relative mt-5 me-5 float-end" data-countdown="2022/10/24">
                         <img src="./assets/images/clock/clock.png" alt="image_not_found" />
-                        <span class="text-white position-absolute"> <CountdownCircleTimer
+                        <span className="text-white position-absolute"> <CountdownCircleTimer
                            key={key}
                            isPlaying
                            duration={timertime}
@@ -560,9 +560,9 @@ const Livecontestnew = () => {
                            </div>
                            <div className="live-user-info">
                               <div className="">
-                                 <span className='user-info-item d-inline-block'><i class="fas fa-user text-dark-orange"></i></span>
+                                 <span className='user-info-item d-inline-block'><i className="fas fa-user text-dark-orange"></i></span>
                                  <span className='user-info-item  d-inline-block'>{initialusers}</span>
-                                 <span className='user-info-item  d-inline-block'><i class="fas fa-star"></i></span>
+                                 <span className='user-info-item  d-inline-block'><i className="fas fa-star"></i></span>
                               </div>
                            </div>
                           </div>
@@ -626,8 +626,8 @@ const Livecontestnew = () => {
 
                             <div className="col-xs-12 col-sm-12 col-md-12 pt-3">
                                 <div className="question-options" id='containersoption'>
-                                    <div class="radio-tile-group">
-                                        <div class="input-container">
+                                    <div className="radio-tile-group">
+                                        <div className="input-container">
                                             <input id="walk" className="radio-button" type="radio" name="radio" value={questions.options[0]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
                                                 <label htmlFor="walk" className="radio-tile-label">A {questions.options[0]}</label>

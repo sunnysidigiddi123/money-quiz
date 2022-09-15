@@ -105,8 +105,8 @@ const Form = ({
                                 <br></br>
                                 
                                 <div className="input-group mb-0">									
-								<button className="btn btn-primary btn-sm btn-block facebook-shadow mb-1 py-1" type="submit" ><i class="fab fa-facebook-f" aria-hidden="true"></i> Sign In with Facebook</button>
-                <button className="btn btn-sm btn-block btn-google text-white google-shadow" type="submit" ><i class="fab fa-google" aria-hidden="true"></i> Sign In with Google</button>
+								<button className="btn btn-primary btn-sm btn-block facebook-shadow mb-1 py-1" type="submit" ><i className="fab fa-facebook-f" aria-hidden="true"></i> Sign In with Facebook</button>
+                <button className="btn btn-sm btn-block btn-google text-white google-shadow" type="submit" ><i className="fab fa-google" aria-hidden="true"></i> Sign In with Google</button>
 						</div>
 								<section>
 									<div className="form-wrap max-width-600 mx-auto">
@@ -229,16 +229,16 @@ const Form = ({
 
 
 
-<button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Sign Up</span> <i class="fas fa-sign-in-alt"></i></button>
+<button className="btn  btn-sm btn-block bg-dark-orange text-white d-flex justify-content-between" type="submit" ><span>Sign Up</span> <i className="fas fa-sign-in-alt"></i></button>
                                         {/* <button type="submit" className="btn btn-primary">Submit</button> */}
 									</div>
-                  <dov className="row">
+                  <div className="row">
                   <div className=" col-sm-12 pt-3">
                     <p className="fs-5">Already have an account?  <Link
                 to="/"
               ><span className="text-dark-orange fw-bold">Sign In</span></Link></p>
                   </div>
-                  </dov>
+                  </div>
 								</section>
 						
 								

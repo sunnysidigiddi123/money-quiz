@@ -1359,12 +1359,12 @@ function continuee(){
                     
                     <div className="ans ml-2 dpx" onChange={(e) => correctAns(e)}   >
                        <label>
-                       <input type="radio" name="options" value='option1' class="option-input radio"   /> {question.options[0].option1}</label>
-                       <label> <input type="radio" name="options" value='option2' class="option-input radio"   /> {question.options[0].option2}</label>
+                       <input type="radio" name="options" value='option1' className="option-input radio"   /> {question.options[0].option1}</label>
+                       <label> <input type="radio" name="options" value='option2' className="option-input radio"   /> {question.options[0].option2}</label>
                       
                        
-                       <label> <input type="radio" name="options" value='option3'class="option-input radio"  /> {question.options[0].option3}</label>
-                       <label> <input type="radio" name="options" value='option4' class="option-input radio" />{question.options[0].option4}</label>
+                       <label> <input type="radio" name="options" value='option3'className="option-input radio"  /> {question.options[0].option3}</label>
+                       <label> <input type="radio" name="options" value='option4' className="option-input radio" />{question.options[0].option4}</label>
                     </div>
                      </> 
                 }
