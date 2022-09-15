@@ -41,9 +41,9 @@ export class AdminContestController {
     @Post('createContest')
     @UsePipes(ValidationPipe)
     async createContest(@Body() adminContestDto: CreateAdminContestDto, @Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
-        const user = await this.userService.getUserById(request.userId)
+        const admin = await this.userService.getUserById(request.userId)
         console.log(adminContestDto)
-        const newContest = await this.admincontestService.createContest(adminContestDto, user, request);
+        const newContest = await this.admincontestService.createContest(adminContestDto, admin, request);
         if (newContest)
             response.status(201).send(newContest)
         else throw new HttpException("COntest Not Created", HttpStatus.BAD_REQUEST)

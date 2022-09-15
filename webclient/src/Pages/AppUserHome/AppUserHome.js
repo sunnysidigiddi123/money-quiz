@@ -96,6 +96,8 @@ export default function AppUserHome() {
             if (error && error.response) {
                 toast.error(error.response.data.message);
                 if (error.response.status === 401) {
+                    localStorage.clear();
+		            sessionStorage.clear();
                     navigate("/");
                 }
             } else {
@@ -134,6 +136,8 @@ export default function AppUserHome() {
                 console.log('error is ', error)
                 toast.error(error.response.data.message);
                 if (error.response.status === 401) {
+                    localStorage.clear();
+		            sessionStorage.clear();
                     navigate("/");
                 }
             } else {

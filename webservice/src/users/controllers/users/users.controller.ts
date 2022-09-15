@@ -6,6 +6,7 @@ import { LoginUserDto } from 'src/dtos/Users/LoginUser.dto';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { Response } from 'express';
 import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
+import { CreateAdminDto } from 'src/dtos/Users/CreateAdmin.dto';
 
 
 
@@ -32,6 +33,19 @@ export class UsersController {
     }
 
    
+}
+
+@Get('admin/getuserid')
+async adminhome(@Req() request: IGetUserAuthInfoRequest,@Res() response:Response){
+   
+   const user = await this.usersService.adminhome(request);  
+  
+   if(user){
+
+       response.status(201).send(user)
+   }
+
+  
 }
 
 @Get('/profileinfo')
@@ -77,6 +91,16 @@ response.status(201).send(user)
      }
  }
 
+ @Post('/admin/signup')
+ @UsePipes(ValidationPipe)      //for class-validator to import
+ async signupAdmin(@Body() createAdminDto:CreateAdminDto,@Res() response:Response){
+     console.log(createAdminDto)
+     const admin = await this.usersService.signupAdmin(createAdminDto);
+     if(admin){
+        response.status(201).send(admin)
+     }
+ }
+
  @Post('login')
  @UsePipes(ValidationPipe)      //for class-validator to import
  async loginUsers(@Body() loginUserDto:LoginUserDto,@Res() response:Response){
@@ -86,6 +110,17 @@ response.status(201).send(user)
      }else
      throw new HttpException("You have entered an invalid username or password",HttpStatus.BAD_REQUEST)
  }
+
+ @Post('admin/login')
+ @UsePipes(ValidationPipe)      //for class-validator to import
+ async loginAdmin(@Body() loginUserDto:LoginUserDto,@Res() response:Response){
+     const admin = await this.usersService.loginAdmin(loginUserDto);
+     if(admin){
+        response.status(202).send(admin)
+     }else
+     throw new HttpException("You have entered an invalid username or password",HttpStatus.BAD_REQUEST)
+ }
+
 
  @UseInterceptors(ClassSerializerInterceptor) // to import class serialized restrict password interceptors
  @Get('/:name')

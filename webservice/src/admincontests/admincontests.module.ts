@@ -1,13 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Admincontest, Ads, Otp, profile_address, Segment, User, user_profile } from 'src/typeorm';
+import { Admin, Admincontest, Ads, Otp, profile_address, Segment, User, user_profile } from 'src/typeorm';
 import { ValidateUserMiddleWare } from 'src/users/middlewares/validate-user.middleware';
 import { UsersService } from 'src/users/services/users/users.service';
 import { AdminContestController } from './controllers/contest/admincontest.controller';
 import { AdminContestService } from './services/contest/admincontest.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admincontest,User,Segment,Otp,user_profile,profile_address])],
+  imports: [TypeOrmModule.forFeature([Admincontest,User,Segment,Otp,user_profile,profile_address,Admin])],
   controllers: [AdminContestController],
   providers: [
     {

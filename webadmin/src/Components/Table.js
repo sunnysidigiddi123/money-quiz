@@ -116,10 +116,10 @@ const Table = (props) => {
      }).then((res) => {
         
             const filteredData = res.data.ads.filter((item)=>
-            item.user.id == props.userId
+            item.admin.id == props.userId
             
            )
-                
+                console.log(filteredData ,props.userId,"aaa")
            setDatas(filteredData);
     
         

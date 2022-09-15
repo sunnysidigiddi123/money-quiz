@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { RoleTypes } from "src/typeorm/Users/User";
 
-
-export class CreateUserDto {
+export class CreateAdminDto {
      
 
      @IsEmail()
@@ -14,10 +14,6 @@ export class CreateUserDto {
       
      @IsNotEmpty()
      password:string;
-
-
-     @IsNotEmpty()
-     Wallet:number;
 
      
 

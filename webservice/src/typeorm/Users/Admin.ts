@@ -2,18 +2,12 @@ import { Exclude } from "class-transformer";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Ads } from "../ads/Ads";
 import { Admincontest } from "../contests/Admincontest";
-import { user_profile } from "./user_profile";
 
 
-
-export enum RoleTypes {
-    Admin = 'admin',
-    User = 'user'
-    }
 
 
 @Entity()
-export class User {
+export class Admin {
 
     @PrimaryGeneratedColumn('increment')
     id: number
@@ -39,28 +33,12 @@ export class User {
     @Exclude()
     password: string
     
-    
-    @Column({
-        nullable:false,
-        default:0})
-    Wallet: number
+ 
+    @OneToMany(() => Admincontest, savedcontest => savedcontest.admin)
+    savedcontests: Admincontest[];
 
-    // @OneToOne(() => user_profile)
-    // @JoinColumn()
-    // userProfile: user_profile
-
-    @OneToOne(() => user_profile, (profile) => profile.user, {
-        onDelete: "CASCADE", 
-      }) // specify inverse side as a second parameter
-    @JoinColumn()
-    userProfile: user_profile
-
-  
-    // @OneToMany(() => Admincontest, savedcontest => savedcontest.user)
-    // savedcontests: Admincontest[];
-
-    // @OneToMany(() => Ads, ad => ad.user)
-    // ads: Ads[];
+    @OneToMany(() => Ads, ad => ad.admin)
+    ads: Ads[];
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

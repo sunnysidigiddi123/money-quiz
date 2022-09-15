@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
-import { User, Ads, Ads_question, Ads_target, Ads_played_users } from 'src/typeorm';
+import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin } from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
 
@@ -23,14 +23,17 @@ export class AdsService {
         private readonly adsTargetRepository: Repository<Ads_target>,
         @InjectRepository(Ads_played_users)
         private readonly adsPlayedUserRepository: Repository<Ads_played_users>,
+        @InjectRepository(Admin)
+        private readonly adminRepository: Repository<Admin>,
 
     ) { }
 
 
-    async createAd(adsDto: CreateAdsDto, user: User, request: IGetUserAuthInfoRequest) {
+    async createAd(adsDto: CreateAdsDto, admin: Admin, request: IGetUserAuthInfoRequest) {
 
         try {
-            const users = await this.UserRepository.findOne({ where: { id: request.userId } })
+            console.log(request.userId,"aaa")
+            const users = await this.adminRepository.findOne({ where: { id: request.userId } })
             console.log(users, "Sfsdfds")
             const newAd = this.adsRepository.create({
                 adName: adsDto.adName,
@@ -39,7 +42,7 @@ export class AdsService {
                 adImage: adsDto.adImage,
                 winningAmount: adsDto.winningAmount,
                 publish: adsDto.publish,
-                user: users
+                admin: users
             });
 
             const newAdTarget = this.adsTargetRepository.create({
@@ -48,12 +51,12 @@ export class AdsService {
                 location: adsDto.location
             })
             newAd.Ads_target = newAdTarget 
-            console.log(newAd, "Sfsdsfsddfgddfds", user.ads)
-            user.ads = [...user.ads, newAd]
-            console.log("kjhjk", user.ads)
+            console.log(newAd, "Sfsdsfsddfgddfds", admin.ads)
+            admin.ads = [...admin.ads, newAd]
+            console.log("kjhjk", admin.ads)
 
             await this.adsTargetRepository.save(newAdTarget)
-            await this.UserRepository.save(user)
+            await this.adminRepository.save(admin)
             await this.adsRepository.save(newAd)
 
             return { message: "Ad Created Succssfully", Ad: newAd }
@@ -109,7 +112,7 @@ export class AdsService {
 
         try {
 
-            const ads = await this.adsRepository.find({relations:['user','questions']});
+            const ads = await this.adsRepository.find({relations:['admin','questions']});
             console.log('sssss')
 
             return { ads: ads }

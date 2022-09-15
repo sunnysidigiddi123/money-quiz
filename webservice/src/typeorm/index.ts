@@ -15,9 +15,10 @@ import { userInfo } from "os";
 import { user_profile } from "./Users/user_profile";
 import { profile_address } from "./Users/profile_address";
 import { aud_liveusers } from "./audit/aud_liveusers";
+import { Admin } from "./Users/Admin";
 
-const entities = [User,Admincontest,Publishedcontest,aud_contests,Question,Applieduser,Liveuser,Segment,Otp,user_profile, Ads,Ads_target,Ads_question,Ads_played_users,profile_address,aud_liveusers];
+const entities = [User,Admincontest,Publishedcontest,aud_contests,Question,Applieduser,Liveuser,Segment,Otp,user_profile, Ads,Ads_target,Ads_question,Ads_played_users,profile_address,aud_liveusers,Admin];
 
-export {User,Admincontest,Publishedcontest,aud_contests,Question,Applieduser,Liveuser,Segment,Otp,user_profile,Ads,Ads_target,Ads_question,Ads_played_users,profile_address,aud_liveusers};
+export {User,Admincontest,Publishedcontest,aud_contests,Question,Applieduser,Liveuser,Segment,Otp,user_profile,Ads,Ads_target,Ads_question,Ads_played_users,profile_address,aud_liveusers,Admin};
 
 export default entities ;

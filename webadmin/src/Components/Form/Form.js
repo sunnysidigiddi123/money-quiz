@@ -44,7 +44,7 @@ const Form = ({
 
   async function signupp(e) {
     e.preventDefault();
-    const API_URL = `${process.env.REACT_APP_BASE_URL}/users/signup`;
+    const API_URL = `${process.env.REACT_APP_BASE_URL}/users/admin/signup`;
     const email = values.email;
     const user = values.firstName;
     const password = values.password;
@@ -52,9 +52,7 @@ const Form = ({
     let sendData = {
       name:user,
       email,
-      password,
-      Wallet:0,
-      role: "admin",
+      password
     };
     try{
     
@@ -195,27 +193,7 @@ const Form = ({
                     ):(
                       <></>
                     )}
-                     		<div className="form-group row">
-											<label className="col-sm-4 col-form-label">Organization<span style={{ color: "red" }}>*</span></label>
-											<div className="col-sm-8">
-												<input 
-										                         		type="text" 
-											                        	className={errors.organization?'form-control form-control red' :'form-control'}
-                                                id="Organiztion-input"
-                                                placeholder='Enter Organization'
-                                                value={values.organization}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                name="organization"
-                                                required
-												/>
-											</div>
-										</div>
-                    {errors.organization ?(
-                                      <div className="errormsg"  style={{ color: "red" }}>{touched.organization && errors.organization}</div>
-                    ):(
-                      <></>
-                    )}
+                   
                                         <br></br>
 
                                         { backerrorpassword == " " ? (
