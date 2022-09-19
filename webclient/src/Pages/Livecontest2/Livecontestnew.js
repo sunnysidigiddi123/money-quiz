@@ -44,6 +44,7 @@ const Livecontestnew = () => {
    const [initialusers , setInitialUsers] = useState(0);
    const [showWinning, setShowWinning] =useState(false)
    const [cashOutCoin, setcashOutCoin] =useState(0)
+   const [showConfirmation, setShowConfirmation] = useState(false);
    // For adding values from userhome 
    // console.log(present.length,present)
    const navigate = useNavigate();
@@ -60,17 +61,17 @@ const Livecontestnew = () => {
 
    function addData() {
 
-      setQuestions(location.state.question1)
+      setQuestions(location?.state?.question1)
       // if(location.state.question1.videolink == ''){
       //    setViewVideo(false)
       // }
-      setContestTime(location.state.ContestTime)
-      setEntryAmount(location.state.entryamount)
-      setContestId(location.state.contestid)
+      setContestTime(location?.state?.ContestTime)
+      setEntryAmount(location?.state?.entryamount)
+      setContestId(location?.state?.contestid)
       // setPresent(location.state.present == null ? [] : location.state.present)
-      setTotalQuestions(location.state.totalquestions)
-      setQuestionIndex(location.state.questionIndex+1)
-      sessionStorage.setItem("questionIndex",location.state.questionIndex+1)
+      setTotalQuestions(location?.state?.totalquestions)
+      setQuestionIndex(location?.state?.questionIndex+1)
+      sessionStorage.setItem("questionIndex",location?.state?.questionIndex+1)
       console.log(questions)
 
    }
@@ -82,11 +83,11 @@ const Livecontestnew = () => {
       let contestStartTime = moment(contesttime)
       let userEntersTime = new Date()
       let userDelayTime = userEntersTime - contestStartTime
-      let questionTime = questions.totalQuestionTime * 1000
+      let questionTime = questions?.totalQuestionTime * 1000
       console.log("Question Time", questionTime, userDelayTime)
       let afterDelayQuestionTime = questionTime - userDelayTime
       setTimerTime(afterDelayQuestionTime/1000)
-      console.log("Qufdd", afterDelayQuestionTime, contestStartTime,questionIndex)
+      console.log("afterDelayQuestionTime, contestStartTime, questionIndex", afterDelayQuestionTime, contestStartTime,questionIndex)
       
       if (contestStartTime <= userEntersTime) {
       
@@ -94,7 +95,7 @@ const Livecontestnew = () => {
          setVideoTime(Math.round(userDelayTime / 1000))
          console.log('userdelay',userDelayTime/1000)
 
-         if(userDelayTime/1000 >= questions.totalVideoTime){
+         if(userDelayTime/1000 >= questions?.totalVideoTime){
 
             setViewVideo(false)
          }
@@ -188,6 +189,7 @@ const Livecontestnew = () => {
        if(post.data.status == 1){
          setReentersuccess(true)
          toast.success(post.data.message)
+         setShowConfirmation(false);
        }
       
    } catch (e) {
@@ -219,7 +221,7 @@ const Livecontestnew = () => {
          contestId: contestid,
          segmentId: questions.segmentId,
          questionIndex: sessionStorage.getItem('questionIndex'),
-         LivecontestTime:moment(contesttime).add(questions.totalQuestionTime+STATS_DELAY_IN_SEC, 'seconds')
+         LivecontestTime:moment(contesttime).add(questions?.totalQuestionTime+STATS_DELAY_IN_SEC, 'seconds')
          // questionId: questions.id,
          // selectedOption: selectedans
 
@@ -237,11 +239,11 @@ const Livecontestnew = () => {
          }
          
          console.log(post.data.question)
-         setContestTime(moment(contesttime).add(questions.totalQuestionTime+STATS_DELAY_IN_SEC, 'seconds'))
+         setContestTime(moment(contesttime).add(questions?.totalQuestionTime+STATS_DELAY_IN_SEC, 'seconds'))
          if (post.data.question !== null) {
             // setLgShows(true)
             setQuestions(post.data.question)
-            setTimerTime(post.data.question.totalQuestionTime+STATS_DELAY_IN_SEC)
+            setTimerTime(post.data.question?.totalQuestionTime+STATS_DELAY_IN_SEC)
             setQuestionIndex(parseInt(post.data.liveindex) + 1)
             console.log("qqqqqqq",parseInt(post.data.liveindex)+1)
             sessionStorage.setItem("questionIndex",parseInt(post.data.liveindex)+1)
@@ -276,7 +278,7 @@ const Livecontestnew = () => {
    
    const checkAnswers = async (e) => {
       const selectedans = localStorage.getItem('selectedans');
-      console.log(value, questions.totalQuestionTime);
+      console.log(value, questions?.totalQuestionTime);
       const BASE_URL = `${process.env.REACT_APP_BASE_URL}/broadcast/answerCheck`;
       const token = sessionStorage.getItem("token");
       let sendData = {
@@ -473,14 +475,14 @@ const Livecontestnew = () => {
                         <div className="col-md-7 m-auto">
                            <div className="content_box position-relative">
 
-                              {viewVideo && questions && !questions.imagepath ?
+                              {viewVideo && questions && !questions?.imagepath ?
 
                                  <div className="player-wrapper">
-                                    <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
+                                    <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions?.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions?.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameBorder="0" allowFullScreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
                                        height='100%' muted></ReactPlayer></div>
                                  :
                                  <>
-                                   {questions.imagepath && <img src={questions.imagepath} alt="image" width="500" height="600"></img>}
+                                   {questions?.imagepath && <img src={questions?.imagepath} alt="image" width="500" height="600"></img>}
                                   
                                     <div className="question_number text-uppercase">
                                        <span>question {questionIndex} / {totalquestions}</span>
@@ -610,50 +612,50 @@ const Livecontestnew = () => {
                                 </div>: <></>}
                             </div>
                             
-                            {viewVideo && questions && !questions.imagepath ?    
+                            {viewVideo && questions && !questions?.imagepath ?    
                             <div className="col-xs-12 col-sm-12 col-md-12 mt-3 d-flex justify-content-center">
                                 <div className='video-player-wraper'>
-                                 <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameborder="0" allowfullscreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
+                                 <ReactPlayer className="react-player" id='player' url={`https://www.youtube.com/embed/${questions?.videolink}?autoplay=1&rel=0&mute=1&start=${newvideoTime}&end=${questions?.totalVideoTime}&modestbranding=1&showinfo=0&fs=0`} frameBorder="0" allowFullScreen playing={true} allow="autoplay" onEnded={() => setViewVideo(false)} width='100%'
                                        height='100%' muted></ReactPlayer> 
                                 </div>
                             </div>
                             
                                :<>
-                          {questions.imagepath && <div className="col-xs-12 col-sm-12 col-md-12 pt-3 d-flex justify-content-center">
+                          {questions?.imagepath && <div className="col-xs-12 col-sm-12 col-md-12 pt-3 d-flex justify-content-center">
 
-                        <img src={questions.imagepath} className='ques-img' alt="" />
+                        <img src={questions?.imagepath} className='ques-img' alt="" />
                               </div> }
 
                             <div className="col-xs-12 col-sm-12 col-md-12 pt-3">
                                 <div className="question-options" id='containersoption'>
                                     <div className="radio-tile-group">
                                         <div className="input-container">
-                                            <input id="walk" className="radio-button" type="radio" name="radio" value={questions.options[0]} onClick={(e) => add(e)}/>
+                                            <input id="walk" className="radio-button" type="radio" name="radio" value={questions?.options[0]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
-                                                <label htmlFor="walk" className="radio-tile-label">A {questions.options[0]}</label>
+                                                <label htmlFor="walk" className="radio-tile-label">A {questions?.options[0]}</label>
                                             </div>
                                         </div>
 
                                         <div className="input-container">
-                                            <input id="bike" className="radio-button" type="radio" name="radio" value={questions.options[1]} onClick={(e) => add(e)}/>
+                                            <input id="bike" className="radio-button" type="radio" name="radio" value={questions?.options[1]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
 
-                                                <label htmlFor="bike" className="radio-tile-label">B {questions.options[1]}</label>
+                                                <label htmlFor="bike" className="radio-tile-label">B {questions?.options[1]}</label>
                                             </div>
                                         </div>
 
                                         <div className="input-container">
-                                            <input id="drive" className="radio-button" type="radio" name="radio" value={questions.options[2]} onClick={(e) => add(e)}/>
+                                            <input id="drive" className="radio-button" type="radio" name="radio" value={questions?.options[2]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
 
-                                                <label htmlFor="drive" className="radio-tile-label">C {questions.options[2]}</label>
+                                                <label htmlFor="drive" className="radio-tile-label">C {questions?.options[2]}</label>
                                             </div>
                                         </div>
 
                                         <div className="input-container">
-                                            <input id="fly" className="radio-button" type="radio" name="radio" value={questions.options[3]} onClick={(e) => add(e)}/>
+                                            <input id="fly" className="radio-button" type="radio" name="radio" value={questions?.options[3]} onClick={(e) => add(e)}/>
                                             <div className="radio-tile">
-                                                <label htmlFor="fly" className="radio-tile-label">D {questions.options[3]}</label>
+                                                <label htmlFor="fly" className="radio-tile-label">D {questions?.options[3]}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -670,40 +672,10 @@ const Livecontestnew = () => {
                     </section>{/* Active player ribbon ends */}
                 </div>
             </div>
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  {/* <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} /> 
+               {/* <StatsModalWrong lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} /> 
                   <StatsModal  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} /> */}
-                   <WrongAnswer lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers}/>
-<CorrectAnswer  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} currentQuesId = {questions.id}/> 
+                   <WrongAnswer lgShow={lgShows} setLgShow={setLgShows} reenter={reenter} reentersuccess={reentersuccess} setReentersuccess={setReentersuccess} polldata={polldata} totalquestions={totalquestions} initalusers={initialusers} showConfirmation={showConfirmation} setShowConfirmation={setShowConfirmation} />
+<CorrectAnswer  lgShow={lgShowss} setLgShow={setLgShowss} cashout={cashout} polldata={polldata} creditlastamount={creditlastamount} contestid={contestid} totalquestions={totalquestions} initalusers={initialusers} currentQuesId = {questions?.id}/> 
 
       </>
    )

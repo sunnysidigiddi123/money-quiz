@@ -350,16 +350,16 @@ export default function SingleQuizDetail() {
        <button type="submit" className="btn btn-danger" onClick={(e)=>{ e.preventDefault(); setLgShowsss(false)}}>Close</button>
        </form> */}
             
-       <div className="modal-content py-md-5 px-md-4 p-sm-3 p-4">
-
-            <h3>Do You Want To Enter in Contest ?</h3> <i className="fa fa-bell ss"></i>
-            <p className="r3 px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
-            <br></br>
-            <p className="r3 px-md-5 px-sm-1">Current Entry Amount : {newpoll && newpoll[1]}</p>
-            <br>
-            </br>
-            <p className="r3 px-md-5 px-sm-1">You Have To Pay : {newpoll && (parseInt(newpoll[1]) - (parseInt(newpoll[0])))}</p>
-            <div className="text-center mb-3"> <button className="btn btn-primary w-50 rounded-pill b1" onClick={(e) => entered(e)}>Yes</button> </div> <a onClick={(e) => { e.preventDefault(); setLgShowsss(false) }}>Not now</a>
+       <div className="modal-content p-1">
+       <div className="text-center">
+       <i className="fa fa-bell re-enter-pay-bell"></i>
+       </div>
+            <h3>Do You Want To Enter in Contest ?</h3> 
+            <p className="re-enter-pay-text px-md-5 px-sm-1">Entry Amount : {newpoll && newpoll[0]}</p>
+            <p className="re-enter-pay-text px-md-5 px-sm-1">Current Entry Amount : {newpoll && newpoll[1]}</p>
+            <p className="re-enter-pay-text px-md-5 px-sm-1">You Have To Pay : {newpoll && (parseInt(newpoll[1]) - (parseInt(newpoll[0])))}</p>
+            <div className="text-center mb-3"> <button className="btn btn-gray" onClick={(e) => { e.preventDefault(); setLgShowsss(false) }}>Not now</button> <button className="btn btn-orange px-4 ms-2" onClick={(e) => entered(e)}>Yes</button> </div> 
+            
           </div>
 
         </Modal.Body>

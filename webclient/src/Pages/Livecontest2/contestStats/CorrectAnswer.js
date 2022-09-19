@@ -57,7 +57,7 @@ export default function CorrectAnswer(props) {
                                 <div className="col-xs-12">
                                     <div className="d-flex justify-content-between py-4 ">
                                         <h1 className='inner-page-heading'>Statistics</h1>
-                                       current quest id:  {props.currentQuesId}
+                                       {/* current quest id:  {props.currentQuesId} */}
                                         <div className="start-in-time position-relative pb-5">
                                             <span className="countdown-wrapper position-absolute">
                                                 <div className="">
