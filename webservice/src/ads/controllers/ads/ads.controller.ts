@@ -17,9 +17,9 @@ export class AdsController {
 
    @Get('getAds')
    @UseInterceptors(ClassSerializerInterceptor)
-   async getAds(@Res() response: Response) {
+   async getAds(@Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
 
-       const savedcontest = await this.adsService.getAds();
+       const savedcontest = await this.adsService.getAds(request);
 
        if(savedcontest){
            response.status(201).send(savedcontest)
