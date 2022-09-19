@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
-import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin } from 'src/typeorm';
+import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin, user_profile, profile_address} from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
+import { GenderTypes } from 'src/typeorm/Users/user_profile';
 
 
 
@@ -25,6 +26,9 @@ export class AdsService {
         private readonly adsPlayedUserRepository: Repository<Ads_played_users>,
         @InjectRepository(Admin)
         private readonly adminRepository: Repository<Admin>,
+        @InjectRepository(profile_address)
+        private readonly profileaddressRepository: Repository<profile_address>,
+
 
     ) { }
 
@@ -48,7 +52,10 @@ export class AdsService {
             const newAdTarget = this.adsTargetRepository.create({
 
                 ageGroup: adsDto.ageGroup,
-                location: adsDto.location
+                location: adsDto.location,
+                state: adsDto.state,
+                gender:adsDto.gender,
+                income:adsDto.income,
             })
             newAd.Ads_target = newAdTarget 
             console.log(newAd, "Sfsdsfsddfgddfds", admin.ads)
@@ -94,18 +101,44 @@ export class AdsService {
 
 }
 
-    async getAds() {
+async getAds(request: IGetUserAuthInfoRequest) { 
 
-        try {
+    try {
+        // console.log("id", request.userId);
+        const user = await this.UserRepository.findOne({
+          where: {
+            id: request.userId,
+          },
+          relations:['userProfile']
+        });
+        // console.log("users", user);
+        const address = await this.profileaddressRepository.findOne({relations:{user_profile:true}, where:{user_profile:{user:{id:request.userId}}}})
+        const ads = await this.adsRepository.find({
+            relations: {
+               Ads_target:true,  
+               
+            },
+            where: 
+            {
+                Ads_target : {
+                    // income:user.userProfile.incomegroup,
+                    // location : address.city,
+                    // state : address.state,
 
-            const ads = await this.adsRepository.find();
-            console.log('sssss')
+                }
+            
+            
+            },
 
-            return { ads: ads }
-        } catch (e) {
-            throw new HttpException(e, HttpStatus.BAD_REQUEST)
-        }
+        })
+    
+
+        console.log("Neeraj", ads)
+        return {ads:ads}
+    } catch (e) {
+        throw new HttpException(e, HttpStatus.BAD_REQUEST)
     }
+}
 
 
     async getAdsAdmin() {
