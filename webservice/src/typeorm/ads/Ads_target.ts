@@ -18,7 +18,25 @@ export class Ads_target {
     })
     location: string
 
-    
+
+    @Column({
+        nullable:false,
+        default:''
+    })
+    state: string
+
+    @Column({
+        nullable:false,
+        default:''
+    })
+    gender: string
+
+    @Column({
+        nullable:false,
+        default:''
+    })
+    income: string
+
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;

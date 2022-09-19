@@ -26,5 +26,14 @@ export class CreateAdsDto {
       @IsNotEmpty()
       location:string;
 
+      @IsNotEmpty()
+      state:string;
+
+      @IsNotEmpty()
+      gender:string;
+
+      @IsNotEmpty()
+      income:string;
+
 
 }
