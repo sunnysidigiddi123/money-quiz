@@ -19,7 +19,7 @@ export default function UpdateProfile() {
     const [username, setUsername] = useState('');
     const [error, setError] = useState({});
     const [stateList, setStateList] = useState([])
-    const [cityList, setCityList] = useState([])
+    const [districtList, setDistrictList] = useState([])
     const [locationList, setLocationList] = useState([])
     const [profileInfo, setProfileInfo, getProfileInfo] = useState({
         age: "",
@@ -29,10 +29,10 @@ export default function UpdateProfile() {
         name: "",
     });
     const [userAddress, setUserAddress, getUserAddress] = useState({
-        PIN: "",
+        pin: "",
         address1: "",
         address2: "",
-        city: "",
+        district: "",
         state: "",
         country: "",
         location: "",
@@ -46,7 +46,7 @@ export default function UpdateProfile() {
     //     pin: "",
     //     address1: "",
     //     address2: "",
-    //     city:"",
+    //     district:"",
     //     state: "",
     //     country:"",
     //     location:"",
@@ -81,10 +81,10 @@ export default function UpdateProfile() {
             console.log(e.target.value)
             getPinData(parseInt(e.target.value));
         } else if (e.target.name == 'pin' && e.target.value.length != 6) {
-            setCityList([])
+            setDistrictList([])
             setStateList([])
             setLocationList([])
-            userAddress.city=""
+            userAddress.district=""
             userAddress.state=""
             userAddress.location=""
             setUserAddress({
@@ -106,7 +106,7 @@ export default function UpdateProfile() {
             pin: userAddress.pin,
             address1: userAddress.address1,
             address2: userAddress.address2,
-            city: userAddress.city,
+            district: userAddress.district,
             state: userAddress.state,
             country: userAddress.country,
             location: userAddress.location,
@@ -155,7 +155,7 @@ export default function UpdateProfile() {
             }).then((res) => {
                // console.log(res.data)
                 let pinRes = res?.data?.pincode?.result;
-                setCityList([...new Set(pinRes.map(item => item.DivisionName))])
+                setDistrictList([...new Set(pinRes.map(item => item.District))])
                 setStateList([...new Set(pinRes.map(item => item.StateName))])
                 setLocationList([...new Set(pinRes.map(item => item.LocationName))])
 
@@ -347,10 +347,10 @@ export default function UpdateProfile() {
                                                 </Form.Select>
                                             </div>
                                             <div className="col-md-6  col-xs-12 pb-3">
-                                                <Form.Label htmlFor="city" className='fw-bold'>city</Form.Label>
-                                                <Form.Select aria-label="Default select example" value={userAddress.city ? userAddress.city : "Select city"} onChange={handleAddressChange} id="city" name="city" disabled={(cityList.length == 0) ? 'disabled' : ''}>
-                                                    <option value="">Select city</option>
-                                                    {cityList.map((cityitem, cityIdx) => {
+                                                <Form.Label htmlFor="district" className='fw-bold'>District</Form.Label>
+                                                <Form.Select aria-label="Select district" value={userAddress.district ? userAddress.district : "Select district"} onChange={handleAddressChange} id="district" name="district" disabled={(districtList.length == 0) ? 'disabled' : ''}>
+                                                    <option value="">Select district</option>
+                                                    {districtList.map((cityitem, cityIdx) => {
                                                         return (<option key={cityIdx} value={cityitem}>{cityitem}</option>)
                                                     })
                                                     }

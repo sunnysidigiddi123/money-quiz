@@ -12,23 +12,20 @@ import BottomNav from "../../../Components/BottomNav/BottomNav";
 
 export default function WrongAnswer(props) {
     const [fullscreen, setFullscreen] = useState(true);
-    const [showConfirmation, setShowConfirmation] = useState(false)
+    // const [showConfirmation, setShowConfirmation] = useState(false)
     const navigate = useNavigate();
-
-
-
-
     return (
 
         <>
             <Modal
                 size="md"
-                   show={props.lgShow}
-                   fullscreen={fullscreen}
-                   onHide={() => props.setLgShow(false)}
-                   backdrop="static"
-                   keyboard={false}
-                   aria-labelledby="example-modal-sizes-title-lg"                
+                show={props.lgShow}
+
+                fullscreen={fullscreen}
+                onHide={() => props.setLgShow(false)}
+                backdrop="static"
+                keyboard={false}
+                aria-labelledby="example-modal-sizes-title-lg"
             >
                 <Modal.Body className='bg-lighter-gray p-0'>
                     <div className="container-fluid stats">
@@ -43,7 +40,6 @@ export default function WrongAnswer(props) {
                                                 <div className="">
                                                     {props.totalquestions != sessionStorage.getItem('questionIndex')
                                                         ? <>
-
                                                             <div className="widget_match_countdown">
                                                                 <span className='timer-help-text'>Next Round Starts In</span>
                                                                 <div id="">
@@ -78,6 +74,7 @@ export default function WrongAnswer(props) {
                                                                     strokeWidth={5}
                                                                     onComplete={() => {
                                                                         if (!props.reentersuccess) {
+                                                                            console.log("reenter is false here")
                                                                             navigate('/appuserhome')
                                                                         }
                                                                         props.setReentersuccess(false)
@@ -103,7 +100,6 @@ export default function WrongAnswer(props) {
                                         <span className='fw-bold'>Incorrect Answer</span>
                                     </div>
                                     <div className="row py-3">
-
                                     </div>
                                     <div className="row py-2 ">
                                         <p>Stats Chart will goes here.</p>
@@ -112,7 +108,7 @@ export default function WrongAnswer(props) {
                             </div>
                         </section>
 
-                        {!showConfirmation
+                        {!props.showConfirmation
                             ? <>
                                 <section className="mt-3">
                                     <div className="row pe-4">
@@ -139,15 +135,14 @@ export default function WrongAnswer(props) {
                                                             <span className='user-info-item  d-inline-block'><i className="fas fa-star"></i></span></h2>
                                                     </div>
                                                     <div>
-                                                        {props.totalquestions != sessionStorage.getItem('questionIndex') && (!props.reentersuccess ? <a onClick={() => setShowConfirmation(true)} className="btn btn-sm btn-green text-white py-2">Re-enter  <ImEnter /></a> : <a className="btn btn-sm btn-green text-white py-2">Reentered  <ImEnter /></a>)}
+                                                        {props.totalquestions != sessionStorage.getItem('questionIndex') && (!props.reentersuccess ? <a onClick={() => props.setShowConfirmation(true)} className="btn btn-sm btn-green text-white py-2">Re-enter  <ImEnter /></a> : <a className="btn btn-sm btn-green text-white py-2">Reentered  <ImEnter /></a>)}
                                                         {/* <button className='btn btn-sm btn-green text-white py-2'>Re-enter</button> */}
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div className="exit mt-3 text-center">
-                                            <button className='btn btn-sm btn-orange px-4' onClick={() => navigate('/appuserhome')}>Exit</button>
+                                            {/* <button className='btn btn-sm btn-orange px-4' onClick={() => navigate('/appuserhome')}>Exit</button> */}
                                         </div>
                                     </div>
                                 </section>
@@ -164,13 +159,14 @@ export default function WrongAnswer(props) {
                                         <div className='col0sm-12 px-0'>
                                             <div className="button-section">
                                                 <button className="btn btn-block btn-confirmation text-uppercase" onClick={() => props.reenter()}>Yes</button>
-                                                <button className="btn btn-block btn-confirmation text-uppercase" onClick={() => setShowConfirmation(false)}>Cancel</button>
+                                                <button className="btn btn-block btn-confirmation text-uppercase" onClick={() => props.setShowConfirmation(false)}>Cancel</button>
                                             </div>
                                         </div>
                                     </div>
                                 </section>
                             </>
                         }
+
                     </div>
                 </Modal.Body>
             </Modal>
