@@ -33,6 +33,8 @@ export default function AppUserHome() {
     const [startsin, setStartsin] = useState();
     const [pageCount, setPageCount] = useState();
     const [nextQuizCounter, setNextQuizCounter] = useState(0);
+   
+
 
     const navigate = useNavigate();
     const calculateDifference = (contestTime) => {

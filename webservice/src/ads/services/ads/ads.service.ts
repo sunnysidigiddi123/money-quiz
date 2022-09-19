@@ -6,6 +6,7 @@ import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
 import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin } from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
+import { GenderTypes } from 'src/typeorm/Users/user_profile';
 
 
 
@@ -48,7 +49,10 @@ export class AdsService {
             const newAdTarget = this.adsTargetRepository.create({
 
                 ageGroup: adsDto.ageGroup,
-                location: adsDto.location
+                location: adsDto.location,
+                state: adsDto.state,
+                gender:adsDto.gender,
+                income:adsDto.income,
             })
             newAd.Ads_target = newAdTarget 
             console.log(newAd, "Sfsdsfsddfgddfds", admin.ads)

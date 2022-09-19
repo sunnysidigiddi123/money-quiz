@@ -64,6 +64,9 @@ const AdminHome = () => {
 	const [agefrom,setAgeFrom] = useState();
 	const [ageto , setAgeTo] = useState();
 	const [location,setLocation] = useState("");
+	const [state ,setState] = useState('')
+	const [gender ,setGender] = useState('')
+	const [income , setIncome] = useState('')
 	
 
 	const onChangeHandler = (event) =>{
@@ -357,7 +360,10 @@ const AdminHome = () => {
 		winningAmount: adwinningamount,
 	    publish:false,
 		ageGroup:[agefrom,ageto],
-		location:location
+		location:location,
+		state:state,
+		gender:gender,
+		income:income
 	  
 	}
 	try {
@@ -1057,6 +1063,30 @@ function showq(){
                          type="text"
 						 placeholder='Gurgaon'
                          onChange={e => setLocation(e.target.value)}
+						 required />     
+	                     </div>
+						 <div className="col-md-6 col-sm-12 form-group con">
+		                <label>state</label>
+			             <input className="form-control"    
+                         type="text"
+						 placeholder='Delhi'
+                         onChange={e => setState(e.target.value)}
+						 required />     
+	                     </div>
+						 <div className="col-md-6 col-sm-12 form-group con">
+		                <label>gender</label>
+			             <input className="form-control"    
+                         type="text"
+						 placeholder='Male'
+                         onChange={e => setGender(e.target.value)}
+						 required />     
+	                     </div>
+						 <div className="col-md-6 col-sm-12 form-group con">
+		                <label>income</label>
+			             <input className="form-control"    
+                         type="text"
+						 placeholder='10lakh'
+                         onChange={e => setIncome(e.target.value)}
 						 required />     
 	                     </div>
                           
