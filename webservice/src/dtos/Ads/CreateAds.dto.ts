@@ -1,5 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
-import { GenderTypes, IncomeTypes } from "src/typeorm/ads/Ads_target";
+import { GenderTypes, IncomeTypes } from "src/utils/enums";
+
 
 export class CreateAdsDto {
    

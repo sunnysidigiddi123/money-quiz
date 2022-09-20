@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
-import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin, profile_address, user_profile } from 'src/typeorm';
+import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin, user_profile, profile_address} from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
-import { GenderTypes } from 'src/typeorm/Users/user_profile';
+
 
 
 
@@ -122,9 +122,7 @@ export class AdsService {
                 where:
                 {
                     Ads_target: {
-                        // income: user.userProfile.incomegroup,
-                        // location: address.city,
-                        // state: address.state,
+                       
                     }
                 },
             })
