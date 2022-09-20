@@ -11,7 +11,14 @@ export enum GenderTypes {
     OTHERS = 'others'
     }
 
-    
+    export enum IncomeTypes {
+        BELOW_18 = 'below 18',
+        BETWEEN18_22 = '18-22',
+        BETWEEN22_26 = '22-26',
+        BETWEEN26_32 = '26-32',
+        BETWEEN32_58 = '32-58',
+        ABOVE_58 = 'above 58',
+        }    
 
 
 @Entity()
@@ -42,10 +49,10 @@ export class user_profile {
 
     @Column({
         nullable:false,
-        default:''
+        type:'text'
        
     })
-    incomegroup: string
+    incomegroup: IncomeTypes
     
 
     @OneToOne(() => User, (user) => user.userProfile) // specify inverse side as a second parameter

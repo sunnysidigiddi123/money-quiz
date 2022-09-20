@@ -63,10 +63,18 @@ const AdminHome = () => {
 	const [addetails,setAdDetails] = useState("");
 	const [agefrom,setAgeFrom] = useState();
 	const [ageto , setAgeTo] = useState();
-	const [location,setLocation] = useState("");
-	const [state ,setState] = useState('')
 	const [gender ,setGender] = useState('')
 	const [income , setIncome] = useState('')
+	const [stateList, setStateList] = useState([])
+    const [districtList, setDistrictList] = useState([])
+    const [locationList, setLocationList] = useState([])
+	const [userAddress, setUserAddress, getUserAddress] = useState({
+        pin: "",
+        district: "",
+        state: "",
+        country: "",
+        location: "",
+    });  
 	
 
 	const onChangeHandler = (event) =>{
@@ -184,6 +192,7 @@ const AdminHome = () => {
 	  } catch (e) {
 	  
 		toast.error(e.message);
+		
 			
 	  }
   
@@ -360,12 +369,15 @@ const AdminHome = () => {
 		winningAmount: adwinningamount,
 	    publish:false,
 		ageGroup:[agefrom,ageto],
-		location:location,
-		state:state,
+		location:userAddress.location,
+		state:userAddress.state,
 		gender:gender,
-		income:income
-	  
+		income:income,
+		pin:userAddress.pin,
+		district:userAddress.district,
+		country:userAddress.country 
 	}
+
 	try {
 	  let post = await axios.post(BASE_URL, sendData,{ 
 		headers: {
@@ -390,6 +402,8 @@ const AdminHome = () => {
 	} catch (e) {
 	
 	  toast.error(e.message);
+	  console.log(e.response.message,"mmm")
+	 
 
 		  
 	}
@@ -611,6 +625,68 @@ const getSegment =async(e)=>{
    
 }
 
+const handleAddressChange = (e) => {
+	userAddress[e.target.name] = e.target.value.trim();
+	setUserAddress({
+		...userAddress
+	})
+	console.log(e.target.name,e.target.value,userAddress)
+	if (e.target.name == 'pin' && e.target.value.length == 6) {
+		console.log(e.target.value)
+		getPinData(parseInt(e.target.value));
+	} else if (e.target.name == 'pin' && e.target.value.length != 6) {
+		setDistrictList([])
+		setStateList([])
+		setLocationList([])
+		userAddress.district=""
+		userAddress.state=""
+		userAddress.location=""
+		setUserAddress({
+			...userAddress
+		})
+		console.log('useraddress afer update', userAddress)
+	}
+};
+
+  // get City & stated based on PIN entered
+  const getPinData = async (pin) => {
+	const _URL = `${process.env.REACT_APP_BASE_URL}/users/getpincodedata`;
+	const token = sessionStorage.getItem("token");
+	const HEADER = { "authorization": token, }
+	
+	let sendData = {
+		pincode: pin,
+	};
+	try {
+		await axios.post(_URL, sendData, {
+			headers: HEADER,
+		}).then((res) => {
+		   // console.log(res.data)
+			let pinRes = res?.data?.pincode?.result;
+			setDistrictList([...new Set(pinRes.map(item => item.District))])
+			setStateList([...new Set(pinRes.map(item => item.StateName))])
+			setLocationList([...new Set(pinRes.map(item => item.LocationName))])
+
+			setUserAddress({
+				...userAddress
+			})
+			//setSelectedCity("New Delhi South West Division");
+			
+		})
+		console.log(districtList,"aaa")
+	} catch (error) {
+		console.log('error is ', error)
+		if (error && error.response) {
+			toast.error(error.response.data.message);
+			if (error.response.status === 401) {
+				navigate("/");
+			}
+		} else {
+			toast.error('Something went wrong');
+		}
+	}
+}
+
 
 
 
@@ -621,6 +697,14 @@ useEffect(() => {
     }
   }, []);
 
+  useEffect(() => {
+       
+	if (userAddress.pin && userAddress.pin.toString().length == 6) {
+		console.log("pin change use effect trigger")
+		getPinData(parseInt(userAddress.pin));
+	}
+
+}, [userAddress.pin])
 
 useEffect(() => {
 	getUser();
@@ -1006,7 +1090,7 @@ function showq(){
 						 <div className="col-md-6 col-sm-12 form-group con">
 		                <label>Ad Time</label>
 			             <input className="form-control"    
-                         type={"datetime-local"}
+                         type={"date"}
                          onChange={e => setAdTime(e.target.value)}
 						 required />     
 	                     </div>
@@ -1050,44 +1134,91 @@ function showq(){
 					    <div className="col-md-6 col-sm-12 form-group con">
 	                  	<label>Age Group From</label>
 	                 	<input className="form-control" type="number"  
-                         placeholder="from"  onChange={e => setAgeFrom(e.target.value)}  required/>
+                         placeholder="from"  onChange={e => setAgeFrom(e.target.value)}  />
                      	</div>
 						 <div className="col-md-6 col-sm-12 form-group con">
 	                  	<label>To</label>
 	                 	<input className="form-control" type="number"  
-                         placeholder="to"  onChange={e => setAgeTo(e.target.value)}  required/>
+                         placeholder="to"  onChange={e => setAgeTo(e.target.value)}  />
                      	</div>
 						 <div className="col-md-6 col-sm-12 form-group con">
-		                <label>Location</label>
-			             <input className="form-control"    
-                         type="text"
-						 placeholder='Gurgaon'
-                         onChange={e => setLocation(e.target.value)}
-						 required />     
+		                 <label htmlFor="pin" className="form-label  fw-bold">PIN</label>
+                        <input type="text" className="form-control" id="pin" name="pin" value={userAddress.pin} onChange={handleAddressChange} />   
 	                     </div>
-						 <div className="col-md-6 col-sm-12 form-group con">
-		                <label>state</label>
+                          <div className="col-md-6 col-sm-12 form-group con">
+								  <Form.Label htmlFor="state" className='fw-bold'>State</Form.Label>
+								  <Form.Select aria-label="Default select example" onChange={handleAddressChange} id="state" name="state" value={userAddress.state ? userAddress.state : "Select State"} disabled={(stateList.length == 0) ? 'disabled' : ''}>
+									  <option value="">Select State</option>
+									  {stateList.map((stateitem, stateIdx) => {
+										  return (<option key={stateIdx} value={stateitem}>{stateitem}</option>)
+									  })
+									  }
+								  </Form.Select>
+								  </div>
+
+						 {/* <div className="col-md-6 col-sm-12 form-group con">
+		                <label>State</label>
 			             <input className="form-control"    
                          type="text"
 						 placeholder='Delhi'
                          onChange={e => setState(e.target.value)}
 						 required />     
-	                     </div>
+	                     </div> */}
+
+								  <div className="col-md-6 col-sm-12 form-group con">
+								  <Form.Label htmlFor="district" className='fw-bold'>District</Form.Label>
+                                                <Form.Select aria-label="Select district" value={userAddress.district ? userAddress.district : "Select district"} onChange={handleAddressChange} id="district" name="district" disabled={(districtList.length == 0) ? 'disabled' : ''}>
+                                                    <option value="">Select district</option>
+                                                    {districtList.map((cityitem, cityIdx) => {
+                                                        return (<option key={cityIdx} value={cityitem}>{cityitem}</option>)
+                                                    })
+                                                    }
+                                                </Form.Select>
+								  </div>
+								  <div className="col-md-6 col-sm-12 form-group con">
+								  <Form.Label htmlFor="location" className='fw-bold'>Area</Form.Label>
+                                                <Form.Select aria-label="Select Location" value={userAddress.location ? userAddress.location : "Select Area"} onChange={handleAddressChange} id="location" name="location" disabled={(locationList.length == 0) ? 'disabled' : ''}>
+                                                    <option value="">Select Area</option>
+                                                    {locationList.map((areaitem, areaIdx) => {
+                                                        return (<option key={areaIdx} value={areaitem}>{areaitem}</option>)
+                                                    })
+                                                    }
+                                                </Form.Select>
+								  </div>
+								  <div className="col-md-6 col-sm-12 form-group con">
+								  <Form.Label htmlFor="country" className='fw-bold'>Country</Form.Label>
+                                                <Form.Select aria-label="Select Country"  value={userAddress.country} onChange={handleAddressChange} id="country" name="country">
+                                                    <option value="">Select Country</option>
+                                                    <option >India</option>
+                                                </Form.Select>
+												</div>
+						
+						
+						<div className="col-md-6 col-sm-12 form-group con">
+							 <Form.Label className=' fw-bold'>Gender</Form.Label>
+									  <Form.Select aria-label="Default select example" name="gender" value={gender} onChange={e => setGender(e.target.value)} >
+										  <option>Select Gender</option>
+										  <option value="male">Male</option>
+										  <option value="female">Female</option>
+										  <option value="others">Others</option>
+							 </Form.Select>
+
+
+	                    </div>
 						 <div className="col-md-6 col-sm-12 form-group con">
-		                <label>gender</label>
-			             <input className="form-control"    
-                         type="text"
-						 placeholder='Male'
-                         onChange={e => setGender(e.target.value)}
-						 required />     
-	                     </div>
-						 <div className="col-md-6 col-sm-12 form-group con">
-		                <label>income</label>
-			             <input className="form-control"    
-                         type="text"
-						 placeholder='10lakh'
-                         onChange={e => setIncome(e.target.value)}
-						 required />     
+
+						 <Form.Label className=' fw-bold'>Income</Form.Label>
+									  <Form.Select aria-label="Default select example" name="income" value={income} onChange={e => setIncome(e.target.value)} >
+										  <option>Select Income Group</option>
+										  <option value="below 18">Below 18</option>
+										  <option value="18-22">18 to 22</option>
+										  <option value="22-26">22 to 26</option>
+										  <option value="26-32">26 to 32</option>
+										  <option value="32-58">32 to 58</option>
+										  <option value="above 58">Above 58</option>
+										
+									  </Form.Select>
+		           
 	                     </div>
                           
 

@@ -1,12 +1,13 @@
 import { Type } from "class-transformer";
 import { isDate, IsDate, IsDateString, IsEmail, IsEnum, IsISO8601, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { IncomeTypes } from "src/typeorm/ads/Ads_target";
 import { RoleTypes } from "src/typeorm/Users/User";
 import { GenderTypes } from "src/typeorm/Users/user_profile";
 
 export class CreateUserProfileDto {
      
 
-    @IsISO8601({ strict: true })
+   
      dob: Date
 
      @IsEnum(GenderTypes)
@@ -16,6 +17,7 @@ export class CreateUserProfileDto {
 
      location:string;
 
-     incomegroup: string
+     @IsEnum(IncomeTypes)
+     incomegroup: IncomeTypes
 
 }

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
-import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin } from 'src/typeorm';
+import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin, profile_address, user_profile } from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
 import { GenderTypes } from 'src/typeorm/Users/user_profile';
@@ -26,6 +26,8 @@ export class AdsService {
         private readonly adsPlayedUserRepository: Repository<Ads_played_users>,
         @InjectRepository(Admin)
         private readonly adminRepository: Repository<Admin>,
+        @InjectRepository(profile_address)
+        private readonly profileaddressRepository: Repository<profile_address>,
 
     ) { }
 
@@ -33,7 +35,7 @@ export class AdsService {
     async createAd(adsDto: CreateAdsDto, admin: Admin, request: IGetUserAuthInfoRequest) {
 
         try {
-            console.log(request.userId,"aaa")
+            console.log(request.userId, "aaa")
             const users = await this.adminRepository.findOne({ where: { id: request.userId } })
             console.log(users, "Sfsdfds")
             const newAd = this.adsRepository.create({
@@ -50,11 +52,14 @@ export class AdsService {
 
                 ageGroup: adsDto.ageGroup,
                 location: adsDto.location,
+                pin: adsDto.pin,
+                district:adsDto.district,
                 state: adsDto.state,
-                gender:adsDto.gender,
-                income:adsDto.income,
+                gender: adsDto.gender,
+                incomegroup: adsDto.income,
+                country:adsDto.country
             })
-            newAd.Ads_target = newAdTarget 
+            newAd.Ads_target = newAdTarget
             console.log(newAd, "Sfsdsfsddfgddfds", admin.ads)
             admin.ads = [...admin.ads, newAd]
             console.log("kjhjk", admin.ads)
@@ -72,39 +77,58 @@ export class AdsService {
         }
     }
 
-   
-    getAdsById(id:number){
-    
-        try{
-  
-        return this.adsRepository.findOne({where: { id }, relations: ['questions']})
-       
-       }catch(e){
-        
-              throw new HttpException(e, HttpStatus.BAD_REQUEST) 
-        }
-  }
 
-
-  async createAdsQuestion(questionDto: CreateAdsQuestionDto, ads: Ads) {
-
-    const newQuestion = this.questionRepository.create(questionDto);
-    ads.questions = [...ads.questions, newQuestion]
-    console.log("qqqqq", ads.questions)
-    await this.questionRepository.save(newQuestion)
-    await this.adsRepository.save(ads);
-    return newQuestion;
-
-
-}
-
-    async getAds() {
+    getAdsById(id: number) {
 
         try {
 
-            const ads = await this.adsRepository.find();
-            console.log('sssss')
+            return this.adsRepository.findOne({ where: { id }, relations: ['questions'] })
 
+        } catch (e) {
+
+            throw new HttpException(e, HttpStatus.BAD_REQUEST)
+        }
+    }
+
+
+    async createAdsQuestion(questionDto: CreateAdsQuestionDto, ads: Ads) {
+
+        const newQuestion = this.questionRepository.create(questionDto);
+        ads.questions = [...ads.questions, newQuestion]
+        console.log("qqqqq", ads.questions)
+        await this.questionRepository.save(newQuestion)
+        await this.adsRepository.save(ads);
+        return newQuestion;
+
+
+    }
+
+    async getAds(request: IGetUserAuthInfoRequest) {
+        try {
+            console.log("id", request.userId);
+            const user = await this.UserRepository.findOne({
+                where: {
+                    id: request.userId,
+                },
+                relations: ['userProfile']
+            });
+            console.log("users", user);
+            const address = await this.profileaddressRepository.findOne({ relations: { user_profile: true }, where: { user_profile: {user:{id:request.userId}} } })
+            console.log(address)
+            const ads = await this.adsRepository.find({
+                relations: {
+                    Ads_target: true,
+                },
+                where:
+                {
+                    Ads_target: {
+                        // income: user.userProfile.incomegroup,
+                        // location: address.city,
+                        // state: address.state,
+                    }
+                },
+            })
+            console.log("Neeraj", ads)
             return { ads: ads }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
@@ -116,7 +140,7 @@ export class AdsService {
 
         try {
 
-            const ads = await this.adsRepository.find({relations:['admin','questions']});
+            const ads = await this.adsRepository.find({ relations: ['admin', 'questions'] });
             console.log('sssss')
 
             return { ads: ads }
@@ -130,7 +154,7 @@ export class AdsService {
         try {
 
             const ads_question = await this.questionRepository.find({
-               
+
                 where: {
                     ads: {
                         id: request.body.adsId,
@@ -138,15 +162,15 @@ export class AdsService {
                 },
             });
             console.log(request.body.adsId)
-           
-            return {message:"Ads questions" , adsQuestion:ads_question }
+
+            return { message: "Ads questions", adsQuestion: ads_question }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
         }
     }
 
-    async answerCheck(request: IGetUserAuthInfoRequest){
-   
+    async answerCheck(request: IGetUserAuthInfoRequest) {
+
         const user = await this.UserRepository.findOne({ where: { id: request.userId } })
         const ad = await this.adsRepository.findOne({ where: { id: request.body.adId }, relations: ['questions'] })
 
@@ -165,11 +189,11 @@ export class AdsService {
                 const userAnswered = JSON.parse(playedList.ansList)
 
                 let aaa = []
-
+                 console.log(JSON.parse(playedList.ansList).length ,ad.questions.length )
                 for (let i = 0; i < ad.questions.length; i++) {
 
 
-                    if (userAnswered[i].quesId == ad.questions[i].id && userAnswered[i].ans == ad.questions[i].correctanswer) {
+                    if (JSON.parse(playedList.ansList).length == ad.questions.length && userAnswered[i].quesId == ad.questions[i].id && userAnswered[i].ans == ad.questions[i].correctanswer   ) {
 
                         aaa.push(true)
                     } else

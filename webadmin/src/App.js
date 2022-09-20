@@ -21,6 +21,8 @@ function App() {
         <Route exact path="/resetPassword" element={<ResetPassword />} />
         <Route exact path="/adminhome" element={<AdminHome />} />
         <Route exact path="/contest" element={<Contest />} /> 
+        <Route exact path="/contestlist" element={<Contest />} /> 
+        <Route exact path="/adslist" element={<Contest />} /> 
         <Route exact path="/ads" element={<Ads />} /> 
         
       </Routes>

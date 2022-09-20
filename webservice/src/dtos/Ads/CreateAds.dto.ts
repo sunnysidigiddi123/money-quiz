@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
+import { GenderTypes, IncomeTypes } from "src/typeorm/ads/Ads_target";
 
 export class CreateAdsDto {
    
@@ -20,7 +21,7 @@ export class CreateAdsDto {
       @IsNotEmpty()
       publish:boolean;
       
-      @IsNotEmpty()
+    
       ageGroup:number[];
       
       @IsNotEmpty()
@@ -29,11 +30,22 @@ export class CreateAdsDto {
       @IsNotEmpty()
       state:string;
 
-      @IsNotEmpty()
-      gender:string;
+      @IsEnum(GenderTypes)
+      gender:GenderTypes;
+
+      @IsEnum(IncomeTypes)
+      income: IncomeTypes
 
       @IsNotEmpty()
-      income:string;
+      pin:number;
+
+      @IsNotEmpty()
+      district:string;
+
+      @IsNotEmpty()
+      country:string;
+
+
 
 
 }
