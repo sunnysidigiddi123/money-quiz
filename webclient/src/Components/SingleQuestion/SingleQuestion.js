@@ -26,7 +26,7 @@ export default function SingleQuestion() {
                             </div>
                             <div className="col-xs-12 col-sm-12 col-md-12 mt-3 d-flex justify-content-center">
                                 <div className='video-player-wraper'>
-                                <ReactPlayer className="react-player" id='player' url="https://www.youtube.com/watch?v=1Upn-UAk2ZU" frameborder="0" allowfullscreen playing={true} allow="autoplay"  width='100%'
+                                <ReactPlayer className="react-player" id='player' url="https://www.youtube.com/watch?v=1Upn-UAk2ZU" frameborder="0" allowFullScreen playing={true} allow="autoplay"  width='100%'
                                        height='100%' muted></ReactPlayer>
                                 </div>
                             </div>
