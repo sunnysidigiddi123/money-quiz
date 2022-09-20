@@ -1,21 +1,31 @@
+import { GenderTypes, IncomeTypes } from "src/utils/enums"
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm"
 
 
-export enum GenderTypes {
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHERS = 'others'
-    }
+// export enum GenderTypes {
+//     "MALE" = 'male',
+//     "FEMALE" = 'female',
+//     "OTHERS" = 'others'
+//     }
 
 
-    export enum IncomeTypes {
-        BELOW_18 = 'below 18',
-        BETWEEN18_22 = '18-22',
-        BETWEEN22_26 = '22-26',
-        BETWEEN26_32 = '26-32',
-        BETWEEN32_58 = '32-58',
-        ABOVE_58 = 'above 58',
-        }    
+//     export enum IncomeTypes {
+//         "1 to 10 lakhs" = '1-10',
+//         "10 to 20 lakhs" = '10-20',
+//         "20 to 30 lakhs" = '20-30',
+//         "30 to 40 lakhs" = '30-40',
+//         "Above 58 lakhs" = 'above 40',
+    
+//         } 
+//         export enum AgeGroupTypes {
+//             "Below 18 years" = 'below 18',
+//             "18 to 22 years" = '18-22',
+//             "22 to 26 years" = '22-26',
+//             "26 to 32 years" = '26-32',
+//             "32 to 58 years" = '32-58',
+//             "Above 58 years" = 'above 58',
+//             }    
+    
 
 @Entity()
 export class Ads_target {

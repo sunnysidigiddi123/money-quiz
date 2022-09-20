@@ -13,6 +13,7 @@ import { Request } from 'express';
 import { Response } from 'express';
 import { CreateUserProfileDto } from 'src/dtos/Users/CreateUserProfile.dto';
 import { CreateAdminDto } from 'src/dtos/Users/CreateAdmin.dto';
+import { AgeGroupTypes, GenderTypes, IncomeTypes } from 'src/utils/enums';
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -521,7 +522,7 @@ export class UsersService {
     
     try{
       console.log(request.userId,request.body.pincode)
-      const user = await this.adminRepository.findOne({where:{id:request.userId}});
+      const user = await this.userRepository.findOne({where:{id:request.userId}});
     
       if(user){
         console.log("sdssa")
@@ -539,5 +540,47 @@ export class UsersService {
     
   }
 }
+
+async getpincodedataadmin(request: IGetUserAuthInfoRequest){
+
+    
+  try{
+    console.log(request.userId,request.body.pincode)
+    const user = await this.adminRepository.findOne({where:{id:request.userId}});
+  
+    if(user){
+      console.log("sdssa")
+       const pincodeData = pincode(request.body.pincode)
+       console.log(pincodeData)
+  
+       return { message:"Pincode details" , pincode:pincodeData }
+    }
+
+
+} catch (e) {
+
+  throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+  
+}
+}
+
+
+async getenumvalues(request: IGetUserAuthInfoRequest){
+   
+  try{
+       
+  
+       return { message:"Enum Values" , Gender:GenderTypes,AgeGroup:AgeGroupTypes,IncomeGroup:IncomeTypes}
+    }
+
+ catch (e) {
+
+  throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+  
+}
+}
+
 
 }

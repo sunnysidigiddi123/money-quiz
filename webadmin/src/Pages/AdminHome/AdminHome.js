@@ -61,10 +61,11 @@ const AdminHome = () => {
 	const [adwinningamount,setAdWinningAmount] = useState();
 	const [selectedFile, setSelectedFile] = useState("");
 	const [addetails,setAdDetails] = useState("");
-	const [agefrom,setAgeFrom] = useState();
-	const [ageto , setAgeTo] = useState();
+	
+	const [ageGroup , setAgeGroup] = useState('');
 	const [gender ,setGender] = useState('')
-	const [income , setIncome] = useState('')
+	const [incomegroup, setIncomeGroup] = useState('')
+	
 	const [stateList, setStateList] = useState([])
     const [districtList, setDistrictList] = useState([])
     const [locationList, setLocationList] = useState([])
@@ -75,6 +76,8 @@ const AdminHome = () => {
         country: "",
         location: "",
     });  
+
+	
 	
 
 	const onChangeHandler = (event) =>{
@@ -368,11 +371,11 @@ const AdminHome = () => {
 		adTime: adtime,
 		winningAmount: adwinningamount,
 	    publish:false,
-		ageGroup:[agefrom,ageto],
+		ageGroup:ageGroup,
 		location:userAddress.location,
 		state:userAddress.state,
 		gender:gender,
-		income:income,
+		income:incomegroup,
 		pin:userAddress.pin,
 		district:userAddress.district,
 		country:userAddress.country 
@@ -650,7 +653,7 @@ const handleAddressChange = (e) => {
 
   // get City & stated based on PIN entered
   const getPinData = async (pin) => {
-	const _URL = `${process.env.REACT_APP_BASE_URL}/users/getpincodedata`;
+	const _URL = `${process.env.REACT_APP_BASE_URL}/users/getpincodedataadmin`;
 	const token = sessionStorage.getItem("token");
 	const HEADER = { "authorization": token, }
 	
@@ -687,6 +690,8 @@ const handleAddressChange = (e) => {
 	}
 }
 
+  
+
 
 
 
@@ -710,7 +715,7 @@ useEffect(() => {
 	getUser();
 
 	getDraftContest();
-		
+
 	  }, [userId]);
 
 function showq(){
@@ -1131,16 +1136,20 @@ function showq(){
 						 </div>
 
 						 <div className='row'>
-					    <div className="col-md-6 col-sm-12 form-group con">
-	                  	<label>Age Group From</label>
-	                 	<input className="form-control" type="number"  
-                         placeholder="from"  onChange={e => setAgeFrom(e.target.value)}  />
-                     	</div>
+
 						 <div className="col-md-6 col-sm-12 form-group con">
-	                  	<label>To</label>
-	                 	<input className="form-control" type="number"  
-                         placeholder="to"  onChange={e => setAgeTo(e.target.value)}  />
-                     	</div>
+								  <Form.Label htmlFor="state" className='fw-bold'>AgeGroup</Form.Label>
+								  <Form.Select aria-label="Default select example" onChange={e => setAgeGroup(e.target.value)}  id="state" name="state" value={ageGroup} >
+									  <option value="">Select AgeGroup</option>
+									  <option value="below 18">Below 18 years</option>
+										  <option value="18-22">18 to 22 years</option>
+										  <option value="22-26">22 to 26 years</option>
+										  <option value="26-32">26 to 32 years</option>
+										  <option value="32-58">32 to 58 years</option>
+										  <option value="above 58">Above 58 years</option>
+								  </Form.Select>
+								  </div>
+					   
 						 <div className="col-md-6 col-sm-12 form-group con">
 		                 <label htmlFor="pin" className="form-label  fw-bold">PIN</label>
                         <input type="text" className="form-control" id="pin" name="pin" value={userAddress.pin} onChange={handleAddressChange} />   
@@ -1198,9 +1207,10 @@ function showq(){
 							 <Form.Label className=' fw-bold'>Gender</Form.Label>
 									  <Form.Select aria-label="Default select example" name="gender" value={gender} onChange={e => setGender(e.target.value)} >
 										  <option>Select Gender</option>
-										  <option value="male">Male</option>
-										  <option value="female">Female</option>
-										  <option value="others">Others</option>
+										  <option value="male">MALE</option>
+										  <option value="female">FEMALE</option>
+										  <option value="others">OTHERS</option>
+										
 							 </Form.Select>
 
 
@@ -1208,14 +1218,14 @@ function showq(){
 						 <div className="col-md-6 col-sm-12 form-group con">
 
 						 <Form.Label className=' fw-bold'>Income</Form.Label>
-									  <Form.Select aria-label="Default select example" name="income" value={income} onChange={e => setIncome(e.target.value)} >
+						 <Form.Select aria-label="Default select example" name="income" value={incomegroup} onChange={e => setIncomeGroup(e.target.value)} >
 										  <option>Select Income Group</option>
-										  <option value="below 18">Below 18</option>
-										  <option value="18-22">18 to 22</option>
-										  <option value="22-26">22 to 26</option>
-										  <option value="26-32">26 to 32</option>
-										  <option value="32-58">32 to 58</option>
-										  <option value="above 58">Above 58</option>
+										  <option value="1-10">1 to 10 lakhs</option>
+										  <option value="10-20">10 to 20 lakhs</option>
+										  <option value="20-30">20 to 30 lakhs</option>
+										  <option value="30-40">30 to 40 lakhs</option>
+										  <option value="above 40">Above 58 lakhs</option>
+									
 										
 									  </Form.Select>
 		           
