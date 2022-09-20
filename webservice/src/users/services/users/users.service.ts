@@ -452,7 +452,7 @@ export class UsersService {
 
         existprofile.dob = userprofileDto.dob
         existprofile.gender = userprofileDto.gender
-        existprofile.age = userprofileDto.age
+        existprofile.ageGroup = userprofileDto.ageGroup
         existprofile.incomegroup = userprofileDto.incomegroup
 
         existprofileaddress.address1 = request.body.address1
@@ -476,7 +476,7 @@ export class UsersService {
           const profile = this.userprofileRepository.create({
             dob:userprofileDto.dob,
             gender:userprofileDto.gender,
-            age:userprofileDto.age,
+            ageGroup:userprofileDto.ageGroup,
             incomegroup:userprofileDto.incomegroup,
             user: user
           })

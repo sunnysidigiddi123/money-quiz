@@ -31,14 +31,14 @@ const Table = (props) => {
 		  sortable: true
 		  
 		},
-		{
-		  name: "Ad Details",
-		  selector:  row=> `${row.adDetails}`,
-		  sortable: true,
-		  wrap:true
+		// {
+		//   name: "Ad Details",
+		//   selector:  row=> `${row.adDetails}`,
+		//   sortable: true,
+		//   wrap:true
 		 
 		  
-		},
+		// },
 		{
 			name: "Ad Winning Amount",
 			selector:  row=> `₹ ${row.winningAmount}`,
@@ -46,13 +46,53 @@ const Table = (props) => {
 			wrap:true
 		   
 			
-		  },
-		{
-		  name: "Ad Time",
-		  selector: row=> `${moment(row.adTime).format("MMMM Do YYYY, h:mm:ss a")}`,
-		  sortable: true,
+    },
+    {
+      name: "State",
+      selector:  row=> `${row.Ads_target.state}`,
+      sortable: true,
+      wrap:true
+        
+      
+    },
+    {
+      name: "District",
+      selector:  row=> `${row.Ads_target.district}`,
+      sortable: true,
+      wrap:true
+        
+      
+    },
+    {
+      name: "Income Group",
+      selector:  row=> `${row.Ads_target.incomegroup}`,
+      sortable: true,
+      wrap:true
+        
+      
+    },
+    {
+      name: "Age Group",
+      selector:  row=> `${row.Ads_target.ageGroup}`,
+      sortable: true,
+      wrap:true
+        
+      
+    },
+    {
+      name: "Gender",
+      selector:  row=> `${row.Ads_target.gender}`,
+      sortable: true,
+      wrap:true
+        
+      
+    },
+		// {
+		//   name: "Ad Time",
+		//   selector: row=> `${moment(row.adTime).format("MMMM Do YYYY, h:mm:ss a")}`,
+		//   sortable: true,
 		  
-		},
+		// },
         { 
 			 
 			name: "Actions",
@@ -199,7 +239,6 @@ const Table = (props) => {
            <tr>
                <th>Ad Name</th>
                <th>Ad Time</th>
-               <th>Ad Details</th>
                <th>Question Type</th>
                <th>Total Questions</th>
        
@@ -209,7 +248,6 @@ const Table = (props) => {
            <tr className="active-row">
                <td>{ad && ad.adName}</td>
                <td>{moment(ad &&ad.adTime).format("MMMM Do YYYY, h:mm:ss a")}</td>
-               <td>{ad &&ad.adDetails}</td>
                <td>{questions && questions.type}</td>
                <td>{questions && questions.question}</td>
               

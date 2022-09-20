@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { isDate, IsDate, IsDateString, IsEmail, IsEnum, IsISO8601, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
 import { RoleTypes } from "src/typeorm/Users/User";
-import { GenderTypes, IncomeTypes } from "src/utils/enums";
+import { AgeGroupTypes, GenderTypes, IncomeTypes } from "src/utils/enums";
 
 
 export class CreateUserProfileDto {
@@ -13,7 +13,8 @@ export class CreateUserProfileDto {
      @IsEnum(GenderTypes)
      gender:GenderTypes;
      
-     age:number;
+     @IsEnum(AgeGroupTypes)
+     ageGroup: AgeGroupTypes;
 
      location:string;
 

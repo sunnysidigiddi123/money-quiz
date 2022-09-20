@@ -1,4 +1,4 @@
-import { GenderTypes, IncomeTypes } from "src/utils/enums";
+import { AgeGroupTypes, GenderTypes, IncomeTypes } from "src/utils/enums";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Admincontest } from "../contests/Admincontest";
 import { profile_address } from "./profile_address";
@@ -27,9 +27,9 @@ export class user_profile {
 
     @Column({
         nullable:false,
-        default:0
+        type:'text'
     })
-    age: number
+    ageGroup: AgeGroupTypes
 
 
     @Column({
