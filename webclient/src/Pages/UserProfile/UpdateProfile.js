@@ -23,6 +23,7 @@ export default function UpdateProfile() {
     const [locationList, setLocationList] = useState([])
     const [profileInfo, setProfileInfo, getProfileInfo] = useState({
         age: "",
+        ageGroup: "",
         dob: "",
         gender: "",
         incomegroup: "",
@@ -36,7 +37,10 @@ export default function UpdateProfile() {
         state: "",
         country: "",
         location: "",
-    });  
+    });
+    const [genderList, setGenderList] = useState({})
+    const [ageGroupList, setAgeGroupList] = useState({})
+    const [incomeGroupList, setIncomeGroupList] = useState({})
     // const initialFormData = {
     //     age: "",
     //     dob: "",
@@ -84,9 +88,9 @@ export default function UpdateProfile() {
             setDistrictList([])
             setStateList([])
             setLocationList([])
-            userAddress.district=""
-            userAddress.state=""
-            userAddress.location=""
+            userAddress.district = ""
+            userAddress.state = ""
+            userAddress.location = ""
             setUserAddress({
                 ...userAddress
             })
@@ -110,6 +114,7 @@ export default function UpdateProfile() {
             state: userAddress.state,
             country: userAddress.country,
             location: userAddress.location,
+            ageGroup: profileInfo.ageGroup,
 
             // altContact: "",
             // aadhar: "",
@@ -125,7 +130,7 @@ export default function UpdateProfile() {
             }).then((res) => {
                 console.log(res.data)
                 toast.success(res?.data?.message);
-                setFormData(res?.data?.profile, res?.data?.address);                              
+                setFormData(res?.data?.profile, res?.data?.address);
             });
 
         } catch (error) {
@@ -153,7 +158,7 @@ export default function UpdateProfile() {
             await axios.post(_URL, sendData, {
                 headers: HEADER,
             }).then((res) => {
-               // console.log(res.data)
+                // console.log(res.data)
                 let pinRes = res?.data?.pincode?.result;
                 setDistrictList([...new Set(pinRes.map(item => item.District))])
                 setStateList([...new Set(pinRes.map(item => item.StateName))])
@@ -177,7 +182,7 @@ export default function UpdateProfile() {
         }
     }
     useEffect(() => {
-       
+
         if (userAddress.pin && userAddress.pin.toString().length == 6) {
             console.log("pin change use effect trigger")
             getPinData(parseInt(userAddress.pin));
@@ -224,6 +229,49 @@ export default function UpdateProfile() {
                 console.log(res);
                 setUsername(res?.data?.name);
                 setFormData(res?.data?.userProfile, res?.data?.address);
+                console.log("agegroup is ", ageGroupList)
+            })
+
+        } catch (error) {
+            console.log(error.response)
+            if (error && error.response) {
+                console.log('error is ', error)
+                toast.error(error.response.data.message);
+                if (error.response.status === 401) {
+                    navigate("/");
+                }
+            } else {
+                toast.error('Something went wrong');
+            }
+        }
+    }
+    const getEnumValues = async () => {
+
+        const _URL = CONSTANTS.GETENUMVALUES;
+        const token = sessionStorage.getItem("token");
+        const HEADERS = { "authorization": token, }
+        try {
+            axios.get(_URL, {
+                headers: HEADERS,
+            }).then((res) => {
+                console.log('enum', res);
+                let genderData = res?.data?.Gender;
+                // [...new Set(genderData.map((item) => (item)))]
+                // genderData.map((item, indx)=>{
+                //     console.log(item)
+                //     console.log(indx)
+                // })
+                // setGenderList([...new Set(pinRes.map(item => item.District))]) 
+
+                // for (const key in genderData) {                    
+                //      // console.log(`${key}: ${genderData[key]}`);    
+                //       //let tempobj = {displaytext:key, displayvalue:genderData[key]}
+                //       setAgeGroupList([...new Set({displaytext:key, displayvalue:genderData[key]})])  
+
+                //     }
+                setAgeGroupList({ ...res?.data?.AgeGroup })
+                setGenderList({ ...res?.data?.Gender })                
+                setIncomeGroupList({ ...res?.data?.IncomeGroup })
             })
 
         } catch (error) {
@@ -240,8 +288,11 @@ export default function UpdateProfile() {
         }
     }
     useEffect(() => {
+        getEnumValues();
         getUserDetails();
     }, [])
+
+
 
     return (
         <>
@@ -252,6 +303,18 @@ export default function UpdateProfile() {
                         <div className="card-body">
                             <h4 className="card-title">Hello <span className='text-dark-orange'>{username} !</span></h4>
                             <h5 className="card-subtitle mb-2 text-muted">Fill the information to complete your profile.</h5>
+
+                            {/* {Object.keys(ageGroupList).map((key, index) => {
+                                return (
+                                    <div key={index}>
+                                        <h2>
+                                            {key}: {ageGroupList[key]}
+                                        </h2>
+
+                                        <hr />
+                                    </div>
+                                );
+                            })} */}
                         </div>
                     </div>
                     <form className="row g-3" onSubmit={(e) => { handleFormSubmit(e) }}>
@@ -269,27 +332,54 @@ export default function UpdateProfile() {
                                   Location:{JSON.stringify(locationList)} <br/> */}
                                         <div className="row">
                                             <div className="col-sm-12 col-md-6  pb-3">
-                                                <label htmlFor="age" className="form-label fw-bold">Age</label>
-                                                <input type="number" className="form-control" id="age" name="age" value={profileInfo.age} onChange={handlePinfoChange} />
+                                                {/* <label htmlFor="ageGroup" className="form-label fw-bold">Age</label>
+                                                <input type="number" className="form-control" id="age" name="age" value={profileInfo.age} onChange={handlePinfoChange} /> */}
+                                                <Form.Label htmlFor="ageGroup" className='fw-bold'>Age Group</Form.Label>
+                                                <Form.Select aria-label="Default select example" onChange={handlePinfoChange} id="ageGroup" name="ageGroup" value={profileInfo.ageGroup ? profileInfo.ageGroup : "Age Group"}>
+                                                    <option value="">Age Group</option>                                                    
+                                                    {Object.keys(ageGroupList).map((key, index) => {
+                                                        return (
+                                                            <option key={index} value={ageGroupList[key]}>{key}</option>
+                                                        );
+                                                    })}
+                                                </Form.Select>
+                                            
+                                            
                                             </div>
                                             <div className="col-sm-12 col-md-6 pb-3">
                                                 <Form.Label className=' fw-bold'>Gender</Form.Label>
                                                 <Form.Select aria-label="Default select example" name="gender" value={profileInfo.gender} onChange={handlePinfoChange} >
                                                     <option>Select Gender</option>
-                                                    <option value="male">Male</option>
+                                                    {Object.keys(genderList).map((key, index) => {
+                                                        return (
+                                                            <option key={index} value={genderList[key]}>{key}</option>
+                                                        );
+                                                    })}
+                                                    {/* <option value="male">Male</option>
                                                     <option value="female">Female</option>
-                                                    <option value="others">Others</option>
+                                                    <option value="others">Others</option> */}
                                                 </Form.Select>
                                             </div>
                                             <div className="col-md-6 pb-3">
                                                 <label htmlFor="dob" className="form-label fw-bold">DOB</label>
-                                               
+
                                                 <input className="form-control" id="dob" name="dob" type={"date"}
                                                     value={moment(profileInfo.dob).format("YYYY-MM-DD")} onChange={handlePinfoChange} />
                                             </div>
                                             <div className="col-md-6 pb-3">
-                                                <label htmlFor="incomegroup" className="form-label fw-bold">Income Group</label>
-                                                <input className="form-control" id="incomegroup" name="incomegroup" type="number" value={profileInfo.incomegroup} onChange={handlePinfoChange} />
+                                                {/* <label htmlFor="incomegroup" className="form-label fw-bold">Income Group</label>
+                                                <input className="form-control" id="incomegroup" name="incomegroup" type="number" value={profileInfo.incomegroup} onChange={handlePinfoChange} /> */}
+
+                                                <Form.Label htmlFor="incomegroup" className='fw-bold'>Income Group</Form.Label>
+                                                <Form.Select aria-label="Default select example" onChange={handlePinfoChange} id="incomegroup" name="incomegroup" value={profileInfo.incomegroup ? profileInfo.incomegroup : "Income Group"}>
+                                                    <option value="">Income Group</option> 
+                                                    {Object.keys(incomeGroupList).map((key, index) => {
+                                                        return (
+                                                            <option key={index} value={incomeGroupList[key]}>{key}</option>
+                                                        );
+                                                    })}
+                                                </Form.Select>
+
                                             </div>
                                             {/* <div className="col-md-6 pb-3">
                                                 <label htmlFor="altContact" className="form-label fw-bold">Alternate Contact Number</label>
