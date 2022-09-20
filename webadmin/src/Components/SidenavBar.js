@@ -11,6 +11,14 @@ const SidenavBar = () => {
 		sessionStorage.clear();
 		navigate("/");
 	  }
+
+	  const navigateToAds =()=>{
+		navigate("/adhome");
+	  }
+
+	  const navigateToContest =()=>{
+		navigate("/adminhome");
+	  }
     return (
         <>
             <div className="left-side-bar">
@@ -33,13 +41,13 @@ const SidenavBar = () => {
 						
 					</li>
 					<li className="dropdown">
-						<a href="#" className="dropdown-toggle">
+						<a href="#" className="dropdown-toggle" onClick={navigateToContest}>
 							<span className="micon dw dw-edit2"></span><span className="mtext">Contests</span>
 						</a>
 					
 					</li>
 					<li className="dropdown">
-						<a href="#" className="dropdown-toggle">
+						<a href="#" className="dropdown-toggle" onClick={navigateToAds}>
 							<span className="micon dw dw-library"></span><span className="mtext">Ads</span>
 						</a>
 						
