@@ -3,7 +3,7 @@ import axios from "axios";
 import {useState, useEffect } from "react";
 import Header from '../../Components/Header';
 import SidenavBar from '../../Components/SidenavBar';
-import './AdminHome.css'
+import './AdHome.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Modal, Button, Form, Row, ModalFooter } from "react-bootstrap";
@@ -760,7 +760,7 @@ function showq(){
 							</div>
 							<div className="widget-data">
 								<div className="h4 mb-0">{totalcon.length}</div>
-								<div className="weight-600 font-14">Total Contests</div>
+								<div className="weight-600 font-14">Total Ads</div>
 							</div>
 						</div>
 					</div>
@@ -775,7 +775,7 @@ function showq(){
 							</div>
 							<div className="widget-data">
 								<div className="h4 mb-0">{data.length}</div>
-								<div className="weight-600 font-14">Created Contests</div>
+								<div className="weight-600 font-14">Created Ads</div>
 							</div>
 						</div>
 					</div>
@@ -814,24 +814,9 @@ function showq(){
 			
 			<div className="card-box mb-30 admincreate" >
 			<div className="pd-20">
-			{/* <Dropzone 
-                    onDrop={onDrop}
-                    multiple={false}
-                    maxSize={800000000}>
-                    {({ getRootProps, getInputProps }) => (
-                        <div style={{ width: '50px', height: '50px', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                            {...getRootProps()}
-                        >
-                            <input {...getInputProps()} />
-                          
-                            <FaPlus />
-
-                        </div>
-                    )}
-                </Dropzone> */}
 
 
-			<Button onClick={() => setLgShow(true)} style={{position:'absolute',right:'84px'}}>Create Contests</Button>
+			<Button onClick={() => setLgShowAds(true)} style={{position:'absolute',right:'84px'}}>Create Ads</Button>
 			{/* <Button onClick={() => setLgShowAds(true)} >Create Ads</Button> */}
 			<Modal
             size="lg"
@@ -1024,13 +1009,13 @@ function showq(){
                    </Modal>
 
 		     	</div>
-					<div className="pd-20">
+					{/* <div className="pd-20">
 						<h4 className="text-blue h4">Contests List</h4>
-					</div>
+					</div> */}
 					<div className="pb-20">
 					
                        
-					<div className="pl-20 pr-20">
+					{/* <div className="pl-20 pr-20">
 
 					<DataTableExtensions {...tableData}  print={false}
 		            export={false}>
@@ -1048,8 +1033,8 @@ function showq(){
                     />
                    </DataTableExtensions>
 
-						  </div>
-						  {/* <div className="pd-20">
+						  </div> */}
+						  <div className="pd-20">
 						<h4 className="text-blue h4">Ads List</h4>
 					</div>
 						  <div className="pl-20 pr-20">
@@ -1057,7 +1042,7 @@ function showq(){
 							 
                         <Table userId={userId} user={user}/>
 
-						  </div> */}
+						  </div>
 
 					  </div>
 				  </div>
