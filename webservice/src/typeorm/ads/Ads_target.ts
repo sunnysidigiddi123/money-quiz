@@ -1,4 +1,4 @@
-import { GenderTypes, IncomeTypes } from "src/utils/enums"
+import { AgeGroupTypes, GenderTypes, IncomeTypes } from "src/utils/enums"
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm"
 
 
@@ -35,9 +35,9 @@ export class Ads_target {
 
     @Column({
         nullable:false,
-        type:'simple-array'
+        type:'text'
     })
-    ageGroup: number[]
+    ageGroup: AgeGroupTypes
 
     @Column({
         nullable: false,

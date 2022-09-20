@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsNumberString, MinLength } from "class-validator";
-import { GenderTypes, IncomeTypes } from "src/utils/enums";
+import { AgeGroupTypes, GenderTypes, IncomeTypes } from "src/utils/enums";
 
 
 export class CreateAdsDto {
@@ -21,9 +21,9 @@ export class CreateAdsDto {
      
       @IsNotEmpty()
       publish:boolean;
-      
-    
-      ageGroup:number[];
+
+      @IsEnum(AgeGroupTypes)
+      ageGroup: AgeGroupTypes;
       
       @IsNotEmpty()
       location:string;

@@ -121,7 +121,9 @@ export class AdsService {
                 where:
                 {
                     Ads_target: {
-                       
+                        // incomegroup:user.userProfile.incomegroup,
+                        // location:address.location,
+                        state:address.state,
                     }
                 },
             })
@@ -137,7 +139,7 @@ export class AdsService {
 
         try {
 
-            const ads = await this.adsRepository.find({ relations: ['admin', 'questions'] });
+            const ads = await this.adsRepository.find({ relations: ['admin', 'questions', 'Ads_target'] });
             console.log('sssss')
 
             return { ads: ads }
