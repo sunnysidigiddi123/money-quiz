@@ -4,7 +4,6 @@ import { User } from "./User";
 import { user_profile } from "./user_profile";
 
 
-
 @Entity()
 export class profile_address {
 
@@ -38,14 +37,21 @@ export class profile_address {
         default:''
        
     })
-    city: string
+    state: string
 
     @Column({
         nullable:false,
         default:''
        
     })
-    state: string
+    district: string
+    
+    @Column({
+        nullable:false,
+        default:''
+       
+    })
+    location: string
 
     @Column({
         nullable:false,

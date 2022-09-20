@@ -457,9 +457,10 @@ export class UsersService {
         existprofileaddress.address1 = request.body.address1
         existprofileaddress.address2 = request.body.address2
         existprofileaddress.pin = request.body.pin,
-        existprofileaddress.city = request.body.city,
+        existprofileaddress.district = request.body.district,
         existprofileaddress.state = request.body.state,
-        existprofileaddress.country = request.body.country
+        existprofileaddress.country = request.body.country,
+        existprofileaddress.location = request.body.location
 
        console.log(existprofile.id)
         await this.userprofileRepository.save(existprofile)
@@ -484,9 +485,10 @@ export class UsersService {
              address1:request.body.address1,
              address2:request.body.address2,
              pin:request.body.pin,
-             city:request.body.city,
+             district:request.body.district,
              state:request.body.state,
-             country:request.body.country
+             country:request.body.country,
+             location:request.body.location
 
           })
           profile.address = profile_address
@@ -518,11 +520,11 @@ export class UsersService {
 
     
     try{
-      
-      const user = await this.userRepository.findOne({where:{id:request.userId}});
+      console.log(request.userId,request.body.pincode)
+      const user = await this.adminRepository.findOne({where:{id:request.userId}});
     
       if(user){
-
+        console.log("sdssa")
          const pincodeData = pincode(request.body.pincode)
          console.log(pincodeData)
     

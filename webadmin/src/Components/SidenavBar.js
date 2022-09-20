@@ -36,47 +36,20 @@ const SidenavBar = () => {
 						<a href="#" className="dropdown-toggle">
 							<span className="micon dw dw-edit2"></span><span className="mtext">Contests</span>
 						</a>
-						<ul className="submenu">
-							<li><a href="#">Menu 1</a></li>
-							<li><a href="#">Menu 2</a></li>
-							<li><a href="#">Menu 3</a></li>
-						
-							
-						</ul>
-					</li>
-					<li className="dropdown">
-						<a href="#" className="dropdown-toggle">
-							<span className="micon dw dw-library"></span><span className="mtext">Wallet</span>
-						</a>
-						<ul className="submenu">
-							<li><a href="#">Menu 1</a></li>
-							<li><a href="#">Menu 2</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#" className="dropdown-toggle no-arrow">
-							<span className="micon dw dw-calendar1"></span><span className="mtext">Calendar</span>
-						</a>
-					</li>
-					<li className="dropdown">
-						<a href="#" className="dropdown-toggle">
-							<span className="micon dw dw-apartment"></span><span className="mtext"> Previous Contests </span>
-						</a>
-						<ul className="submenu">
-							<li><a href="#">Menu 1</a></li>
-							<li><a href="#">Menu 2</a></li>
 					
-						
-						</ul>
 					</li>
+					<li className="dropdown">
+						<a href="#" className="dropdown-toggle">
+							<span className="micon dw dw-library"></span><span className="mtext">Ads</span>
+						</a>
+						
+					</li>
+					
 					<li className="dropdown">
 						<a href="#" className="dropdown-toggle">
 							<span className="micon dw dw-paint-brush"></span><span className="mtext">Settings</span>
 						</a>
-						<ul className="submenu">
-							<li><a href="#">Menu 1</a></li>
 						
-						</ul>
 					</li>
 					<li className="dropdown">
 						<a href="#" className="dropdown-toggle">
@@ -86,28 +59,7 @@ const SidenavBar = () => {
 							<li><a href="#">Menu 1</a></li>
 							
 						</ul>
-					</li>
-					<li className="dropdown">
-						<a href="#" className="dropdown-toggle">
-							<span className="micon dw dw-right-arrow1"></span><span className="mtext">Pages</span>
-						</a>
-						<ul className="submenu">
-							<li><a href="#">Menu 1</a></li>
-							<li><a href="#">Menu 2</a></li>
-							
-						</ul>
-					</li>
-			
-					<li>
-						<a href="#" className="dropdown-toggle no-arrow">
-							<span className="micon dw dw-diagram"></span><span className="mtext">Sitemap</span>
-						</a>
-					</li>
-					<li>
-						<a href="#" className="dropdown-toggle no-arrow">
-							<span className="micon dw dw-chat3"></span><span className="mtext">Chat</span>
-						</a>
-					</li>
+					</li>				
 					<li>
 					<a  className="dropdown-toggle no-arrow" onClick={logout}>
 							<span className="micon dw dw-invoice"></span><span className="mtext">Signout</span>

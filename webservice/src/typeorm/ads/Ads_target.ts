@@ -1,5 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm"
 
+
+export enum GenderTypes {
+    MALE = 'male',
+    FEMALE = 'female',
+    OTHERS = 'others'
+    }
+
+
+    export enum IncomeTypes {
+        BELOW_18 = 'below 18',
+        BETWEEN18_22 = '18-22',
+        BETWEEN22_26 = '22-26',
+        BETWEEN26_32 = '26-32',
+        BETWEEN32_58 = '32-58',
+        ABOVE_58 = 'above 58',
+        }    
+
 @Entity()
 export class Ads_target {
   
@@ -13,29 +30,51 @@ export class Ads_target {
     ageGroup: number[]
 
     @Column({
-        nullable:false,
-        default:''
-    })
-    location: string
+        nullable: false,
+        default:0
 
+         })
+    pin: number
 
     @Column({
         nullable:false,
         default:''
+       
     })
     state: string
 
     @Column({
         nullable:false,
         default:''
+       
     })
-    gender: string
+    district: string
+    
+    @Column({
+        nullable:false,
+        default:''
+       
+    })
+    location: string
 
     @Column({
         nullable:false,
         default:''
+       
     })
-    income: string
+    country: string
+
+    @Column({
+        nullable:false,
+        type:'text'
+    })
+    gender: GenderTypes
+
+    @Column({
+        nullable:false,
+        type:'text'
+    })
+    incomegroup: IncomeTypes
 
     
     @CreateDateColumn({name: 'created_at'})
