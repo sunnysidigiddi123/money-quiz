@@ -1,11 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { All, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Any, IsNull, Not, Repository } from 'typeorm';
 import { Request } from 'express';
 import { CreateAdsDto } from 'src/dtos/Ads/CreateAds.dto';
 import { User, Ads, Ads_question, Ads_target, Ads_played_users, Admin, user_profile, profile_address} from 'src/typeorm';
 import { IGetUserAuthInfoRequest } from 'src/users/middlewares/validate-user.middleware';
 import { CreateAdsQuestionDto } from 'src/dtos/Ads/CreateAdsQuestion.dto';
+import { GenderTypes } from 'src/utils/enums';
+import { skip } from 'rxjs';
+import { count } from 'console';
 
 
 
@@ -112,23 +115,113 @@ export class AdsService {
                 relations: ['userProfile']
             });
             console.log("users", user);
-            const address = await this.profileaddressRepository.findOne({ relations: { user_profile: true }, where: { user_profile: {user:{id:request.userId}} } })
+            const address = await this.profileaddressRepository.findOne({ relations: { user_profile: true }, where: { user_profile: { user: { id: request.userId } } } })
             console.log(address)
-            const ads = await this.adsRepository.find({
+            const [adss, count] = await this.adsRepository.findAndCount({
                 relations: {
-                    Ads_target: true,
+                    Ads_target: true
+
                 },
-                where:
-                {
-                    Ads_target: {
-                        // incomegroup:user.userProfile.incomegroup,
-                        // location:address.location,
-                        state:address.state,
-                    }
-                },
+
             })
-            console.log("Neeraj", ads)
-            return { ads: ads }
+            if (user.userProfile == null) {
+
+
+                const ads = await this.adsRepository.find({
+                    relations: {
+                        Ads_target: true
+
+                    },
+                    where:
+                    {
+                        Ads_target: {
+                            gender: '',
+                            country: '',
+                            state: '',
+                            incomegroup: '',
+                            ageGroup: ''
+
+                        }
+
+
+                    },
+                })
+
+                console.log("ppp", ads, address)
+                return { ads: ads }
+
+            }
+            if (user.userProfile != null) {
+                const objj = []
+                const adsss = []
+                var sum = 0
+                for (let i = 0; i < count; i++) {
+                    console.log("ggg", sum)
+                    if (adss[sum].Ads_target.gender == '' && adss[sum].Ads_target.country == '' && adss[sum].Ads_target.state == '' && adss[sum].Ads_target.incomegroup == ''
+                        && adss[sum].Ads_target.ageGroup == '') {
+
+                        const obj = {
+                            gender: '',
+                            country: '',
+                            state: '',
+                            incomegroup: '',
+                            ageGroup: '',
+
+
+                        };
+                        objj.push(obj)
+                    } else {
+
+                        const obj = {
+                            ...(adss[sum].Ads_target.gender != '') && { gender: user.userProfile.gender },
+                            ...(adss[sum].Ads_target.country != '') && { country: address.country },
+                            ...(adss[sum].Ads_target.state != '') && { state: address.state },
+                            ...(adss[sum].Ads_target.incomegroup != '') && { incomegroup: user.userProfile.incomegroup },
+                            ...(adss[sum].Ads_target.ageGroup != '') && { ageGroup: user.userProfile.ageGroup },
+
+
+                        };
+                        objj.push(obj)
+
+
+
+                    }
+
+                    console.log("ggg", objj[0])
+                    const ads = await this.adsRepository.find({
+                        relations: {
+                            Ads_target: true
+                        },
+                        where:
+                        {
+                            Ads_target: objj
+                        },
+                    })
+                    // console.log("ppp", sum, ads)
+                    console.log(ads)
+                    adsss.push(ads)
+                    // console.log("nnnnn", ads)
+                    objj.splice(0, 1)
+                    sum = sum + (1)
+                    continue
+
+
+                }
+                console.log("nnnnn", adsss.flat())
+                const data = adsss.flat().filter(function (element) {
+                    return element !== undefined;
+                });
+
+                var result = data.reduce((unique, o) => {
+                    if (!unique.some(obj => obj.id === o.id && obj.value === o.value)) {
+                        unique.push(o);
+                    }
+                    return unique;
+                }, []);
+                // console.log("fff", result)
+
+                return { ads: result }
+            }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
         }

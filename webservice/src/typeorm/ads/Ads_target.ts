@@ -35,16 +35,16 @@ export class Ads_target {
 
     @Column({
         nullable:false,
-        type:'text'
+        default:''
     })
-    ageGroup: AgeGroupTypes
+    ageGroup: string
 
     @Column({
         nullable: false,
-        default:0
+        default:''
 
          })
-    pin: number
+    pin: string
 
     @Column({
         nullable:false,
@@ -76,15 +76,15 @@ export class Ads_target {
 
     @Column({
         nullable:false,
-        type:'text'
+        default:''
     })
-    gender: GenderTypes
+    gender: string
 
     @Column({
         nullable:false,
-        type:'text'
+        default:''
     })
-    incomegroup: IncomeTypes
+    incomegroup: string
 
     
     @CreateDateColumn({name: 'created_at'})
