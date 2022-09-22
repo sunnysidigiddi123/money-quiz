@@ -21,23 +21,23 @@ export class user_profile {
 
     @Column({
         nullable:false,
-        type:'text'
+        default:''
     })
-    gender: GenderTypes
+    gender: string
 
     @Column({
         nullable:false,
-        type:'text'
+        default:''
     })
-    ageGroup: AgeGroupTypes
+    ageGroup: string
 
 
     @Column({
         nullable:false,
-        type:'text'
-       
+        default:''
+          
     })
-    incomegroup: IncomeTypes
+    incomegroup: string
     
 
     @OneToOne(() => User, (user) => user.userProfile) // specify inverse side as a second parameter

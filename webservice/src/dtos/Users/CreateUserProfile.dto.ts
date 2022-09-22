@@ -10,15 +10,15 @@ export class CreateUserProfileDto {
    
      dob: Date
 
-     @IsEnum(GenderTypes)
-     gender:GenderTypes;
+     // @IsEnum(GenderTypes)
+     gender:string;
      
-     @IsEnum(AgeGroupTypes)
-     ageGroup: AgeGroupTypes;
+     // @IsEnum(AgeGroupTypes)
+     ageGroup: string;
 
      location:string;
 
-     @IsEnum(IncomeTypes)
-     incomegroup: IncomeTypes
+     // @IsEnum(IncomeTypes)
+     incomegroup: string
 
 }

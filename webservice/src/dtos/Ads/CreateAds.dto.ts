@@ -22,28 +22,28 @@ export class CreateAdsDto {
       @IsNotEmpty()
       publish:boolean;
 
-      @IsEnum(AgeGroupTypes)
-      ageGroup: AgeGroupTypes;
+      // @IsEnum(AgeGroupTypes)
+      ageGroup: string;
       
-      @IsNotEmpty()
+      // @IsNotEmpty()
       location:string;
 
-      @IsNotEmpty()
+      // @IsNotEmpty()
       state:string;
 
-      @IsEnum(GenderTypes)
-      gender:GenderTypes;
+      // @IsEnum(GenderTypes)
+      gender:string;
 
-      @IsEnum(IncomeTypes)
-      income: IncomeTypes
+      // @IsEnum(IncomeTypes)
+      income: string
 
-      @IsNotEmpty()
-      pin:number;
+      // @IsNotEmpty()
+      pin:string;
 
-      @IsNotEmpty()
+      // @IsNotEmpty()
       district:string;
 
-      @IsNotEmpty()
+      // @IsNotEmpty()
       country:string;
 
 

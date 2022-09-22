@@ -27,10 +27,10 @@ export class profile_address {
 
     @Column({
         nullable: false,
-        default:0
+        default:''
 
          })
-    pin: number
+    pin: string
 
     @Column({
         nullable:false,

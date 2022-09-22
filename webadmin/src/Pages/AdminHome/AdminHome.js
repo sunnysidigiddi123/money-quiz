@@ -376,7 +376,7 @@ const AdminHome = () => {
 		state:userAddress.state,
 		gender:gender,
 		income:incomegroup,
-		pin:userAddress.pin,
+		pin:userAddress.pin ,
 		district:userAddress.district,
 		country:userAddress.country 
 	}
