@@ -10,6 +10,7 @@ export class aud_contests {
 
     @Column({
         nullable:false,
+        unique:true
        
     })
     contestId: number
