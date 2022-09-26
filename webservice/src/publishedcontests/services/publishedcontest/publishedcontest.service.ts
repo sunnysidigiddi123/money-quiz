@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Question, aud_contests } from 'src/typeorm';
+import { Applieduser, Publishedcontest, Liveuser, Admincontest, User, Segment, Question, aud_contests, aud_applieduser } from 'src/typeorm';
 import { CreateAuditContestDto } from 'src/dtos/contests/CreateAuditContest.dto';
 import { CreatePublishedContestDto } from 'src/dtos/contests/CreatePublishedContest.dto';
 import { ConnectionIsNotSetError, Repository } from 'typeorm'; 
@@ -32,6 +32,8 @@ export class PublishedcontestService {
     private readonly segmentRepository: Repository<Segment>,
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    @InjectRepository(aud_applieduser)
+    private readonly auditapplieduserRepository: Repository<aud_applieduser>,
     
     ){}
 
@@ -245,8 +247,9 @@ async getData(request: IGetUserAuthInfoRequest){
        
       const contestalreadyaudited = await this.AuditContestRepository.findOne({where: {contestId:request.body.contestId}})
       const [liveusers ,count] = await this.liveUserRepository.findAndCount({where:{contestId:request.body.contestId}})
+      const applieduser = await this.AppliedUserRepository.findOne({where:{contestid:request.body.contestId,userid:request.userId}})
 
-      if(!contestalreadyaudited){
+     
         
         
         const auditcontest = this.AuditContestRepository.create({
@@ -263,6 +266,21 @@ async getData(request: IGetUserAuthInfoRequest){
 
         }) 
 
+        const auditapplieduser = this.auditapplieduserRepository.create({
+                
+          contestid:request.body.contestId,
+          userid:request.userId
+
+
+        })
+
+
+
+
+          await this.AppliedUserRepository.remove(applieduser)
+          await this.auditapplieduserRepository.save(auditapplieduser)
+
+      if(!contestalreadyaudited){
         await this.PublishedContestRepository.remove(contest)
         await this.AuditContestRepository.save(auditcontest)
           
