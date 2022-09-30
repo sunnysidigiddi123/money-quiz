@@ -463,18 +463,16 @@ const AdminHome = () => {
 	
 	  toast.error(e.message);
 
-	//   if (e.response.status === 401) {
-	// 	try {
-	// 	  await refreshTokens(refreshToken);
-	// 	  getContest();
-	// 	} catch (e) {
-	// 	  //console.log(e.response);
-	// 	  if (e.response.status === 401) {
-	// 		localStorage.clear();
-	// 		navigate("/");
-	// 	  }
-	// 	}
-	//   }
+	  if (e.response.status === 401) {
+		
+		  //console.log(e.response);
+		  if (e.response.status === 401) {
+			localStorage.clear();
+			sessionStorage.clear();
+			navigate("/");
+		  }
+		
+	  }	
 		  
 	}
 
@@ -499,17 +497,15 @@ const AdminHome = () => {
             // console.log(e.response)
 		
 			if (e.response.status === 401) {
-				try {
-				  await refreshTokens(refreshToken);
-				  getUser();
-				} catch (e) {
-				  //console.log(e.response);
-				  if (e.response.status === 401) {
-					localStorage.clear();
-					navigate("/");
-				  }
+		
+				//console.log(e.response);
+				if (e.response.status === 401) {
+				  localStorage.clear();
+				  sessionStorage.clear();
+				  navigate("/");
 				}
-			  }	
+			  
+			}	
         }
        
     }
