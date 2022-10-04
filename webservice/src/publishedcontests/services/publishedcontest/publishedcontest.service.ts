@@ -260,7 +260,7 @@ async getData(request: IGetUserAuthInfoRequest){
       // }
 
       const question = contest.questions[request.body.questionIndex]
-     if(contest.questions.length == request.body.questionIndex ){
+    //  if(contest.questions.length == request.body.questionIndex ){
        
       const contestalreadyaudited = await this.AuditContestRepository.findOne({where: {contestId:request.body.contestId}})
       const [liveusers ,count] = await this.liveUserRepository.findAndCount({where:{contestId:request.body.contestId}})
@@ -307,7 +307,7 @@ async getData(request: IGetUserAuthInfoRequest){
         await this.AuditContestRepository.save(auditcontest)
           
       }
-    }
+    // }
 
       throw new HttpException({message:'NO User Left To Play Contest'},HttpStatus.BAD_REQUEST)
 
@@ -428,6 +428,7 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
   try{
   const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestid}})
   const liveusers = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
+  const appliedusers = await this.AppliedUserRepository.count({where:{contestid:request.body.contestid}})
   const appliedContest = await this.AppliedUserRepository.find({where:{userid:request.userId,contestid:request.body.contestid}})
   const totalWinningAmount = contest.EntryAmount * liveusers
   console.log(appliedContest,request.userId)
@@ -439,7 +440,7 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
         isApplied = true
   }
   console.log(isApplied,"aaa")
-  return {message: "Detailed  View of contest",liveplayers:liveusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,contestName:contest.contestName,isApplied:isApplied }
+  return {message: "Detailed  View of contest",liveplayers:liveusers,appliedusers:appliedusers ,totalwinningamount:totalWinningAmount,entryamount:contest.EntryAmount,contestTime:contest.contestTime,contestName:contest.contestName,isApplied:isApplied }
   
   }catch(e){
     throw new HttpException(e,HttpStatus.BAD_REQUEST)

@@ -22,6 +22,16 @@ export class UsersController {
         return this.usersService.findUsers();
     }
 
+    @Get('/getuserwallet')
+    async getuserwallet(@Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
+        const getuserwallet = await this.usersService.getuserwallet(request);
+        if (getuserwallet) {
+
+            response.status(201).send(getuserwallet)
+        }
+
+    }
+
 
     @Get('/getenumvalues')
     async getenumvalues(@Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
@@ -220,7 +230,17 @@ export class UsersController {
         }
     }
 
+    @Post('addmoneywallet')
+    @UsePipes(ValidationPipe)
+    async addmoneywallet(@Req() request: IGetUserAuthInfoRequest, @Res() response: Response) {
+        const addmoneywallet = await this.usersService.addmoneywallet(request);
 
+        if (addmoneywallet) {
+
+            response.status(201).send(addmoneywallet)
+        }
+    }
+   
 
 
 

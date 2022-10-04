@@ -15,6 +15,7 @@ export class user_profile {
     @Column({
         nullable: false,
         type:'date'
+        
 
          })
     dob: Date

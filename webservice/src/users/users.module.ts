@@ -49,6 +49,16 @@ export class UsersModule implements NestModule {
       method: RequestMethod.POST
   
      },
+     {
+      path: 'users/getuserwallet',
+      method: RequestMethod.GET
+  
+     },
+     {
+      path: 'users/addmoneywallet',
+      method: RequestMethod.POST
+  
+     },
     
      
     )

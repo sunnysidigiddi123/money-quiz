@@ -583,4 +583,40 @@ async getenumvalues(request: IGetUserAuthInfoRequest){
 }
 
 
+async getuserwallet(request: IGetUserAuthInfoRequest){
+   
+  try{
+       
+       const user = await this.userRepository.findOne({where:{id:request.userId}})
+       return { message:"Wallet Amount" , userwallet :user.Wallet}
+    }
+
+ catch (e) {
+
+  throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+  
+}
+}
+
+async addmoneywallet(request: IGetUserAuthInfoRequest){
+   
+  try{
+       
+       const user = await this.userRepository.findOne({where:{id:request.userId}})
+         user.Wallet = user.Wallet + parseInt(request.body.amount)
+         this.userRepository.save(user)
+       return { message:"Amount Added" , userwallet :user.Wallet}
+    }
+
+ catch (e) {
+
+  throw new HttpException(e, HttpStatus.BAD_REQUEST)
+
+  
+}
+}
+
+
+
 }
