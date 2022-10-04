@@ -16,7 +16,9 @@ const GETADLIST = `${BASE_URL}/ads/getAds`;
 const GETADBYID = `${BASE_URL}/ads`;
 const ADSANSWERCHECK = `${BASE_URL}/ads/answerCheck`;
 const GETPINDETAILS = `${BASE_URL}/users/getpincodedata`;
-const GETENUMVALUES = `${BASE_URL}/users/getenumvalues`
+const GETENUMVALUES = `${BASE_URL}/users/getenumvalues`;
+const GETWALLETAMOUNT = `${BASE_URL}/users/getuserwallet`;
+const ADDWALLETAMOUNT = `${BASE_URL}/users/addmoneywallet`;
 
 export default {
     BASE_URL,
@@ -36,5 +38,7 @@ export default {
     GETUSERPROFILE,
     UPDATEPROFILE,
     GETPINDETAILS,
-    GETENUMVALUES
+    GETENUMVALUES,
+    GETWALLETAMOUNT,
+    ADDWALLETAMOUNT
 }

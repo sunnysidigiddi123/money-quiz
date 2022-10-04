@@ -219,8 +219,15 @@ export class AdsService {
                     return unique;
                 }, []);
                 // console.log("fff", result)
+                
+                //filter user ads which already played
 
-                return { ads: result }
+
+                const PlayedAds = await this.adsPlayedUserRepository.find({where:{userId:request.userId}}) 
+                
+                const filteredAds = result.filter((elem) => !PlayedAds.find(({ adId }) => elem.id === adId));
+                 console.log("kk",filteredAds,"ADsada")
+                return { ads: filteredAds }
             }
         } catch (e) {
             throw new HttpException(e, HttpStatus.BAD_REQUEST)
