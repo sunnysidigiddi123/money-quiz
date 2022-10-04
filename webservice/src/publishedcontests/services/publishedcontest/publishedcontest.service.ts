@@ -233,6 +233,82 @@ async getData(request: IGetUserAuthInfoRequest){
       await this.liveUserRepository.remove(LiveUser);
       await this.UserRepository.save(user);
 
+
+      contest.LivecontestTime = request.body.LivecontestTime
+      contest.LiveQuestionIndex = request.body.questionIndex
+      await this.PublishedContestRepository.save(contest)
+
+      // if(contest.questions.length > request.body.questionIndex ){
+
+        
+      //   let diff = contest.questions.length-parseInt(request.body.questionIndex)
+
+      //   for(let i=0;i< diff;i++){
+                  
+      //     setTimeout(()=>{
+
+      //       contest.LivecontestTime = moment(contest.LivecontestTime).add(contest.questions[parseInt(request.body.questionIndex)+(i+1)].totalQuestionTime,'seconds').toDate()
+      //       contest.LiveQuestionIndex =  contest.LiveQuestionIndex+1
+      //       this.PublishedContestRepository.save(contest)
+
+      //     },contest.questions[parseInt(request.body.questionIndex)+(i+1)].totalQuestionTime)
+        
+        
+      //   }
+
+
+      // }
+
+      const question = contest.questions[request.body.questionIndex]
+     if(contest.questions.length == request.body.questionIndex ){
+       
+      const contestalreadyaudited = await this.AuditContestRepository.findOne({where: {contestId:request.body.contestId}})
+      const [liveusers ,count] = await this.liveUserRepository.findAndCount({where:{contestId:request.body.contestId}})
+      const applieduser = await this.AppliedUserRepository.find({where:{contestid:request.body.contestId}})
+
+     
+        
+        
+        const auditcontest = this.AuditContestRepository.create({
+         
+          contestId:contest.id,
+          contestDetails:contest.contestDetails,
+          contestName:contest.contestName,
+          contestTime:contest.contestTime,
+          EntryAmount:contest.EntryAmount,
+          winningAmount:contest.ParticularPoll,
+          remainingUsers: count+1
+
+
+
+        }) 
+        
+        for(let i=0;i<applieduser.length;i++){
+
+          const auditapplieduser = this.auditapplieduserRepository.create({
+                
+            contestid:request.body.contestId,
+            userid:applieduser[i].userid
+  
+  
+          })
+          await this.auditapplieduserRepository.save(auditapplieduser)
+        }
+      
+
+
+
+
+          await this.AppliedUserRepository.remove(applieduser)
+         
+
+      if(!contestalreadyaudited){
+        await this.PublishedContestRepository.remove(contest)
+        await this.AuditContestRepository.save(auditcontest)
+          
+      }
+    }
+
       throw new HttpException({message:'NO User Left To Play Contest'},HttpStatus.BAD_REQUEST)
 
 
