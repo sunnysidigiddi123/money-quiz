@@ -444,7 +444,7 @@ async detailviewcontest(request: IGetUserAuthInfoRequest ){
   const liveusers = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
   const appliedusers = await this.AppliedUserRepository.count({where:{contestid:request.body.contestid}})
   const appliedContest = await this.AppliedUserRepository.find({where:{userid:request.userId,contestid:request.body.contestid}})
-  const totalWinningAmount = contest.EntryAmount * liveusers
+  const totalWinningAmount = contest.EntryAmount * appliedusers
   console.log(appliedContest,request.userId)
  
   let isApplied :Boolean
