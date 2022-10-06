@@ -28,7 +28,7 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .body-bg{background-color: #fdfeff;}
 .btn-orange{background-color: #ff914d; color: #ffffff; border-radius: 20px;}
 .btn-gray{background-color: #a7a7a7; color: #ffffff; border-radius: 20px;}
-.btn-green{background-color: #4ece42; border-radius: 20px;}
+.btn-green{background-color: #26a21b; border-radius: 20px;}
 .btn-green:hover{color:#ffffff!important}
 .btn-confirmation{border-bottom: 2px solid rgb(227, 225, 225); border-bottom-left-radius: 40px; padding: 20px 0;}
 .page-container{padding:90px 0;}
@@ -43,6 +43,8 @@ body{background-color: #f7f7f7!important; font-family: 'Montserrat', sans-serif!
 .bg-green{background-color: #baf0ba!important;}
 .bg-darker-gray{background-color: #5b5b5b;}
 .bg-badge{background-color: #e5d5c9;}
+.bg-wrong-answer{background-color:#dd3545}
+.bg-correct-answer{background-color: #26a21b;}
 .text-info-gray{color: #808080; font-weight: bold; font-size: 0.9rem; padding-bottom: 5px;}
 .fw-500{font-weight: 500;}
 .add-circle{width: 50px; height: 50px; padding: 12px;  border-radius: 50%;}
