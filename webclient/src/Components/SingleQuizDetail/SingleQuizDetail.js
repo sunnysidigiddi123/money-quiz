@@ -25,6 +25,7 @@ export default function SingleQuizDetail() {
     const [currentContestName, setCurrentContestName] = useState();
     const [entryFee, setEntryFee] = useState();
     const [activePlayerCount, setActivePlayerCount] = useState();
+    const [appliedPlayerCount, setAppliedPlayerCount] = useState();
     const [totalPrize, setTotalPrize] = useState();
     const [isApplied, setIsApplied] = useState()
     const [quizStartTime, setQuizStartTime] = useState();
@@ -61,8 +62,9 @@ export default function SingleQuizDetail() {
                 console.log(res.data)
                 let response = res?.data;
                 setEntryFee(response?.entryamount);
-                setActivePlayerCount(response?.liveplayers)
-                setTotalPrize(response?.totalwinningamount)
+                setActivePlayerCount(response?.liveplayers);
+                setAppliedPlayerCount(response?.appliedusers);
+                setTotalPrize(response?.totalwinningamount);
                 setIsApplied(response?.isApplied);
                 setCurrentContestName(response?.contestName);
                 setStartsin(calculateDifference(response?.contestTime));
@@ -246,7 +248,7 @@ export default function SingleQuizDetail() {
                                     </div>
                                     <div className="user-no">
                                         <p className="mb-0 text-info-gray">Active Players</p>
-                                        <p className="mb-0 fw-500  fs-1 text-center text-white">{activePlayerCount}</p>
+                                        <p className="mb-0 fw-500  fs-1 text-center text-white">{activePlayerCount ? activePlayerCount : appliedPlayerCount}</p>
                                     </div>
                                     <div className="user-grp-icons">
                                         <img src="./assets/images/profile.png" alt="" />

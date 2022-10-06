@@ -19,8 +19,7 @@ export default function WrongAnswer(props) {
         <>
             <Modal
                 size="md"
-                show={props.lgShow}
-
+                show={props.lgShow}               
                 fullscreen={fullscreen}
                 onHide={() => props.setLgShow(false)}
                 backdrop="static"
@@ -94,9 +93,9 @@ export default function WrongAnswer(props) {
                         </section>{/* inner-page-top Ends */}
                         <section className="mt-3">
                             <div className="row pe-4">
-                                <div className="col-sm-12 bg-white game-info-card py-5">
+                                <div className="col-sm-12 bg-wrong-answer game-info-card py-5 text-white">
                                     <div className='py-5'>
-                                        <h2 className='stats-num-text'>Oh No! </h2>
+                                        <h2 className='stats-num-text text-white'>Oh No! </h2>
                                         <span className='fw-bold'>Incorrect Answer</span>
                                     </div>
                                     <div className="row py-3">
@@ -135,6 +134,7 @@ export default function WrongAnswer(props) {
                                                             <span className='user-info-item  d-inline-block'><i className="fas fa-star"></i></span></h2>
                                                     </div>
                                                     <div>
+                                                    reentersuccess from is {props.reentersuccess}
                                                         {props.totalquestions != sessionStorage.getItem('questionIndex') && (!props.reentersuccess ? <a onClick={() => props.setShowConfirmation(true)} className="btn btn-sm btn-green text-white py-2">Re-enter  <ImEnter /></a> : <a className="btn btn-sm btn-green text-white py-2">Reentered  <ImEnter /></a>)}
                                                         {/* <button className='btn btn-sm btn-green text-white py-2'>Re-enter</button> */}
                                                     </div>

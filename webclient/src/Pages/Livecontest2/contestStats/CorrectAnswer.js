@@ -112,9 +112,9 @@ export default function CorrectAnswer(props) {
                         </section>{/* inner-page-top Ends */}
                         <section className="mt-3">
                             <div className="row pe-4">
-                                <div className="col-sm-12 bg-white game-info-card py-5">
+                                <div className="col-sm-12 bg-correct-answer game-info-card py-5 text-white">
                                     <div className='py-5'>                                        
-                                        <h2 className='stats-num-text'>Congrats! </h2>
+                                        <h2 className='stats-num-text text-white'>Congrats! </h2>
                                         <span className='fw-bold'>You gave correct answer.</span>
                                     </div>
                                     <div className="row py-3">
