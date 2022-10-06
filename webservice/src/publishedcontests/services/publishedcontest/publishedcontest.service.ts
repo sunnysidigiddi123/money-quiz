@@ -167,20 +167,30 @@ async contestplaycheck(request: IGetUserAuthInfoRequest){
   
   
       }else{
+        if(contest.EntryRestrict == true){
+          
+          throw new HttpException({message:"Wait Until Segment Gets over",status:0},HttpStatus.BAD_REQUEST);
 
-        if(contest.EntryAmount == contest.ParticularPoll){
-          const liveUsers = this.liveUserRepository.create({
-                userId:user.id,
-                contestId:contest.id
-          })
-          await this.liveUserRepository.save(liveUsers);
-          const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
-          return {message:'Enter Successfully', status:1,question1:contest.questions[contest.LiveQuestionIndex],contestTime:contest.LivecontestTime,totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew,questionIndex:contest.LiveQuestionIndex}
+        }else{
+
+          if(contest.EntryAmount == contest.ParticularPoll){
+            const liveUsers = this.liveUserRepository.create({
+                  userId:user.id,
+                  contestId:contest.id
+            })
+            await this.liveUserRepository.save(liveUsers);
+            const TotalLiveUsersnew = await this.liveUserRepository.count({where:{contestId:request.body.contestid}})
+            return {message:'Enter Successfully', status:1,question1:contest.questions[contest.LiveQuestionIndex],contestTime:contest.LivecontestTime,totalquestions:contest.questions.length,totalIntitalUsers:TotalLiveUsersnew,questionIndex:contest.LiveQuestionIndex}
+           }
+           if(contest.EntryAmount < contest.ParticularPoll){
+  
+            return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2,entryamount:contest.EntryAmount,contestTime:contest.LivecontestTime,particularPoll:contest.ParticularPoll,question1:contest.questions[contest.LiveQuestionIndex],totalquestions:contest.questions.length}
          }
-         if(contest.EntryAmount < contest.ParticularPoll){
 
-          return {mesage:"Please Pay New Poll Amount To Enter in Contest",status:2,entryamount:contest.EntryAmount,contestTime:contest.LivecontestTime,particularPoll:contest.ParticularPoll,question1:contest.questions[contest.LiveQuestionIndex],totalquestions:contest.questions.length}
-       }
+
+        }
+
+      
 
       }
     }
@@ -204,6 +214,10 @@ async getData(request: IGetUserAuthInfoRequest){
  const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
  try{
  if(user){
+
+    contest.EntryRestrict = false
+
+    this.PublishedContestRepository.save(contest)
       
     //  //for segment 
      

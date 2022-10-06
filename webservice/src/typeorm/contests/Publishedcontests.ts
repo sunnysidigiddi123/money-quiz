@@ -57,6 +57,12 @@ export class Publishedcontest {
         nullable:true,
     })
     SegmentGoingOn: Date
+
+    @Column({
+        nullable:false,
+        default:false
+    })
+    EntryRestrict: boolean
     
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
