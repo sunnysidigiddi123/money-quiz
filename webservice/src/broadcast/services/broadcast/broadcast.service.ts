@@ -110,8 +110,13 @@ export class BroadcastService {
   
     try{
     const TotalLiveUsers = await this.liveUserRepository.count({where:{contestId:request.body.contestId}})
-  
+    const contest = await this.PublishedContestRepository.findOne({where:{id:request.body.contestId}})
          
+
+       contest.EntryRestrict = true
+
+       this.PublishedContestRepository.save(contest)
+
       return {message: "Initial Users" ,InitialUsers:TotalLiveUsers}
 
     }catch(e){
