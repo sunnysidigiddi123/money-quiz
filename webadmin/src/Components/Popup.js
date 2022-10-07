@@ -13,7 +13,7 @@ const Popup = () => {
 										<div className="modal-body text-center font-18">
 											<h3 className="mb-20">Form Submitted!</h3>
 											<div className="mb-30 text-center"><img src="vendors/images/success.png" /></div>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											
 										</div>
 										<div className="modal-footer justify-content-center">
 											<button type="button" className="btn btn-primary" data-dismiss="modal">Done</button>
