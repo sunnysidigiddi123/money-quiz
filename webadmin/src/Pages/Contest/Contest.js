@@ -222,10 +222,7 @@ const Contest = () => {
         <div className="pd-ltr-20" style={{height:'100vh'}}>
           <div className="card-box mb-30 admincreate">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde hic
-              non repellendus debitis iure, doloremque assumenda. Autem modi,
-              corrupti, nobis ea iure fugiat, veniam non quaerat mollitia animi
-              error corporis.
+              
             </p>
             <h1>Please Add Question</h1>
               <br></br>

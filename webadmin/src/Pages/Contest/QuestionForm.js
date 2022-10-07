@@ -50,10 +50,7 @@ const QuestionForm = () => {
         <div className="pd-ltr-20">
           <div className="card-box mb-30 admincreate">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde hic
-              non repellendus debitis iure, doloremque assumenda. Autem modi,
-              corrupti, nobis ea iure fugiat, veniam non quaerat mollitia animi
-              error corporis.
+              Create Questions
             </p>
             <div>
                 {" "}
