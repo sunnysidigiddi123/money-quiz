@@ -5,6 +5,9 @@ on:
       context:
         required: true
         type: string
+      file:
+        required: true
+        type: string        
     outputs:
       version:
         description: 'Version'
