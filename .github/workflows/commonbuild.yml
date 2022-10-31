@@ -1,10 +1,6 @@
 name: Build & publish image
 on:
   workflow_call: 
-    inputs:
-      context:
-        required: true
-        type: string
     outputs:
       version:
         description: 'Version'
