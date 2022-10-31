@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
+    uses: ./.github/workflows/commonbuild.yml
     with:
           context: webadmin
           push: true
