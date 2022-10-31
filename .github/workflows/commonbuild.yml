@@ -12,11 +12,6 @@ on:
       cluster_environment:
         description: 'Cluster Environment'
         value: ${{ jobs.build-docker.outputs.cluster_environment }}
-  push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
-      - v[0-9]+.[0-9]+.[0-9]+
-
 
 jobs:
   build-and-push-image:
