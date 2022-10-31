@@ -13,6 +13,4 @@ jobs:
     uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
     with:
           context: webadmin
-          file: ./webadmin/Dockerfile
           push: true
-
