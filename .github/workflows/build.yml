@@ -17,6 +17,3 @@ jobs:
     with:
      context: webadmin
      file: ./webadmin/Dockerfile
-    
-       
-       
