@@ -11,3 +11,6 @@ jobs:
       contents: read
       packages: write
     uses: ./.github/workflows/commonbuild.yml
+    with:
+     context: webclient
+     file: ./webclient/Dockerfile
