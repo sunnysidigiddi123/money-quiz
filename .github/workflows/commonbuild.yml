@@ -8,6 +8,13 @@ on:
       cluster_environment:
         description: 'Cluster Environment'
         value: ${{ jobs.build-docker.outputs.cluster_environment }}
+    secrets:
+      GHCR_TOKEN:
+        required: true
+        description: 'secret for GHRC'
+      REPOSITORY_OWNER:
+        required: true
+        description: 'username of repository owner'        
 
 jobs:
   build-and-push-image:
@@ -38,8 +45,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./
+          context: webadmin
+          file: ./webadmin/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
