@@ -5,17 +5,15 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
       - v[0-9]+.[0-9]+.[0-9]+
 
-
 jobs:
-  build-and-push-image:
-    runs-on: ubuntu-latest
+ build-and-push-image:
     permissions:
       contents: read
       packages: write
     uses: Calance-US/calance-workflows/.github/workflows/build.yml@main
-    steps:
+    with:
           context: webadmin
           file: ./webadmin/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: ${{ steps.meta.outputs.labels }}    
