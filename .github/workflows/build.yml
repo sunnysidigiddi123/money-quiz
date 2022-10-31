@@ -11,3 +11,6 @@ jobs:
       contents: read
       packages: write
     uses: ./.github/workflows/commonbuild.yml
+    secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}    
