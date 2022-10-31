@@ -14,6 +14,11 @@ jobs:
     secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}   
+      
+ jobs:
+   needs: build-and-push-image
+   uses: ./.github/workflows/commonbuild.yml
+   with:      
       context: webclient
       file: /.webclient/Dockerfile
     
