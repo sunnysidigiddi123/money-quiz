@@ -13,4 +13,9 @@ jobs:
     uses: ./.github/workflows/commonbuild.yml
     secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}    
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}   
+      context: webclient
+      file: /.webclient/Dockerfile
+    
+       
+       
