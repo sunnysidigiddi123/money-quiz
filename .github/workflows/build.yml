@@ -19,6 +19,6 @@ jobs:
     uses: ./.github/workflows/commonbuild.yml  
     with:
      project: ${{ matrix.project }}
-     image: ${{ project1.image }}
-     context: ${{ project1.context }}
-     file: ${{ project1.dockerfile }}
+     image: ${{ project.image }}
+     context: ${{ project.context }}
+     file: ${{ project.dockerfile }}
