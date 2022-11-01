@@ -15,6 +15,6 @@ jobs:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}   
     with:
+     images: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
      context: webadmin
      file: ./webadmin/Dockerfile
-     image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
