@@ -17,3 +17,4 @@ jobs:
     with:
      context: webadmin
      file: ./webadmin/Dockerfile
+     image: moneyquiz-webadmin
