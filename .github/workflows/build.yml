@@ -6,7 +6,10 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
  build-and-push-dockerimages:
-
+    strategy:
+     fail-fast: false
+     matrix:
+      project: [webadmin,webadmin,webadmin]
     permissions:
       contents: read
       packages: write
@@ -15,5 +18,6 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     project: webadmin,webadmin,webadmin
-
+     image: ${{ matrix.project }}
+     context: ${{ matrix.project }}
+     file: ${{ matrix.project }}
