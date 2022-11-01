@@ -18,12 +18,14 @@ jobs:
      context: webadmin
      file: ./webadmin/Dockerfile
  build-and-push-webclient:
+    needs: build-and-push-webadmin
     uses: ./.github/workflows/commonbuild.yml 
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webclient
      context: webclient
      file: ./webclient/Dockerfile 
  build-and-push-webservice:
+    needs: build-and-push-webadmin
     uses: ./.github/workflows/commonbuild.yml
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webservice
