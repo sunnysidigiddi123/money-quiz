@@ -6,22 +6,20 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
  build-and-push-dockerimages:
-
+    strategy:
+     fail-fast: false
+     matrix:
+       image: [moneyquiz-webadmin,moneyquiz-webclient,moneyquiz-webservice]
+       context: [webadmin,webclient,webservice] 
+       dockerfile: [webadmin,webclient,webservice]  
     permissions:
       contents: read
       packages: write
     secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}
-    strategy:
-     fail-fast: false
-     matrix:
-      image: [moneyquiz-webadmin,moneyquiz-webclient,moneyquiz-webservice]
-      context: [webadmin,webclient,webservice]
-      file: [webadmin,webclient,webservice]      
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
      image: ${{ matrix.image }}
      context: ${{ matrix.context }}
-     file: ${{ matrix.file }}
-
+     file: ${{ matrix.dockerfile }}
