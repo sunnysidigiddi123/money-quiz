@@ -5,27 +5,30 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
- build-and-push-webadmin:
+ ci-cd:
     permissions:
       contents: read
       packages: write
     uses: ./.github/workflows/commonbuild.yml
     secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}   
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
+ build-and-push-webadmin:
+    needs: ci-cd
+    uses: ./.github/workflows/commonbuild.yml 
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
      context: webadmin
      file: ./webadmin/Dockerfile
  build-and-push-webclient:
-    needs: build-and-push-webadmin
+    needs: ci-cd
     uses: ./.github/workflows/commonbuild.yml 
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webclient
      context: webclient
      file: ./webclient/Dockerfile 
  build-and-push-webservice:
-    needs: build-and-push-webadmin
+    needs: ci-cd
     uses: ./.github/workflows/commonbuild.yml
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webservice
