@@ -6,6 +6,11 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
  build-and-push-webadmin:
+    strategy:
+     matrix:
+      image: [ghcr.io/sunnysidigiddi123/moneyquiz-webadmin]
+      context: [webadmin]
+      file: [./webadmin/Dockerfile]
     permissions:
       contents: read
       packages: write
@@ -14,30 +19,7 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
-     context: webadmin
-     file: ./webadmin/Dockerfile
- build-and-push-webclient:
-    permissions:
-      contents: read
-      packages: write
-    secrets:
-      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
-    uses: ./.github/workflows/commonbuild.yml  
-    with:
-     image: ghcr.io/sunnysidigiddi123/moneyquiz-webclient
-     context: webclient
-     file: ./webclient/Dockerfile 
- build-and-push-webservice:
-    permissions:
-      contents: read
-      packages: write
-    secrets:
-      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
-    uses: ./.github/workflows/commonbuild.yml  
-    with:
-     image: ghcr.io/sunnysidigiddi123/moneyquiz-webservice
-     context: webservice
-     file: ./webservice/Dockerfile     
+     image: ${{ matrix.image }}
+     context: ${{ matrix.context }}
+     file: ${{ matrix.file }}
+
