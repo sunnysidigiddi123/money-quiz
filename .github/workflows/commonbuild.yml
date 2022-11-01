@@ -11,9 +11,7 @@ on:
       image:
         required: true
         type: string 
-      project:
-        required: true
-        type: string          
+        
     outputs:
       version:
         description: 'Version'
@@ -59,7 +57,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ${{ inputs.context }}
-          project: ${{ inputs.context }}, ${{ inputs.image }}, ${{ inputs.file }} 
           file: ./${{ inputs.file }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
