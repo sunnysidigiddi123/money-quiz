@@ -48,7 +48,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ inputs.image }}
+          images: | 
+               ${{ inputs.image }}
           tags: |
             type=semver,pattern={{version}}
       - name: Build and push Docker image
