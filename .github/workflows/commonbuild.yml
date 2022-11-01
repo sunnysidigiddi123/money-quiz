@@ -49,14 +49,14 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: | 
-               ${{ inputs.image }}
+              ghcr.io/sunnysidigiddi123/${{ inputs.image }}
           tags: |
             type=semver,pattern={{version}}
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: ${{ inputs.context }}
-          file: ${{ inputs.file }}
+          file: ./${{ inputs.file }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
