@@ -17,4 +17,4 @@ jobs:
     with:
      context: webadmin
      file: ./webadmin/Dockerfile
-     images: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
+     image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
