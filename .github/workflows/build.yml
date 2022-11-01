@@ -9,7 +9,9 @@ jobs:
     strategy:
      fail-fast: false
      matrix:
-      project: [webadmin,webadmin,webadmin]
+      project: [moneyquiz-webadmin,webadmin,./webadmin/Dockerfile]
+      project1: [moneyquiz-webclient,webclient,./webclient/Dockerfile ]
+      project2: [moneyquiz-webservice,webservice,./webservice/Dockerfile ]
     permissions:
       contents: read
       packages: write
@@ -18,6 +20,6 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     image: ${{ matrix.project }}
-     context: ${{ matrix.project }}
-     file: ${{ matrix.project }}
+     image: ${{ matrix.project }}, ${{ matrix.project1 }}, ${{ matrix.project2 }}
+     context: ${{ matrix.project }}, ${{ matrix.project1 }}, ${{ matrix.project2 }}
+     file: ${{ matrix.project }}, ${{ matrix.project1 }}, ${{ matrix.project2 }}
