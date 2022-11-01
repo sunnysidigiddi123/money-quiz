@@ -5,7 +5,7 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
- build-and-push-image:
+ build-and-push-webadmin:
     permissions:
       contents: read
       packages: write
@@ -17,3 +17,15 @@ jobs:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
      context: webadmin
      file: ./webadmin/Dockerfile
+ build-and-push-webclient:
+    uses: ./.github/workflows/commonbuild.yml 
+    with:
+     image: ghcr.io/sunnysidigiddi123/moneyquiz-webclient
+     context: webclient
+     file: ./webclient/Dockerfile 
+ build-and-push-webservice:
+    uses: ./.github/workflows/commonbuild.yml
+    with:
+     image: ghcr.io/sunnysidigiddi123/moneyquiz-webservice
+     context: webservice
+     file: ./webservice/Dockerfile     
