@@ -7,6 +7,7 @@ on:
 jobs:
  build-and-push-dockerimages:
     strategy:
+     fail-fast: false
      matrix:
       image: [moneyquiz-webadmin,moneyquiz-webclient,moneyquiz-webservice]
       context: [webadmin,webclient,webservice]
