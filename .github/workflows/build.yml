@@ -9,7 +9,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-       secrets:
+    secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
     uses: ./.github/workflows/commonbuild.yml  
@@ -21,7 +21,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-       secrets:
+    secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
     uses: ./.github/workflows/commonbuild.yml  
@@ -33,7 +33,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-       secrets:
+    secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
     uses: ./.github/workflows/commonbuild.yml  
