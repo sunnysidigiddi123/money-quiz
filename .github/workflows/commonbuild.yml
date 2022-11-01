@@ -7,7 +7,10 @@ on:
         type: string
       file:
         required: true
-        type: string            
+        type: string   
+      image:
+        required: true
+        type: string          
     outputs:
       version:
         description: 'Version'
@@ -45,8 +48,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: |
-            ghcr.io/${{ github.repository }}
+          images: ${{ inputs.image }}
           tags: |
             type=semver,pattern={{version}}
       - name: Build and push Docker image
