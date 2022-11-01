@@ -5,31 +5,38 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
       - v[0-9]+.[0-9]+.[0-9]+
 jobs:
- ci-cd:
+ build-and-push-webadmin:
     permissions:
       contents: read
       packages: write
-    uses: ./.github/workflows/commonbuild.yml
-    secrets:
+       secrets:
       GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
-      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
- build-and-push-webadmin:
-    needs: ci-cd
-    uses: ./.github/workflows/commonbuild.yml 
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
+    uses: ./.github/workflows/commonbuild.yml  
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webadmin
      context: webadmin
      file: ./webadmin/Dockerfile
  build-and-push-webclient:
-    needs: ci-cd
-    uses: ./.github/workflows/commonbuild.yml 
+    permissions:
+      contents: read
+      packages: write
+       secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
+    uses: ./.github/workflows/commonbuild.yml  
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webclient
      context: webclient
      file: ./webclient/Dockerfile 
  build-and-push-webservice:
-    needs: ci-cd
-    uses: ./.github/workflows/commonbuild.yml
+    permissions:
+      contents: read
+      packages: write
+       secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }} 
+    uses: ./.github/workflows/commonbuild.yml  
     with:
      image: ghcr.io/sunnysidigiddi123/moneyquiz-webservice
      context: webservice
