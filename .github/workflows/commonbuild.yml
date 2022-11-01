@@ -7,7 +7,10 @@ on:
         type: string
       file:
         required: true
-        type: string        
+        type: string       
+      image:
+        required: true
+        type: string         
     outputs:
       version:
         description: 'Version'
@@ -54,6 +57,7 @@ jobs:
         with:
           context: ${{ inputs.context }}
           file: ${{ inputs.file }}
+          image: ${{ inputs.image }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
