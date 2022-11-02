@@ -18,9 +18,9 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     image: ${{matrix.project}} 
-     context: ${{matrix.project}}
-     file: ./${{matrix.project}}/Dockerfile
+     image: webadmin 
+     context: webadmin
+     file: ./webadmin/Dockerfile
      
  deploy-to-kubernetes:
     needs: build-and-push-dockerimages
