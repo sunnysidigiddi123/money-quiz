@@ -61,5 +61,5 @@ jobs:
           jenkins-url: "${{ secrets.JENKINS_URL }}"
           jenkins-token: "${{ secrets.JENKINS_TOKEN }}"
           user: "${{ secrets.JENKINS_USER }}"
-          job-path: "job/kubernetes-deploy-on-nutanix"
+          job-path: "job/monorepo-test"
           job-params: '{"SERVICE_NAME" : "${{ inputs.repository_name }}", "CLUSTER_ENVIRONMENT": "${{ inputs.cluster_environment }}" , "VERSION": "${{ inputs.version }}", "NAMESPACE": "${{ inputs.namespace || secrets.NAMESPACE }}" }'

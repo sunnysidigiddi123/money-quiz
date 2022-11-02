@@ -23,8 +23,8 @@ jobs:
      file: ./${{matrix.project}}/Dockerfile
      
 deploy-to-kubernetes:
-    needs: ci-cd
-    uses: Calance-US/calance-workflows/.github/workflows/deploy.yml@main
+    needs: build-and-push-dockerimages
+    uses: ./.github/workflows/commonbuild.yml 
     with:
       repository_name: ${{ github.event.repository.name }}
       version: ${{ needs.ci-cd.outputs.version }}
