@@ -21,4 +21,4 @@ jobs:
      image: ${{matrix.project}} 
      context: ${{matrix.project}}
      file: ./${{matrix.project}}/Dockerfile
-     
+   
