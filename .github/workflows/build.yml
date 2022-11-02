@@ -9,7 +9,7 @@ jobs:
     strategy:
      fail-fast: false
      matrix:
-       project: [ webadmin, webclient, webservice]
+       project: [ webadmin]
     permissions:
       contents: read
       packages: write
@@ -18,9 +18,9 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     image: webadmin 
-     context: webadmin
-     file: ./webadmin/Dockerfile
+     image: ${{matrix.project}} 
+     context: ${{matrix.project}}
+     file: ./${{matrix.project}}/Dockerfile
      
  deploy-to-kubernetes:
     needs: build-and-push-dockerimages
