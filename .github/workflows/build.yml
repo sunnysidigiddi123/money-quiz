@@ -18,7 +18,7 @@ jobs:
       REPOSITORY_OWNER: ${{ secrets.REPOSITORY_OWNER }}  
     uses: ./.github/workflows/commonbuild.yml  
     with:
-     image: moneyquiz-${{matrix.project}} 
+     image: ${{matrix.project}} 
      context: ${{matrix.project}}
      file: ./${{matrix.project}}/Dockerfile
      
