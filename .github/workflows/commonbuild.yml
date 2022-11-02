@@ -33,6 +33,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      version: ${{ steps.version.outputs.build_version }}
+      cluster_environment: ${{ steps.cluster_environment.outputs.cluster_environment }}      
 
     steps:
       - name: Checkout repository
