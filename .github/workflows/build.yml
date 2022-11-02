@@ -24,7 +24,7 @@ jobs:
      
 deploy-to-kubernetes:
     needs: build-and-push-dockerimages
-    uses: ./.github/workflows/commonbuild.yml 
+    uses: ./.github/workflows/commondeploy.yml 
     with:
       repository_name: ${{ github.event.repository.name }}
       version: ${{ needs.build-and-push-dockerimages.outputs.version }}
