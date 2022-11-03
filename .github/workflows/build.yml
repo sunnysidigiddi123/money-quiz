@@ -28,7 +28,7 @@ jobs:
     with:
       repository_name: ${{ github.event.repository.name }}
       version: ${{ needs.build-and-push-dockerimages.outputs.version }}
-      cluster_environment: testing #${{ needs.build-and-push-dockerimages.outputs.cluster_environment }}
+      cluster_environment: testing 
     secrets:
       NAMESPACE: ${{ secrets.NAMESPACE }}
       JENKINS_URL: ${{ secrets.JENKINS_URL }}
