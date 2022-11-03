@@ -18,7 +18,7 @@ on:
         value: ${{ jobs.build-and-push-image.outputs.version }}
       cluster_environment:
         description: 'Cluster Environment'
-        value: ${{ jobs.build-and-push-image.cluster_environment }}
+        value: ${{ jobs.build-and-push-image.outputs.cluster_environment }}
     secrets:
       GHCR_TOKEN:
         required: true
@@ -26,10 +26,7 @@ on:
       REPOSITORY_OWNER:
         required: true
         description: 'username of repository owner'   
-  push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
-      - v[0-9]+.[0-9]+.[0-9]+             
+          
 
 jobs:
   build-and-push-image:
