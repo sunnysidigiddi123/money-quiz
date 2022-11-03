@@ -25,7 +25,11 @@ on:
         description: 'secret for GHRC'
       REPOSITORY_OWNER:
         required: true
-        description: 'username of repository owner'        
+        description: 'username of repository owner'   
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]
+      - v[0-9]+.[0-9]+.[0-9]+             
 
 jobs:
   build-and-push-image:
