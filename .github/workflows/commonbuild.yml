@@ -15,10 +15,10 @@ on:
     outputs:
       version:
         description: 'Version'
-        value: ${{ jobs.build-docker.outputs.version }}
+        value: ${{ jobs.build-and-push-image.outputs.version }}
       cluster_environment:
         description: 'Cluster Environment'
-        value: ${{ jobs.build-docker.outputs.cluster_environment }}
+        value: ${{ jobs.build-and-push-image.cluster_environment }}
     secrets:
       GHCR_TOKEN:
         required: true
