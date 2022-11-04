@@ -63,7 +63,7 @@ jobs:
       - name: Setting image_name
         id: image_name
         run: |
-          echo "::set-output name=image_name:${{ inputs.image }}"            
+          echo "::set-output name=image_name:${{ inputs.images }}"            
       - name: Setting application version
         id: version
         run: |
