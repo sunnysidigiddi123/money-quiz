@@ -1,0 +1,25 @@
+name: Identify the cluster environment
+
+on:
+  workflow_call:
+    outputs:
+      cluster_environment:  
+        description: This is Cluster environment 
+        value: ${{ jobs.identify-cluster-environment.outputs.cluster_environment}}
+
+    
+
+jobs:
+  identify-cluster-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      cluster_environment: ${{ steps.cluster_environment.outputs.cluster_environment }}
+    steps:
+      - name: Identifying cluster in which application should be deployed
+        id: cluster_environment
+        run: |
+          if [[ "${{fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version']}}" =~ .*-rc[0-9] ]]; then
+            echo '::set-output name=cluster_environment::testing'
+          else
+            echo '::set-output name=cluster_environment::production'
+          fi  
