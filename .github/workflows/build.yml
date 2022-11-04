@@ -27,6 +27,7 @@ jobs:
     uses: ./.github/workflows/commondeploy.yml 
     with:
       repository_name: ${{ github.event.repository.name }}
+      image_name: ${{ needs.build-and-push-dockerimages.inputs.images }}
       version: ${{ needs.build-and-push-dockerimages.outputs.version }}
       cluster_environment: ${{ needs.build-and-push-dockerimages.outputs.cluster_environment }}
     secrets:

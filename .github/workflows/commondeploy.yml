@@ -7,6 +7,10 @@ on:
         description: 'Enter repository name:'
         required: true
         type: string
+      image_name:
+        description: 'Enter image name:'
+        required: true
+        type: string        
       cluster_environment:
         description: 'Which environment you want to deploy?'
         required: true
@@ -29,6 +33,10 @@ on:
         description: 'Enter repository name:'
         required: true
         type: string
+      image_name:
+        description: 'Enter image name:'
+        required: true
+        type: string           
       cluster_environment:
         description: 'Which environment you want to deploy?'
         required: true
@@ -62,4 +70,4 @@ jobs:
           jenkins-token: "${{ secrets.JENKINS_TOKEN }}"
           user: "${{ secrets.JENKINS_USER }}"
           job-path: "job/monorepo-test"
-          job-params: '{"SERVICE_NAME" : "${{ inputs.repository_name }}", "CLUSTER_ENVIRONMENT": "${{ inputs.cluster_environment }}" , "VERSION": "${{ inputs.version }}", "NAMESPACE": "${{ inputs.namespace || secrets.NAMESPACE }}" }'
+          job-params: '{"SERVICE_NAME" : "${{ inputs.repository_name }}","IMAGE_NAME" : "${{ inputs.image_name }}", "CLUSTER_ENVIRONMENT": "${{ inputs.cluster_environment }}" , "VERSION": "${{ inputs.version }}", "NAMESPACE": "${{ inputs.namespace || secrets.NAMESPACE }}" }'
