@@ -36,7 +36,8 @@ jobs:
       packages: write
     outputs:
       version: ${{ steps.version.outputs.build_version }}
-      cluster_environment: ${{ steps.cluster_environment.outputs.cluster_environment }}      
+      cluster_environment: ${{ steps.cluster_environment.outputs.cluster_environment }}
+       
 
     steps:
       - name: Checkout repository
@@ -61,14 +62,7 @@ jobs:
         id: version
         run: |
           echo "::set-output name=build_version::${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}"
-      - name: Identifying cluster in which application should be deployed
-        id: cluster_environment
-        run: |
-          if [[ "${{fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version']}}" =~ .*-rc[0-9] ]]; then
-            echo '::set-output name=cluster_environment::testing'
-          else
-            echo '::set-output name=cluster_environment::production'
-          fi            
+                 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
