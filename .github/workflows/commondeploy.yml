@@ -70,4 +70,4 @@ jobs:
           jenkins-token: "${{ secrets.JENKINS_TOKEN }}"
           user: "${{ secrets.JENKINS_USER }}"
           job-path: "job/monorepo-test"
-          job-params: '{"SERVICE_NAME" : "${{ inputs.repository_name }}","IMAGE_NAME" : "${{ inputs.image_name }}", "CLUSTER_ENVIRONMENT": "${{ inputs.cluster_environment }}" , "VERSION": "${{ inputs.version }}", "NAMESPACE": "${{ inputs.namespace || secrets.NAMESPACE }}" }'
+          job-params: '{"SERVICE_NAME" : "${{ inputs.repository_name }}","IMAGE_NAME" : "${{ inputs.repository_name }}-${{ inputs.image_name }}", "CLUSTER_ENVIRONMENT": "${{ inputs.cluster_environment }}" , "VERSION": "${{ inputs.version }}", "NAMESPACE": "${{ inputs.namespace || secrets.NAMESPACE }}" }'
