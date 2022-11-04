@@ -61,7 +61,7 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
       - name: Setting image_name
-        id: version
+        id: image_name
         run: |
           echo "::set-output name=image_name:${{ inputs.image }}"            
       - name: Setting application version
