@@ -13,6 +13,9 @@ on:
         type: string 
         
     outputs:
+      image_name:
+        description: 'Image Name'
+        value: ${{ jobs.build-and-push-image.outputs.image_name }}    
       version:
         description: 'Version'
         value: ${{ jobs.build-and-push-image.outputs.version }}
@@ -37,7 +40,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.build_version }}
       cluster_environment: ${{ steps.cluster_environment.outputs.cluster_environment }}      
-
+      image_name: ${{ steps.image_name.outputs.images }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
