@@ -9,7 +9,7 @@ jobs:
     strategy:
      fail-fast: false
      matrix:
-       project: [ webservice]
+       project: [ webclient,webservice]
     permissions:
       contents: read
       packages: write
@@ -24,10 +24,17 @@ jobs:
      
  deploy-to-kubernetes:
     needs: build-and-push-dockerimages
+    strategy:
+     fail-fast: false
+     matrix:
+       project: [webclient,webservice]
+    permissions:
+      contents: read
+      packages: write    
     uses: ./.github/workflows/commondeploy.yml 
     with:
       repository_name: ${{ github.event.repository.name }}
-      image_name: webservice
+      image_name: ${{matrix.project}} 
       version: ${{ needs.build-and-push-dockerimages.outputs.version }}
       cluster_environment: ${{ needs.build-and-push-dockerimages.outputs.cluster_environment }}
     secrets:
