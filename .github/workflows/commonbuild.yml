@@ -60,6 +60,10 @@ jobs:
               ghcr.io/${{ secrets.REPOSITORY_OWNER }}/${{ github.repository }}-${{ inputs.image }}
           tags: |
             type=semver,pattern={{version}}
+      - name: Setting image_name
+        id: version
+        run: |
+          echo "::set-output name=image_name:${{ inputs.image }}"            
       - name: Setting application version
         id: version
         run: |
